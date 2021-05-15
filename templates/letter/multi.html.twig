@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New letter{% endblock %}
+
+{% block body %}
+    <h1>Create new letter</h1>
+
+    <div id="forforms">
+        <div id="ifp1" class="letterDiv">
+            {{ include('letter/_form.html.twig') }}
+        </div>
+    </div>
+
+    <div id="template_form">
+        {% set form=form0 %}
+        {{ include('letter/_form.html.twig') }}
+    </div>
+
+    <br>
+    <button class="oneMoreForm btn btn-primary">One more</button>
+    <button class="fiveMoreForms btn btn-primary">5 more</button>
+{% endblock %}

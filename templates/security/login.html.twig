@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+
+    <div class="formSigninContainer">
+        <div class="formSigninInContainer">
+            <div class="dvhdr">{{ "PleaseSignInPrompt"|trans }}</div>
+            {% if error %}
+                <div class="loginError animated bounceInDown"><p>
+                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </p></div>
+            {% endif %}
+
+            <form action="{{ path('login') }}" method="post" class="form-signin">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="form-signin-icon"></div>
+
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><svg
+                                                xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
+                                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                    </svg></span>
+                                </div>
+                                <label for="inputEmail" class="sr-only">Username</label>
+                                <input name="_username" type="text"
+                                       id="inputEmail"
+                                       class="form-control"
+                                       placeholder="{{ "Username"|trans }}" required
+                                       autofocus data-toggle="tooltip"
+                                       data-placement="top"
+                                       autocomplete="username"
+                                       title="{{ "Username"|trans }}">
+
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <svg
+                                                xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                fill="currentColor" class="bi bi-key-fill" viewBox="0 0 16 16">
+                                          <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <label for="inputPassword" class="sr-only">Password</label>
+                                <input name="_password" type="password"
+                                       id="inputPassword" class="form-control"
+                                       placeholder="{{ "Password"|trans }}"
+                                       autocomplete="current-password" required>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="col-sm">
+                            <button class="btn btn-primary btn-block"
+                                    type="submit">{{ "SignInButtonTitle"|trans }}</button>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="box-for-sso-login-buttons">
+
+                    </div>
+                    <div class="login-bottom-tips"><p class="text-center">
+                        <a href="{{ path('pass_reset_email') }}"
+                           class="">{{ "Forgot username or password?"|trans }}</a>
+                        </p>
+                    </div>
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+
+{% endblock %}
+
+

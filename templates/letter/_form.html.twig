@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    {{ form_start(form, {'action': path('letter_new'), 'method': 'POST'}) }}
+    <fieldset>
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_row(form.title) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.organization) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.status) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.file) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_row(form.barcodeNumber) }}
+            </div>
+            <div class="col-md-1">
+                <label style="min-width: 100px;"> letter </label>
+                <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+            </div>
+        </div>
+    </fieldset>
+    {{ form_end(form) }}
+</div>

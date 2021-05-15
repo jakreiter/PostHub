@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Access denied"|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "Access denied"|trans }}</h1>
+
+    <div>
+
+        <div class="alert alert-warning alert-dismissible niezaszer" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            <p>{{ "You do not have access to this resource."|trans }}</p>
+
+            {% if is_granted('ROLE_NOT_CONFIRMED') and app.user %}
+
+                    <a href="{{ path('residence_confirmation', {'id': app.user.id, 'username': app.user.username }) }}" class="btn btn-primary">{{ "Prove you are a resident"|trans }} </a>
+            {% else %}
+                <p>{{ "If you think this is a mistake, please write to"|trans }} <a
+                            href="mailto:{{ admin_contact_email }}?subject=access_denied">{{ admin_contact_email }}</a>
+                </p>
+
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Organization index{% endblock %}
+
+{% block body %}
+    <h1>Organization index</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Scan</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for organization in organizations %}
+            <tr>
+                <td>{{ organization.id }}</td>
+                <td>{{ organization.name }}</td>
+                <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('organization_admin_show', {'id': organization.id}) }}">show</a>
+                    <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('organization_admin_new') }}">Create new</a>
+{% endblock %}

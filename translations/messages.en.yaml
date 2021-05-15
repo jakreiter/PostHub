@@ -1,0 +1,31 @@
+UsersLinkTitle: Users
+AddUserLinkTitle: Add user
+ChangePasswordTitle: Changing password
+ChangePasswordLinkTitle: Change password
+LogoutLinkTitle: Logout
+Password: Password
+New password: New password
+New password2: Repeat the new password
+Username: Login
+Email: Email
+Is active: Active
+Roles assigned: Roles assigned
+BackToListLinkTitle: Back to list
+SaveButtonTitle: Save
+UpdateButtonTitle: Update
+CreateNewUserTitle: Creating new user
+RestrictedAreaTitle: Restricted area
+PleaseSignInPrompt: Please sign in
+SignInButtonTitle: Sign in
+LogInActionButtonTitle: Log in
+menuUsers: Users
+menuAddUser: Add user
+menuHLetters: Letters
+letterMulti: Adding multiple letters
+menuLetterNew: New letter
+Title: Title
+Organization: Organization
+Status: Status
+Scan (PDF file): Scan (PDF file)
+Barcode number: Barcode number
+Forgot username or password?: Forgot username or password?
