@@ -59,8 +59,10 @@ function rebind() {
 
     $(".letterDiv form").submit(function(e) {
         e.preventDefault();
+
         var formData = new FormData(this);
         var form = this;
+        $(form).find('fieldset').prop("disabled", true);
         $.ajax({
             url: this.action,
             type: 'POST',
@@ -68,7 +70,23 @@ function rebind() {
             success: function (data) {
                 let prntdv = $(form).closest('div');
                 prntdv.append("<p>saved</p>");
-                $(form).find('fieldset').prop("disabled", true);
+
+                //alert(data)
+            },
+            error: function (data) {
+                console.log('error');
+                let prntdv = $(form).closest('div');
+                $(form).find('fieldset').prop("disabled", false);
+                prntdv.append("<p>fail</p>");
+
+                //alert(data)
+            },
+            always: function (data) {
+                console.log('always');
+                let prntdv = $(form).closest('div');
+                $(form).find('fieldset').prop("disabled", false);
+                prntdv.append("<p>fail</p>");
+
                 //alert(data)
             },
             cache: false,
