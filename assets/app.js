@@ -63,13 +63,18 @@ function rebind() {
         var formData = new FormData(this);
         var form = this;
         $(form).find('fieldset').prop("disabled", true);
+        $(form).find('.btnSubmitNormal').hide();
+        $(form).find('.btnSubmitInProgress').show();
+
         $.ajax({
             url: this.action,
             type: 'POST',
             data: formData,
             success: function (data) {
                 let prntdv = $(form).closest('div');
-                prntdv.append("<p>saved</p>");
+                $(form).find('.btnSubmitNormal').hide();
+                $(form).find('.btnSubmitInProgress').hide();
+                $(form).find('.btnSubmitSuccess').show();
 
                 //alert(data)
             },
@@ -77,7 +82,12 @@ function rebind() {
                 console.log('error');
                 let prntdv = $(form).closest('div');
                 $(form).find('fieldset').prop("disabled", false);
-                prntdv.append("<p>fail</p>");
+                $(form).find('.btnSubmitNormal').show();
+                $(form).find('.btnSubmitInProgress').hide();
+                $(form).find('.btnSubmitSuccess').hide();
+
+                let statusTarget = $(form).closest('div.statusDiv');
+                statusTarget.html("<p class='text-danger'>Submit failed.</p>");
 
                 //alert(data)
             },
@@ -85,8 +95,9 @@ function rebind() {
                 console.log('always');
                 let prntdv = $(form).closest('div');
                 $(form).find('fieldset').prop("disabled", false);
-                prntdv.append("<p>fail</p>");
 
+                let statusTarget = $(form).closest('div.status');
+                statusTarget.html("<p>Submit ended.</p>");
                 //alert(data)
             },
             cache: false,
