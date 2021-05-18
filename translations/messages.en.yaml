@@ -31,4 +31,7 @@ Barcode number: Barcode number
 Forgot username or password?: Forgot username or password?
 menuOrganizations: Organizations
 menuAddOrganization: Add organization
-
+btnShow: Show
+btnEdit: Edit
+menuLocations: Locations
+menuAddLocation: New Location

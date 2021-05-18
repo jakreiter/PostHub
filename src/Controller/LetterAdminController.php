@@ -34,6 +34,7 @@ class LetterAdminController extends AbstractController
     public function newAction(Request $request, SluggerInterface $slugger): Response
     {
 
+        $rich = $request->get('rich');
         $letter = new Letter();
 
         $form = $this->createForm(LetterType::class, $letter);
@@ -48,7 +49,7 @@ class LetterAdminController extends AbstractController
                 $letter->setOriginalName($uploadedFile->getClientOriginalName());
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$uploadedFile->guessExtension();
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
 
                 // Move the file to the directory where brochures are stored
                 try {
@@ -59,7 +60,7 @@ class LetterAdminController extends AbstractController
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-                $fileSize = filesize($this->getParameter('upload_directory').DIRECTORY_SEPARATOR.$newFilename);
+                $fileSize = filesize($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $newFilename);
                 $letter->setSize($fileSize);
                 $letter->setFilename($newFilename);
             }
@@ -68,15 +69,22 @@ class LetterAdminController extends AbstractController
             $entityManager->persist($letter);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Saved. id:'.$letter->getId());
+            //$this->addFlash('success', 'Saved. id:'.$letter->getId());
             return $this->render('letter/saved.html.twig', [
                 'letter' => $letter,
             ]);
         }
-        return $this->render('letter/new.html.twig', [
-            'letter' => $letter,
-            'form' => $form->createView()
-        ]);
+        if ($rich) {
+            return $this->render('letter/new_rich.html.twig', [
+                'letter' => $letter,
+                'form' => $form->createView(),
+            ]);
+        } else {
+            return $this->render('letter/new.html.twig', [
+                'letter' => $letter,
+                'form' => $form->createView(),
+            ]);
+        }
     }
 
     /**
@@ -114,7 +122,7 @@ class LetterAdminController extends AbstractController
      */
     public function delete(Request $request, Letter $letter): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$letter->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $letter->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($letter);
             $entityManager->flush();

@@ -23,7 +23,6 @@ class UserType extends AbstractType
             ->add('firstName')
             ->add('lastName')
             ->add('email')
-            ->add('newEmail')
             ->add('enabled')
             ->add('roles', ChoiceType::class, [
                 'required' => true,
@@ -34,8 +33,6 @@ class UserType extends AbstractType
                     'ROLE_SUPER_ADMIN' => ['disabled' => 'disabled'],
                 ],
             ])
-            ->add('passResetToken')
-            ->add('ipAddressDuringRegistration')
         ;
     }
 

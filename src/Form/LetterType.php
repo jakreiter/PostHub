@@ -32,7 +32,7 @@ class LetterType extends AbstractType
                 'expanded' => false,
                 'required' => true,
                 'attr' => array(
-                    'class' => 'forums_sel'
+                    'class' => 'superselect'
                 )
             ])
             ->add('status')

@@ -40,16 +40,29 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ "menuOrganizations"|trans }}</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('organization_admin_index') }}">{{ "menuOrganizations"|trans }}</a>
-                        <a class="dropdown-item" href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('organization_admin_index') }}">{{ "menuOrganizations"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
                     </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ "menuLocations"|trans }}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"
+                           href="{{ path('location_admin_index') }}">{{ "menuLocations"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('location_admin_new') }}">{{ "menuAddLocation"|trans }}</a>
+                    </div>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ "menuHLetters"|trans }}</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item"
                            href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
-                        <a class="dropdown-item" href="{{ path('letter_new') }}">{{ "menuLetterNew"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
                     </div>
                 </li>
 

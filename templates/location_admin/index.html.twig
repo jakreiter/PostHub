@@ -3,7 +3,7 @@
 {% block title %}Location index{% endblock %}
 
 {% block body %}
-    <h1>Location index</h1>
+    <h1>Locations</h1>
 
     <table class="table table-bordered">
         <thead>
@@ -33,8 +33,8 @@
                 <td>{{ location.created ? location.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ location.updated ? location.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('location_admin_show', {'id': location.id}) }}">show</a>
-                    <a href="{{ path('location_admin_edit', {'id': location.id}) }}">edit</a>
+                    <a href="{{ path('location_admin_show', {'id': location.id}) }}" class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
+                    <a href="{{ path('location_admin_edit', {'id': location.id}) }}" class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
                 </td>
             </tr>
         {% else %}
@@ -45,5 +45,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('location_admin_new') }}">Create new</a>
+    <a href="{{ path('location_admin_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

@@ -25,8 +25,15 @@ function addLetterforms(numberOfForms)
     {
         formNumber++;
         ifrejmy.push(formNumber);
-        var koddod = "<div id=\"ifp"+formNumber+"\"  class=\"letterDiv\">"+$("#template_form").html();+"</div>";
+        let html = $("#template_form").html();
+        html = html.replaceAll('letter_organization', 'letter_organization'+formNumber);
+        //console.log(html);
+        var koddod = "<div id=\"ifp"+formNumber+"\"  class=\"letterDiv\">"+ html+"</div>";
         $("#forforms").append(koddod);
+        console.log($('#ifp'+formNumber+' select.superselect').length);
+        $('#ifp'+formNumber+' select.superselect').select2({
+            theme: 'bootstrap4',
+        });
     }
     rebind();
 }
@@ -36,6 +43,21 @@ function rebind() {
     $('select.select2').select2({
         theme: 'bootstrap4',
     });
+
+
+    /*
+     * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
+     * see: https://github.com/select2/select2/issues/5993
+     * see: https://github.com/jquery/jquery/issues/4382
+     *
+     * TODO: Recheck with the select2 GH issue and remove once this is fixed on their side
+     */
+
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
+
+
 
     $(function() {
         $("table.sortable").tablesorter({

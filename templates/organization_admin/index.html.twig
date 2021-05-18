@@ -3,7 +3,7 @@
 {% block title %}Organization index{% endblock %}
 
 {% block body %}
-    <h1>Organization index</h1>
+    <h1>Organizations</h1>
 
     <table class="table table-bordered">
         <thead>
@@ -25,8 +25,8 @@
                 <td>{{ organization.owner }}</td>
                 <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('organization_admin_show', {'id': organization.id}) }}">show</a>
-                    <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}">edit</a>
+                    <a href="{{ path('organization_admin_show', {'id': organization.id}) }}" class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
+                    <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}" class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('organization_admin_new') }}">Create new</a>
+    <a href="{{ path('organization_admin_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

@@ -5,6 +5,7 @@ namespace App\DataFixtures;
 use App\Entity\Organization;
 use App\Entity\User;
 use App\Entity\Location;
+use App\Entity\LetterStatus;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -28,6 +29,16 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager)
     {
+
+        $letterStatus = new LetterStatus();
+        $letterStatus->setName('In the office');
+        $manager->persist($letterStatus);
+
+        $letterStatus = new LetterStatus();
+        $letterStatus->setName('Given to the recipient');
+        $manager->persist($letterStatus);
+
+
 
         $users = [];
         $user = new User();
