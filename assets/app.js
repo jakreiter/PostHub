@@ -72,15 +72,9 @@ function rebind() {
             data: formData,
             success: function (data) {
                 let prntdv = $(form).closest('div');
-                $(form).find('.btnSubmitNormal').hide();
-                $(form).find('.btnSubmitInProgress').hide();
-                $(form).find('.btnSubmitSuccess').show();
-
-                //alert(data)
+                prntdv.html(data);
             },
             error: function (data) {
-                console.log('error');
-                let prntdv = $(form).closest('div');
                 $(form).find('fieldset').prop("disabled", false);
                 $(form).find('.btnSubmitNormal').show();
                 $(form).find('.btnSubmitInProgress').hide();
@@ -88,17 +82,6 @@ function rebind() {
 
                 let statusTarget = $(form).closest('div.statusDiv');
                 statusTarget.html("<p class='text-danger'>Submit failed.</p>");
-
-                //alert(data)
-            },
-            always: function (data) {
-                console.log('always');
-                let prntdv = $(form).closest('div');
-                $(form).find('fieldset').prop("disabled", false);
-
-                let statusTarget = $(form).closest('div.status');
-                statusTarget.html("<p>Submit ended.</p>");
-                //alert(data)
             },
             cache: false,
             contentType: false,

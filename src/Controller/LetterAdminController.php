@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\LetterRepository;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +17,15 @@ use Symfony\Component\String\Slugger\SluggerInterface;
  */
 class LetterAdminController extends AbstractController
 {
+    /**
+     * @Route("/", name="letter_admin_index", methods={"GET"})
+     */
+    public function index(LetterRepository $letterRepository): Response
+    {
+        return $this->render('letter/index.html.twig', [
+            'letters' => $letterRepository->findAll(),
+        ]);
+    }
 
     /**
      * @Route("/new", name="letter_new", methods="GET|POST")
@@ -57,10 +68,24 @@ class LetterAdminController extends AbstractController
             $entityManager->persist($letter);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Saved. id:'.$letter->getId());
+            return $this->render('letter/saved.html.twig', [
+                'letter' => $letter,
+            ]);
         }
         return $this->render('letter/new.html.twig', [
             'letter' => $letter,
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/show:{id}", name="letter_admin_show", methods={"GET"})
+     */
+    public function show(Letter $letter): Response
+    {
+        return $this->render('letter/show.html.twig', [
+            'letter' => $letter,
         ]);
     }
 
@@ -82,6 +107,21 @@ class LetterAdminController extends AbstractController
             'form0' => $form0->createView(),
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/delete:{id}", name="letter_admin_delete", methods={"POST"})
+     */
+    public function delete(Request $request, Letter $letter): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$letter->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($letter);
+            $entityManager->flush();
+            $this->addFlash('danger', 'Deleted.');
+        }
+
+        return $this->redirectToRoute('letter_admin_index');
     }
 
 }

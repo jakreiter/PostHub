@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Letter index{% endblock %}
+
+{% block body %}
+    <h1>Letter index</h1>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Organization</th>
+                <th>Status</th>
+                <th>Scan</th>
+                <th>Barcode Number</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for letter in letters %}
+            <tr>
+                <td>{{ letter.id }}</td>
+                <td>{{ letter.title }}</td>
+                <td>{{ letter.organization }}</td>
+                <td>{{ letter.status }}</td>
+                <td>{{ letter.originalName }}</td>
+                <td>{{ letter.barcodeNumber }}</td>
+                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('letter_admin_show', {'id': letter.id}) }}" class="btn btn-success">show</a>
+                </td>
+            </tr>
+        {% else %}
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

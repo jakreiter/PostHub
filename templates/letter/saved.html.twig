@@ -1,0 +1,66 @@
+{% block body %}
+    <form action="#">
+        <fieldset>
+            <div class="row letter_row">
+                <div class="col-md-2">
+                    <div class="form-group"><label for="letter_title" class="required">Title</label>
+                        <input type="text"
+                               id="letter_title"
+                               name="letter[title]"
+                               readonly class="form-control-plaintext"
+                               value="{{ letter.title }}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group"><label class="" for="letter_organization">Organization</label>
+                        <input type="text"
+                               id="letter_organization"
+                               name="letter[organization]"
+                               readonly class="form-control-plaintext"
+                               value="{{ letter.organization }}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group"><label class="" for="letter_status">Status</label>
+                        <input type="text"
+                               id="letter_status"
+                               name="letter[status]"
+                               readonly class="form-control-plaintext"
+                               value="{{ letter.status }}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group"><label class="" for="letter_status">Status</label>
+                        <input type="text"
+                               name="letter[file]"
+                               id="letter_status"
+                               readonly class="form-control-plaintext"
+                               value="{{ letter.originalName }}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group"><label for="letter_barcodeNumber">Barcode number</label>
+                        <input type="text"
+                               name="letter[barcodeNumber]"
+                               id="letter_barcodeNumber"
+                               readonly class="form-control-plaintext"
+                               value="{{ letter.barcodeNumber }}">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group"><label for="letter_id">Id</label>
+                        <input type="text"
+                               name="letter[id]"
+                               id="letter_id"
+                               readonly class="form-control-plaintext"
+                               value="{{ letter.id }}">
+                    </div>
+                </div>
+
+            </div>
+        </fieldset>
+    </form>
+
+
+
+{% endblock %}

@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Letter;
+use App\Entity\Organization;
+use App\Repository\OrganizationRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,7 +19,22 @@ class LetterType extends AbstractType
         $builder
             ->add('title')
             ->add('barcodeNumber')
-            ->add('organization')
+            ->add('organization', EntityType::class, [
+                'class' => 'App:Organization',
+                'query_builder' => function (OrganizationRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.name', 'ASC');
+                },
+                'choice_label' => function (Organization $organization) {
+                    return $organization->getName().' (scan:'.$organization->getScan().')';
+                },
+                'multiple' => false,
+                'expanded' => false,
+                'required' => true,
+                'attr' => array(
+                    'class' => 'forums_sel'
+                )
+            ])
             ->add('status')
             ->add('file', FileType::class, [
                 'label' => 'Scan (PDF file)',

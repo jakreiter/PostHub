@@ -182,7 +182,7 @@ div.miniseparator {
   position: absolute;
   left: -150px;
   text-align: right;
-  padding: 0px 10px;
+  padding: 0 10px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -318,4 +318,17 @@ table.layout-fixed {
 #template_form {
   background-color: #aaa;
   display: none;
+}
+
+.letter_row {
+  border-bottom: 1px solid #888;
+}
+
+label.required:before {
+  content: "* ";
+  color: #aaa;
+}
+
+label.noreq.required:before {
+  content: "";
 }

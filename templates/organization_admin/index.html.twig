@@ -10,6 +10,8 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Location</th>
+                <th>Owner</th>
                 <th>Scan</th>
                 <th>actions</th>
             </tr>
@@ -19,6 +21,8 @@
             <tr>
                 <td>{{ organization.id }}</td>
                 <td>{{ organization.name }}</td>
+                <td>{{ organization.location }}</td>
+                <td>{{ organization.owner }}</td>
                 <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('organization_admin_show', {'id': organization.id}) }}">show</a>

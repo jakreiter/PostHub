@@ -35,7 +35,7 @@ class Letter
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=true)
+     * @ORM\Column(type="string", length=32, nullable=false)
      */
     private $title;
 
@@ -76,23 +76,6 @@ class Letter
     public function __toString()
     {
         return $this->getTitle().' '.$this->getOrganization()->getName();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(?string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
     }
 
     public function getCreated(): ?\DateTimeInterface
@@ -187,6 +170,23 @@ class Letter
     public function setBarcodeNumber(?string $barcodeNumber): self
     {
         $this->barcodeNumber = $barcodeNumber;
+
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
