@@ -9,12 +9,45 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 /**
  * @Route("/kadmin/organization")
  */
 class OrganizationAdminController extends AbstractController
 {
+    /**
+     * @Route("/find.{_format}",
+     *      requirements = { "_format" = "html|json" },
+     *      name="organization_admin_find", methods={"GET"})
+     */
+    public function findAction(Request $request, $_format, OrganizationRepository $organizationRepository): Response
+    {
+        $fragment = $request->query->get('fragment');
+        if ($fragment) {
+            $organizations = $organizationRepository->findByFragment($fragment);
+        } else {
+            $organizations = [];
+        }
+
+        if ('html' == $_format) {
+            return $this->render('organization_admin/index.html.twig', [
+                'organizations' => $organizations,
+            ]);
+        } else {
+            $orgArrs = [];
+            if (count($organizations)) {
+                foreach ($organizations as $organization) {
+                    $orgArrs[]=$organization->toArray();
+                }
+            }
+            $response = new JsonResponse();
+            $response->setData($orgArrs);
+            return $response;
+        }
+    }
+
     /**
      * @Route("/", name="organization_admin_index", methods={"GET"})
      */
@@ -83,7 +116,7 @@ class OrganizationAdminController extends AbstractController
      */
     public function delete(Request $request, Organization $organization): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$organization->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $organization->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($organization);
             $entityManager->flush();

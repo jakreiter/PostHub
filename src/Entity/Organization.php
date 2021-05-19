@@ -72,6 +72,18 @@ class Organization
     }
 
 
+    public function toArray()
+    {
+        $arr = [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'scan' => $this->getScan(),
+            'locationId' => $this->getLocation()->getId(),
+            'locationName' => $this->getLocation()->getName(),
+        ];
+        return $arr;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
