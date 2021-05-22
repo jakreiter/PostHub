@@ -22,6 +22,7 @@ var formNumber = 0;
 
 function organizationSelectAjaxize(formNumber)
 {
+    console.log("organizationSelectAjaxize("+formNumber+")");
     $('#ifp' + formNumber + ' select.organization-ajax-select').select2({
         theme: 'bootstrap4',
         ajax: {
@@ -36,10 +37,12 @@ function organizationSelectAjaxize(formNumber)
 }
 
 function addLetterforms(numberOfForms) {
+    console.log("addLetterforms("+numberOfForms+")");
     for (var nf = 0; nf < numberOfForms; nf++) {
         formNumber++;
         ifrejmy.push(formNumber);
         let html = $("#template_form").html();
+        html = html.replaceAll('letter__token', 'letter__token' + formNumber);
         html = html.replaceAll('letter_organization', 'letter_organization' + formNumber);
         html = html.replaceAll('letter_file', 'letter_file' + formNumber);
         html = html.replaceAll('letter_status', 'letter_status' + formNumber);
@@ -49,7 +52,7 @@ function addLetterforms(numberOfForms) {
         var koddod = "<div id=\"ifp" + formNumber + "\" data-form-number=\"" + formNumber + "\"  class=\"letterDiv\">" + html + "</div>";
         $("#forforms").append(koddod);
         organizationSelectAjaxize(formNumber);
-
+        newLetterFormsAjaxize();
     }
     rebind();
 }
@@ -77,6 +80,44 @@ function formatOrganizationOption (organizationInfo) {
     $container.find(".select2-result-repository__location").text(organizationInfo.locationName);
 
     return $container;
+}
+
+function newLetterFormsAjaxize() {
+    $(".letterDiv form").off('submit');
+    $(".letterDiv form").submit(function (e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+        var form = this;
+        $(form).find('fieldset').prop("disabled", true);
+        $(form).find('.btnSubmitNormal').hide();
+        $(form).find('.btnSubmitInProgress').show();
+
+        $.ajax({
+            url: this.action,
+            type: 'POST',
+            data: formData,
+            success: function (data) {
+                let prntdv = $(form).closest('div');
+                formNumber = prntdv.data('formNumber');
+                prntdv.html(data);
+                organizationSelectAjaxize(formNumber);
+                rebind();
+            },
+            error: function (data) {
+                $(form).find('fieldset').prop("disabled", false);
+                $(form).find('.btnSubmitNormal').show();
+                $(form).find('.btnSubmitInProgress').hide();
+                $(form).find('.btnSubmitSuccess').hide();
+
+                let statusTarget = $(form).closest('div.statusDiv');
+                statusTarget.html("<p class='text-danger'>Submit failed.</p>");
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    });
 }
 
 function formatOrganizationSelection (repo) {
@@ -109,53 +150,24 @@ function rebind() {
         });
     });
 
+    $('form.deleteForm').off();
     $("form.deleteForm").submit(function (event) {
         var confirmed = confirm('Are you sure you want to delete this item?')
         if (!confirmed) event.preventDefault();
         return confirmed;
     });
 
+    $('.oneMoreForm').off();
     $('.oneMoreForm').on("click", function (event, errorMessage) {
         addLetterforms(1);
     });
-
+    $('.fiveMoreForms').off();
     $('.fiveMoreForms').on("click", function (event, errorMessage) {
         addLetterforms(5);
     });
 
-    $(".letterDiv form").submit(function (e) {
-        e.preventDefault();
 
-        var formData = new FormData(this);
-        var form = this;
-        $(form).find('fieldset').prop("disabled", true);
-        $(form).find('.btnSubmitNormal').hide();
-        $(form).find('.btnSubmitInProgress').show();
-
-        $.ajax({
-            url: this.action,
-            type: 'POST',
-            data: formData,
-            success: function (data) {
-                let prntdv = $(form).closest('div');
-                formNumber = prntdv.data('formNumber');
-                prntdv.html(data);
-                organizationSelectAjaxize(formNumber);
-            },
-            error: function (data) {
-                $(form).find('fieldset').prop("disabled", false);
-                $(form).find('.btnSubmitNormal').show();
-                $(form).find('.btnSubmitInProgress').hide();
-                $(form).find('.btnSubmitSuccess').hide();
-
-                let statusTarget = $(form).closest('div.statusDiv');
-                statusTarget.html("<p class='text-danger'>Submit failed.</p>");
-            },
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-    });
+    newLetterFormsAjaxize();
 
 
     $(".custom-file-input").on("change", function () {
