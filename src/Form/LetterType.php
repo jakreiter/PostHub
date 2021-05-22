@@ -23,16 +23,18 @@ class LetterType extends AbstractType
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
                     return $er->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC');
+                        ->orderBy('u.name', 'ASC')
+                        ->setMaxResults(5);
                 },
                 'choice_label' => function (Organization $organization) {
-                    return $organization->getName().' (scan:'.$organization->getScan().')';
+                    return $organization->getName().' '.($organization->getScan()?'📷':'x');
                 },
                 'multiple' => false,
                 'expanded' => false,
                 'required' => true,
+                'placeholder' => '',
                 'attr' => array(
-                    'class' => 'superselect'
+                    'class' => 'organization-ajax-select'
                 )
             ])
             ->add('status')

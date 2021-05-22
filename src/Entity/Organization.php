@@ -76,6 +76,7 @@ class Organization
     {
         $arr = [
             'id' => $this->getId(),
+            'text' => $this->getName().' '.($this->getScan()?'📷':'x'),
             'name' => $this->getName(),
             'scan' => $this->getScan(),
             'locationId' => $this->getLocation()->getId(),

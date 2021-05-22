@@ -7,6 +7,7 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.scss';
+
 const $ = require('jquery');
 global.$ = global.jQuery = $;
 // this "modifies" the jquery module: adding behavior to it
@@ -16,26 +17,70 @@ import 'tablesorter';
 
 import 'select2';
 
-var ifrejmy = [1];
-var formNumber = 1;
+var ifrejmy = [0];
+var formNumber = 0;
 
-function addLetterforms(numberOfForms)
+function organizationSelectAjaxize(formNumber)
 {
-    for (var nf=0;nf<numberOfForms;nf++)
-    {
+    $('#ifp' + formNumber + ' select.organization-ajax-select').select2({
+        theme: 'bootstrap4',
+        ajax: {
+            url: '/kadmin/organization/find.json',
+            dataType: 'json',
+            delay: 250 // milliseconds
+        },
+        minimumInputLength: 2,
+        templateResult: formatOrganizationOption,
+        templateSelection: formatOrganizationSelection
+    });
+}
+
+function addLetterforms(numberOfForms) {
+    for (var nf = 0; nf < numberOfForms; nf++) {
         formNumber++;
         ifrejmy.push(formNumber);
         let html = $("#template_form").html();
-        html = html.replaceAll('letter_organization', 'letter_organization'+formNumber);
+        html = html.replaceAll('letter_organization', 'letter_organization' + formNumber);
+        html = html.replaceAll('letter_file', 'letter_file' + formNumber);
+        html = html.replaceAll('letter_status', 'letter_status' + formNumber);
+        html = html.replaceAll('letter_title', 'letter_title' + formNumber);
+        html = html.replaceAll('letter_barcodeNumber', 'letter_barcodeNumber' + formNumber);
         //console.log(html);
-        var koddod = "<div id=\"ifp"+formNumber+"\"  class=\"letterDiv\">"+ html+"</div>";
+        var koddod = "<div id=\"ifp" + formNumber + "\" data-form-number=\"" + formNumber + "\"  class=\"letterDiv\">" + html + "</div>";
         $("#forforms").append(koddod);
-        console.log($('#ifp'+formNumber+' select.superselect').length);
-        $('#ifp'+formNumber+' select.superselect').select2({
-            theme: 'bootstrap4',
-        });
+        organizationSelectAjaxize(formNumber);
+
     }
     rebind();
+}
+
+
+function formatOrganizationOption (organizationInfo) {
+    if (organizationInfo.loading) {
+        return organizationInfo.text;
+    }
+
+    var $container = $(
+        "<div class='sel-row'>" +
+        " <span class='select2-result-repository__title'></span>" +
+        " <span class='select2-result-repository__scan badge'></span>" +
+        " <span class='select2-result-repository__location'></span>" +
+        "</div>"
+    );
+
+    $container.find(".select2-result-repository__title").text(organizationInfo.name);
+    $container.find(".select2-result-repository__scan").text(organizationInfo.scan);
+
+    if (organizationInfo.scan) $container.find(".select2-result-repository__scan").addClass('badge-success');
+    else  $container.find(".select2-result-repository__scan").addClass('badge-secondary');
+
+    $container.find(".select2-result-repository__location").text(organizationInfo.locationName);
+
+    return $container;
+}
+
+function formatOrganizationSelection (repo) {
+    return repo.text;
 }
 
 function rebind() {
@@ -58,8 +103,7 @@ function rebind() {
     });
 
 
-
-    $(function() {
+    $(function () {
         $("table.sortable").tablesorter({
             theme: "bootstrap"
         });
@@ -79,7 +123,7 @@ function rebind() {
         addLetterforms(5);
     });
 
-    $(".letterDiv form").submit(function(e) {
+    $(".letterDiv form").submit(function (e) {
         e.preventDefault();
 
         var formData = new FormData(this);
@@ -94,7 +138,9 @@ function rebind() {
             data: formData,
             success: function (data) {
                 let prntdv = $(form).closest('div');
+                formNumber = prntdv.data('formNumber');
                 prntdv.html(data);
+                organizationSelectAjaxize(formNumber);
             },
             error: function (data) {
                 $(form).find('fieldset').prop("disabled", false);
@@ -112,7 +158,7 @@ function rebind() {
     });
 
 
-    $(".custom-file-input").on("change", function() {
+    $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
@@ -122,8 +168,6 @@ function rebind() {
 $(document).ready(function () {
     rebind();
 });
-
-
 
 
 // start the Stimulus application

@@ -24,7 +24,7 @@ class OrganizationAdminController extends AbstractController
      */
     public function findAction(Request $request, $_format, OrganizationRepository $organizationRepository): Response
     {
-        $fragment = $request->query->get('fragment');
+        $fragment = $request->query->get('q');
         if ($fragment) {
             $organizations = $organizationRepository->findByFragment($fragment);
         } else {
@@ -42,8 +42,11 @@ class OrganizationAdminController extends AbstractController
                     $orgArrs[]=$organization->toArray();
                 }
             }
+            $reaponseArr = [
+                'results'=>$orgArrs
+            ];
             $response = new JsonResponse();
-            $response->setData($orgArrs);
+            $response->setData($reaponseArr);
             return $response;
         }
     }
