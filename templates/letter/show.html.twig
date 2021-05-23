@@ -7,22 +7,30 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ letter.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ letter.title }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <td>{{ letter.id }}</td>
+        </tr>
+        <tr>
+            <th>Title</th>
+            <td>{{ letter.title }}</td>
+        </tr>
+        <tr>
+            <th>Barcode</th>
+            <td>{{ letter.barcodeNumber }}</td>
+        </tr>
+        <tr>
+            <th>Organization</th>
+            <td><a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}" class="">{{ letter.organization }}</a></td>
+        </tr>
+        <tr>
+            <th>Created</th>
+            <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Updated</th>
+            <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
         </tbody>
     </table>
 
