@@ -131,6 +131,7 @@ class User implements UserInterface, \Serializable
             'id' => $this->getId(),
             'text' => $this->getUsername().' ('.$this->getEmail().')',
             'username' => $this->getUsername(),
+            'email' => $this->getEmail(),
             'firstName' => $this->getFirstName(),
             'lastName' => $this->getLastName(),
             'roles' => $this->getRoles()

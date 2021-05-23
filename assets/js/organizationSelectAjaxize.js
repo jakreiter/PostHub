@@ -1,10 +1,10 @@
 import formatOrganizationOption from './formatOrganizationOption';
 import formatOrganizationSelection from './formatOrganizationSelection';
 
-export default function (formNumber)
+export default function (posthubFormNumber)
 {
-    console.log("organizationSelectAjaxize("+formNumber+")");
-    $('#ifp' + formNumber + ' select.organization-ajax-select').select2({
+    console.log("organizationSelectAjaxize("+posthubFormNumber+")");
+    $('#ifp' + posthubFormNumber + ' select.organization-ajax-select').select2({
         theme: 'bootstrap4',
         ajax: {
             url: '/kadmin/organization/find.json',

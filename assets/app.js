@@ -17,10 +17,11 @@ import 'tablesorter';
 
 import 'select2';
 
-var ifrejmy = [];
-var formNumber = 0;
-global.ifrejmy = ifrejmy;
-global.formNumber = formNumber;
+var posthubLetterForms = [];
+var posthubFormNumber = 0;
+
+global.posthubLetterForms = posthubLetterForms;
+global.posthubFormNumber = posthubFormNumber;
 
 import rebind from './js/rebind';
 
@@ -31,3 +32,4 @@ $(document).ready(function () {
 
 // start the Stimulus application
 import './bootstrap';
+

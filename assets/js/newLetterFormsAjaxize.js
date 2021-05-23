@@ -19,12 +19,13 @@ export default function newLetterFormsAjaxize() {
             data: formData,
             success: function (data) {
                 let prntdv = $(form).closest('div');
-                formNumber = prntdv.data('formNumber');
+                posthubFormNumber = prntdv.data('formNumber');
                 prntdv.html(data);
-                organizationSelectAjaxize(formNumber);
+                organizationSelectAjaxize(posthubFormNumber);
                 rebind();
             },
             error: function (data) {
+                console.log('ajax error1.');
                 $(form).find('fieldset').prop("disabled", false);
                 $(form).find('.btnSubmitNormal').show();
                 $(form).find('.btnSubmitInProgress').hide();
