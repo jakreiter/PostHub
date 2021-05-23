@@ -38,7 +38,7 @@ btnEdit: Edytuj
 menuLocations: Lokalizacje
 menuAddLocation: Nowa lokalizacja
 Name: Nazwa
-Street: ulica
+Street: Ulica
 House number: Number domu
 Apartment number: Number lokalu
 Postal code: Kod pocztowy
@@ -51,3 +51,26 @@ First name: Imię
 Last name: Nazwisko
 Enabled: Włączony
 Roles: Role
+Audit: Audyt zmian
+Changes have been saved.: Zmiany zostały zapisane.
+User: Użytkownik
+Id: Identyfikator
+FirstName: Imię
+Created: Utworzono
+Updated: Zmodyfikowano
+LastPassResetRequest: Ostatni reset hasła
+PassResetToken: Token resetujący hasło
+IpAddressDuringRegistration: Adres IP przy rejestracji
+Edit User: Edycja użytkownika
+Edit: Edycja
+Scan: Skanowanie
+Location: Lokalizacja
+Locations: Localizacje
+Owner: Właściciel
+Create new User: Tworzenie nowego użytkownika
+Create new: Utwórz
+ROLE_USER: Użytkownik
+ROLE_ADMIN: Administrator
+ROLE_SUPER_ADMIN: SuperAdminitrator
+Edit Organization: Edycja organizacji
+Users: Użytkownicy

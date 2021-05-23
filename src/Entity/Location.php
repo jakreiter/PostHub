@@ -5,9 +5,13 @@ namespace App\Entity;
 use App\Repository\LocationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
+
 
 /**
  * @ORM\Entity(repositoryClass=LocationRepository::class)
+ * @Audit\Auditable()
+ * @Audit\Security(view={"ROLE_ADMIN"})
  */
 class Location
 {

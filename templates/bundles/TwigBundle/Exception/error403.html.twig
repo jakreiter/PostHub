@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Brak dostępu{% endblock %}
+
+{% block body %}
+    <h1>Brak dostępu</h1>
+
+    <div>
+        {% if message is defined and  message %}
+            <p>{{ message }}</p>
+        {% else %}
+            <p>Nie masz dostępu do tego zasobu.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

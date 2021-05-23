@@ -1,9 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}{{ "Users"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Users</h1>
+    <h1>{{ "Users"|trans }}</h1>
+
+    <p><a href="{{ path('user_admin_new') }}" class="btn btn-success">{{ "Create new"|trans }}</a>
+    </p>
 
     <table class="table table-bordered">
         <thead>
@@ -47,5 +50,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('user_admin_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

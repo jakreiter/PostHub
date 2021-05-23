@@ -3,11 +3,24 @@
 {% block title %}Edit Organization{% endblock %}
 
 {% block body %}
-    <h1>Edit Organization</h1>
+    <h1>{{ "Edit Organization"|trans }}</h1>
 
     {{ include('organization_admin/_form.html.twig', {'button_label': 'Save'|trans}) }}
 
-    <a href="{{ path('organization_admin_index') }}" class="btn btn-secondary">back to list</a>
 
-    {{ include('organization_admin/_delete_form.html.twig') }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('organization_admin_index') }}" class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('dh_auditor_show_entity_history', {'id': organization.id, 'entity': 'App-Entity-Organization'}) }}"
+                   class="btn btn-outline-info btn-block">{{ "Audit"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                {{ include('organization_admin/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

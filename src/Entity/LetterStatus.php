@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\LetterStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
+use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
 /**
  * @ORM\Entity(repositoryClass=LetterStatusRepository::class)
+ * @Audit\Auditable()
+ * @Audit\Security(view={"ROLE_ADMIN"})
  */
 class LetterStatus
 {

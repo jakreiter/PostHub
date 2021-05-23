@@ -3,52 +3,66 @@
 {% block title %}Location{% endblock %}
 
 {% block body %}
-    <h1>Location</h1>
+    <h1>{{ "Location"|trans }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>{{ "Id"|trans }}</th>
                 <td>{{ location.id }}</td>
             </tr>
             <tr>
-                <th>Name</th>
+                <th>{{ "Name"|trans }}</th>
                 <td>{{ location.name }}</td>
             </tr>
             <tr>
-                <th>Street</th>
+                <th>{{ "Street"|trans }}</th>
                 <td>{{ location.street }}</td>
             </tr>
             <tr>
-                <th>HouseNumber</th>
+                <th>{{ "House number"|trans }}</th>
                 <td>{{ location.houseNumber }}</td>
             </tr>
             <tr>
-                <th>ApartmentNumber</th>
+                <th>{{ "Apartment number"|trans }}</th>
                 <td>{{ location.apartmentNumber }}</td>
             </tr>
             <tr>
-                <th>PostalCode</th>
+                <th>{{ "Postal code"|trans }}</th>
                 <td>{{ location.postalCode }}</td>
             </tr>
             <tr>
-                <th>City</th>
+                <th>{{ "City"|trans }}</th>
                 <td>{{ location.city }}</td>
             </tr>
             <tr>
-                <th>Created</th>
+                <th>{{ "Created"|trans }}</th>
                 <td>{{ location.created ? location.created|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Updated</th>
+                <th>{{ "Updated"|trans }}</th>
                 <td>{{ location.updated ? location.updated|date('Y-m-d H:i:s') : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('location_admin_index') }}">back to list</a>
 
-    <a href="{{ path('location_admin_edit', {'id': location.id}) }}">edit</a>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('location_admin_index') }}" class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('dh_auditor_show_entity_history', {'id': location.id, 'entity': 'App-Entity-Location'}) }}"
+                   class="btn btn-outline-info btn-block">{{ "Audit"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                {{ include('location_admin/_delete_form.html.twig') }}
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('location_admin_edit', {'id': location.id}) }}" class="btn btn-primary btn-block">{{ "Edit"|trans }}</a>
+            </div>
+        </div>
+    </div>
 
-    {{ include('location_admin/_delete_form.html.twig') }}
 {% endblock %}

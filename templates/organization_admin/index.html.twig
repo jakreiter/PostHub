@@ -5,16 +5,18 @@
 {% block body %}
     <h1>Organizations</h1>
 
+    <p><a href="{{ path('organization_admin_new') }}" class="btn btn-success">{{ "Create new"|trans }}</a>
+    </p>
     <table class="table table-bordered">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>Location</th>
-                <th>Owner</th>
-                <th>Scan</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Owner</th>
+            <th>Scan</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for organization in organizations %}
@@ -25,8 +27,10 @@
                 <td>{{ organization.owner }}</td>
                 <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('organization_admin_show', {'id': organization.id}) }}" class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
-                    <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}" class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+                    <a href="{{ path('organization_admin_show', {'id': organization.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
+                    <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +41,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('organization_admin_new') }}" class="btn btn-success">Create new</a>
 {% endblock %}

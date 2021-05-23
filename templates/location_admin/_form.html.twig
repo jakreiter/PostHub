@@ -1,4 +1,45 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-success">{{ button_label|default('Save') }}</button>
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.street) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.houseNumber) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.apartmentNumber) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.postalCode) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.city) }}
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_rest(form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-block">{{ button_label|default('Save') }}</button>
+        </div>
+    </div>
+
+</div>
 {{ form_end(form) }}

@@ -1,0 +1,85 @@
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="/">{{ application_name }}</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+
+            {% if is_granted('ROLE_ADMIN') %}
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ "menuUsers"|trans }}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('user_admin_index') }}">{{ "menuUsers"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('user_admin_new') }}">{{ "menuAddUser"|trans }}</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ "menuOrganizations"|trans }}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"
+                           href="{{ path('organization_admin_index') }}">{{ "menuOrganizations"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ "menuLocations"|trans }}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"
+                           href="{{ path('location_admin_index') }}">{{ "menuLocations"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('location_admin_new') }}">{{ "menuAddLocation"|trans }}</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="true" aria-expanded="false">{{ "menuHLetters"|trans }}</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item"
+                           href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
+                    </div>
+                </li>
+
+            {% endif %}
+            <!--
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+            </li>
+            -->
+        </ul>
+        <ul class="navbar-nav my-3 my-lg-0">
+
+            {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ app.user.username }} {% if is_granted('ROLE_ADMIN') %}<span
+                                class="badge badge-secondary">admin</span>{% endif %}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('logout') }}"
+                           title="Logout">{{ "LogoutLinkTitle"|trans }}</a>
+                    </div>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a href="{{ path('login') }}" class="btn btn-success">{{ "LogInActionButtonTitle"|trans }}</a>
+                </li>
+            {% endif %}
+
+        </ul>
+    </div>
+</nav>
+

@@ -3,7 +3,7 @@
 {% block title %}Edit User{% endblock %}
 
 {% block body %}
-    <h1>Edit User</h1>
+    <h1>{{ "Edit User"|trans }} <strong>{{ user.username }}</strong></h1>
 
     {{ include('user_admin/_form.html.twig', {'button_label': 'Save'|trans}) }}
 
@@ -11,6 +11,10 @@
         <div class="row">
             <div class="col-md-2">
                 <a href="{{ path('user_admin_index') }}" class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('dh_auditor_show_entity_history', {'id': user.id, 'entity': 'App-Entity-User'}) }}"
+                   class="btn btn-outline-info btn-block">{{ "Audit"|trans }}</a>
             </div>
             <div class="col-md-2">
                 {{ include('user_admin/_delete_form.html.twig') }}

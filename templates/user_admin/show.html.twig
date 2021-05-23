@@ -3,80 +3,91 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
-    <h1>User</h1>
+    <h1>{{ "User"|trans }} <strong>{{ user.username }}</strong></h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>Username</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>NewEmail</th>
-                <td>{{ user.newEmail }}</td>
-            </tr>
-            <tr>
-                <th>NewEmailToken</th>
-                <td>{{ user.newEmailToken }}</td>
-            </tr>
-            <tr>
-                <th>GoogleId</th>
-                <td>{{ user.googleId }}</td>
-            </tr>
-            <tr>
-                <th>Enabled</th>
-                <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Roles</th>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-            </tr>
-            <tr>
-                <th>Created</th>
-                <td>{{ user.created ? user.created|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Updated</th>
-                <td>{{ user.updated ? user.updated|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>LastPassResetRequest</th>
-                <td>{{ user.lastPassResetRequest ? user.lastPassResetRequest|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>PassResetToken</th>
-                <td>{{ user.passResetToken }}</td>
-            </tr>
-            <tr>
-                <th>IpAddressDuringRegistration</th>
-                <td>{{ user.ipAddressDuringRegistration }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
 
-    <a href="{{ path('user_admin_index') }}">back to list</a>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>{{ "Id"|trans }}</th>
+                        <td>{{ user.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Username"|trans }}</th>
+                        <td>{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "FirstName"|trans }}</th>
+                        <td>{{ user.firstName }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Password"|trans }}LastName</th>
+                        <td>{{ user.lastName }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Email"|trans }}</th>
+                        <td>{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Enabled"|trans }}</th>
+                        <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-6">
 
-    <a href="{{ path('user_admin_edit', {'id': user.id}) }}">edit</a>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>{{ "Roles"|trans }}</th>
+                        <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Created"|trans }}</th>
+                        <td>{{ user.created ? user.created|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Updated"|trans }}</th>
+                        <td>{{ user.updated ? user.updated|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "LastPassResetRequest"|trans }}</th>
+                        <td>{{ user.lastPassResetRequest ? user.lastPassResetRequest|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "IpAddressDuringRegistration"|trans }}</th>
+                        <td>{{ user.ipAddressDuringRegistration }}</td>
+                    </tr>
+                    </tbody>
+                </table>ę
+            </div>
+        </div>
+    </div>
 
-    {{ include('user_admin/_delete_form.html.twig') }}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('user_admin_index') }}"
+                   class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('dh_auditor_show_entity_history', {'id': user.id, 'entity': 'App-Entity-User'}) }}"
+                   class="btn btn-outline-info btn-block">{{ "Audit"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                {{ include('user_admin/_delete_form.html.twig') }}
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('user_admin_edit', {'id': user.id}) }}"
+                   class="btn btn-primary btn-block">{{ "Edit"|trans }}</a>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}

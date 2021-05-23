@@ -4,5 +4,6 @@ dh_auditor:
     enabled: true
     providers:
         doctrine:
+            viewer: true
             table_prefix: null
             table_suffix: '_audit'

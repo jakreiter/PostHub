@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nie znaleziono strony{% endblock %}
+
+{% block body %}
+    <h1>Nie znaleziono strony</h1>
+
+    <div><p>{% if msg is defined and msg %}{{ msg|nl2br }}{% else %}{% endif %}</p></div>
+    <div>
+        <p></p>
+    </div>
+
+{% endblock %}

@@ -23,7 +23,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements UserInterface, \Serializable
 {
     const ROLE_DEFAULT = 'ROLE_USER';
-    const ALL_ROLES = ['ROLE_USER', 'ROLE_OWNER',  'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
+    const ALL_ROLES = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
 
     /**
      * @ORM\Column(type="integer")

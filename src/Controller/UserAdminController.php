@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 
 /**
  * @Route("/kadmin/user")
@@ -66,6 +68,7 @@ class UserAdminController extends AbstractController
     public function new(Request $request): Response
     {
         $user = new User();
+        $user->setEnabled(true);
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -96,15 +99,15 @@ class UserAdminController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_admin_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_admin_index');
+            $this->addFlash('success', $translator->trans('Changes have been saved.'));
+            return $this->redirectToRoute('user_admin_show', ['id'=>$user->getId()]);
         }
 
         return $this->render('user_admin/edit.html.twig', [

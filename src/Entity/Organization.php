@@ -7,10 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
 
 /**
  * @ORM\Entity(repositoryClass=OrganizationRepository::class)
+ * @Audit\Auditable()
+ * @Audit\Security(view={"ROLE_ADMIN"})
  */
 class Organization
 {

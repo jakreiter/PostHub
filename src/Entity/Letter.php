@@ -6,9 +6,12 @@ use App\Repository\LetterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
+use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
 /**
  * @ORM\Entity(repositoryClass=LetterRepository::class)
+ * @Audit\Auditable()
+ * @Audit\Security(view={"ROLE_ADMIN"})
  */
 class Letter
 {
