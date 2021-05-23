@@ -11,6 +11,7 @@ Email: Email
 Is active: Active
 Roles assigned: Roles assigned
 BackToListLinkTitle: Back to list
+Back to list: Back to list
 SaveButtonTitle: Save
 UpdateButtonTitle: Update
 CreateNewUserTitle: Creating new user
@@ -35,3 +36,12 @@ btnShow: Show
 btnEdit: Edit
 menuLocations: Locations
 menuAddLocation: New Location
+Name: Name
+Street: Street
+House number: House number
+Apartment number: Apartment number
+Postal code: Postal code
+City: City
+Edit Location: Edit Location
+Save: Save
+Delete: Delete

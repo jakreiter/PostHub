@@ -1,0 +1,53 @@
+UsersLinkTitle: Użytkownicy
+AddUserLinkTitle: Dodaj użytkownika
+ChangePasswordTitle: Zmiana hasła
+ChangePasswordLinkTitle: Zmień hasło
+LogoutLinkTitle: Wyloguj
+Password: Hasło
+New password: Nowe hasło
+New password2: Powtórzenie nowego hasła
+Username: Nazwa użytkownika
+Email: Email
+Is active: Aktywny
+Roles assigned: Przypisane role
+BackToListLinkTitle: Powrót do listy
+Back to list: Powrót do listy
+SaveButtonTitle: Zapisz
+UpdateButtonTitle: Aktualizuj
+CreateNewUserTitle: Tworzenie nowego użytkownika
+RestrictedAreaTitle: Strefa z ograniczonym dostępem
+PleaseSignInPrompt: Zaloguj się
+SignInButtonTitle: Zaloguj się
+LogInActionButtonTitle: Zaloguj się
+menuUsers: Użytkownicy
+menuAddUser: Dodaj użytkownika
+menuHLetters: Listy
+letterMulti: Dodawanie wielu listów
+menuLetterNew: Nowy list
+Title: Tytuł
+Organization: Organizazja
+Status: Status
+Scan (PDF file): Skan (Plik PDF)
+Barcode number: Kod kreskowy
+Barcode: Kod kreskowy
+Forgot username or password?: Zapomniałeś nazwy użytkownika lub hasła?
+menuOrganizations: Organizacje
+menuAddOrganization: Dodaj organizacje
+btnShow: Wyświetl
+btnEdit: Edytuj
+menuLocations: Lokalizacje
+menuAddLocation: Nowa lokalizacja
+Name: Nazwa
+Street: ulica
+House number: Number domu
+Apartment number: Number lokalu
+Postal code: Kod pocztowy
+City: Miejscowość
+Edit Location: Edycja lokalizacji
+Save: Zapisz
+Delete: Usuń
+
+First name: Imię
+Last name: Nazwisko
+Enabled: Włączony
+Roles: Role

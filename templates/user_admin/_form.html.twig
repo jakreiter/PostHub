@@ -1,4 +1,40 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.username) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.email) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.firstName) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.lastName) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.enabled) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.roles) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_rest(form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-block">{{ button_label|default('Save') }}</button>
+        </div>
+    </div>
+
+</div>
 {{ form_end(form) }}
