@@ -125,6 +125,19 @@ class User implements UserInterface, \Serializable
         $this->organizations = new ArrayCollection();
     }
 
+    public function toArray()
+    {
+        $arr = [
+            'id' => $this->getId(),
+            'text' => $this->getUsername().' ('.$this->getEmail().')',
+            'username' => $this->getUsername(),
+            'firstName' => $this->getFirstName(),
+            'lastName' => $this->getLastName(),
+            'roles' => $this->getRoles()
+        ];
+        return $arr;
+    }
+
     public function __toString()
     {
         $niceName = '';

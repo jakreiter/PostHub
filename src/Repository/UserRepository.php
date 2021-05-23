@@ -19,6 +19,38 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+
+    public function findByFragment($fragment)
+    {
+        $results1 = $this->createQueryBuilder('o')
+            ->andWhere('o.username LIKE :fragment OR o.email LIKE :fragment OR o.lastName LIKE :fragment')
+            ->setParameter('fragment', $fragment.'%')
+            ->orderBy('o.username', 'ASC')
+            ->setMaxResults(5)
+            ->getQuery()
+            ->getResult()
+        ;
+        $results2 = $this->createQueryBuilder('o')
+            ->andWhere('o.username LIKE :fragment OR o.email LIKE :fragment OR o.lastName LIKE :fragment')
+            ->setParameter('fragment', '%'.$fragment.'%')
+            ->orderBy('o.username', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+        foreach ($results1 as $one) {
+            /**
+             * @var User $one
+             */
+            $ids1[$one->getId()] = $one->getId();
+        }
+        $mergedResults = $results1;
+        foreach ($results2 as $one) {
+            if (!isset($ids1[$one->getId()])) $mergedResults[]=$one;
+        }
+        return $mergedResults;
+    }
+
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

@@ -36,6 +36,22 @@ function organizationSelectAjaxize(formNumber)
     });
 }
 
+function userSelectAjaxize()
+{
+    console.log("userSelectAjaxize()");
+    $('select.user-ajax-select').select2({
+        theme: 'bootstrap4',
+        ajax: {
+            url: '/kadmin/user/find.json',
+            dataType: 'json',
+            delay: 250 // milliseconds
+        },
+        minimumInputLength: 2,
+        templateResult: formatUserOption,
+        templateSelection: formatUserSelection
+    });
+}
+
 function addLetterforms(numberOfForms) {
     console.log("addLetterforms("+numberOfForms+")");
     for (var nf = 0; nf < numberOfForms; nf++) {
@@ -56,6 +72,34 @@ function addLetterforms(numberOfForms) {
     }
     rebind();
 }
+
+
+
+
+function formatUserOption (userInfo) {
+    if (userInfo.loading) {
+        return userInfo.text;
+    }
+
+    var $container = $(
+        "<div class='sel-row'>" +
+        " <span class='select2-result-repository__title'></span>" +
+        " <span class='select2-result-repository__scan badge badge-info'></span>" +
+        " <span class='select2-result-repository__location'></span>" +
+        "</div>"
+    );
+
+    $container.find(".select2-result-repository__title").text(userInfo.username);
+    $container.find(".select2-result-repository__scan").text(userInfo.email);
+
+    return $container;
+}
+
+function formatUserSelection (repo) {
+    return repo.text;
+}
+
+
 
 
 function formatOrganizationOption (organizationInfo) {
@@ -81,6 +125,11 @@ function formatOrganizationOption (organizationInfo) {
 
     return $container;
 }
+
+function formatOrganizationSelection (repo) {
+    return repo.text;
+}
+
 
 function newLetterFormsAjaxize() {
     $(".letterDiv form").off('submit');
@@ -120,17 +169,13 @@ function newLetterFormsAjaxize() {
     });
 }
 
-function formatOrganizationSelection (repo) {
-    return repo.text;
-}
-
 function rebind() {
 
     $('select.select2').select2({
         theme: 'bootstrap4',
     });
 
-
+    userSelectAjaxize();
     /*
      * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
      * see: https://github.com/select2/select2/issues/5993

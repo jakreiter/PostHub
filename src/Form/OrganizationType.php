@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Organization;
+use App\Entity\User;
+use App\Repository\UserRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,7 +18,24 @@ class OrganizationType extends AbstractType
             ->add('name')
             ->add('scan')
             ->add('location')
-            ->add('owner')
+            ->add('owner', EntityType::class, [
+                'class' => 'App:User',
+                'query_builder' => function (UserRepository $er) {
+                    return $er->createQueryBuilder('u')
+                        ->orderBy('u.username', 'ASC')
+                        ->setMaxResults(5);
+                },
+                'choice_label' => function (User $user) {
+                    return $user->getUsername().' ('.$user->getEmail().')';
+                },
+                'multiple' => false,
+                'expanded' => false,
+                'required' => true,
+                'placeholder' => '',
+                'attr' => array(
+                    'class' => 'user-ajax-select'
+                )
+            ])
         ;
     }
 

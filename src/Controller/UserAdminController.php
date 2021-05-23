@@ -9,12 +9,47 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/kadmin/user")
  */
 class UserAdminController extends AbstractController
 {
+    /**
+     * @Route("/find.{_format}",
+     *      requirements = { "_format" = "html|json" },
+     *      name="user_admin_find", methods={"GET"})
+     */
+    public function findByFragmentAction(Request $request, $_format, UserRepository $userRepository): Response
+    {
+        $fragment = $request->query->get('q');
+        if ($fragment) {
+            $users = $userRepository->findByFragment($fragment);
+        } else {
+            $users = [];
+        }
+
+        if ('html' == $_format) {
+            return $this->render('user_admin/index.html.twig', [
+                'users' => $users,
+            ]);
+        } else {
+            $orgArrs = [];
+            if (count($users)) {
+                foreach ($users as $user) {
+                    $orgArrs[]=$user->toArray();
+                }
+            }
+            $reaponseArr = [
+                'results'=>$orgArrs
+            ];
+            $response = new JsonResponse();
+            $response->setData($reaponseArr);
+            return $response;
+        }
+    }
+
     /**
      * @Route("/", name="user_admin_index", methods={"GET"})
      */

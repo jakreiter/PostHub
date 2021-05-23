@@ -22,7 +22,7 @@ class OrganizationAdminController extends AbstractController
      *      requirements = { "_format" = "html|json" },
      *      name="organization_admin_find", methods={"GET"})
      */
-    public function findAction(Request $request, $_format, OrganizationRepository $organizationRepository): Response
+    public function findByFragmentAction(Request $request, $_format, OrganizationRepository $organizationRepository): Response
     {
         $fragment = $request->query->get('q');
         if ($fragment) {

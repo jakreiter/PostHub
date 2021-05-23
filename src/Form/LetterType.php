@@ -11,6 +11,8 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 class LetterType extends AbstractType
 {
@@ -22,8 +24,8 @@ class LetterType extends AbstractType
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
-                    return $er->createQueryBuilder('u')
-                        ->orderBy('u.name', 'ASC')
+                    return $er->createQueryBuilder('o')
+                        ->orderBy('o.name', 'ASC')
                         ->setMaxResults(5);
                 },
                 'choice_label' => function (Organization $organization) {
@@ -54,6 +56,36 @@ class LetterType extends AbstractType
                     ])
                 ],
             ])
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+
+                    $data = $event->getData();
+                    $submittedOrganizationId = $data['organization'];
+                    if ($submittedOrganizationId) {
+                        $form->add('organization', EntityType::class, [
+                            'class' => 'App:Organization',
+                            'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
+                                return $er->createQueryBuilder('o')
+                                    ->andWhere('o.id = :submittedOrganizationId')
+                                    ->setParameter('submittedOrganizationId', $submittedOrganizationId);
+                            },
+                            'choice_label' => function (Organization $organization) {
+                                return $organization->getName().' '.($organization->getScan()?'📷':'x');
+                            },
+                            'multiple' => false,
+                            'expanded' => false,
+                            'required' => true,
+                            'placeholder' => '',
+                            'attr' => array(
+                                'class' => 'organization-ajax-select'
+                            )
+                        ]);
+                    }
+
+                }
+            );
         ;
     }
 
