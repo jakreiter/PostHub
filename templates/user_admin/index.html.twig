@@ -10,19 +10,19 @@
 
     <table class="table table-bordered">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>FirstName</th>
-                <th>LastName</th>
-                <th>Email</th>
-                <th>Enabled</th>
-                <th>Roles</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>LastPassResetRequest</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>{{ "Id"|trans }}</th>
+            <th>{{ "Username"|trans }}</th>
+            <th>{{ "First name"|trans }}</th>
+            <th>{{ "Last name"|trans }}</th>
+            <th>{{ "Email"|trans }}</th>
+            <th>{{ "Location"|trans }}</th>
+            <th>{{ "Enabled"|trans }}</th>
+            <th>{{ "Roles"|trans }}</th>
+            <th>{{ "Created"|trans }}</th>
+            <th>{{ "Updated"|trans }}</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
         {% for user in users %}
@@ -32,14 +32,19 @@
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.location }}</td>
                 <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                <td>{% for role in user.roles %}
+                        <span class="badge badge-info">{{ role|trans }}</span>
+                    {% endfor %}
+                </td>
                 <td>{{ user.created ? user.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ user.updated ? user.updated|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ user.lastPassResetRequest ? user.lastPassResetRequest|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('user_admin_show', {'id': user.id}) }}" class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
-                    <a href="{{ path('user_admin_edit', {'id': user.id}) }}" class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+                    <a href="{{ path('user_admin_show', {'id': user.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
+                    <a href="{{ path('user_admin_edit', {'id': user.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
                 </td>
             </tr>
         {% else %}

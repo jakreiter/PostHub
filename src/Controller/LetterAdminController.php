@@ -97,10 +97,32 @@ class LetterAdminController extends AbstractController
         ]);
     }
 
+
+
+    /**
+     * @Route("/edit:{id}", name="letter_admin_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, Letter $letter): Response
+    {
+        $form = $this->createForm(LetterType::class, $letter);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('letter_admin_index');
+        }
+
+        return $this->render('letter/edit.html.twig', [
+            'letter' => $letter,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    
     /**
      * @Route("/multi", name="letter_multi", methods="GET")
      */
-
     public function multiFormAction(Request $request): Response
     {
 

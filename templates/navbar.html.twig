@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/">{{ application_name }}</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -45,8 +44,10 @@
                        aria-haspopup="true" aria-expanded="false">{{ "menuHLetters"|trans }}</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item"
-                           href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
-                        <a class="dropdown-item" href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
+                           href="{{ path('letter_admin_index') }}">{{ "Letters"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
                     </div>
                 </li>
 

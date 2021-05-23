@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New letter{% endblock %}
+{% block title %}{{ "Adding information about multiple letters"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Adding information about multiple letters</h1>
+    <h1>{{ "Adding information about multiple letters"|trans }}</h1>
 
     <div id="forforms" data-controller="forforms" data-form-number="0"></div>
 
@@ -13,6 +13,6 @@
     </div>
 
     <br>
-    <button class="oneMoreForm btn btn-primary">One more</button>
-    <button class="fiveMoreForms btn btn-primary">5 more</button>
+    <button class="oneMoreForm btn btn-primary">{{ "One more form"|trans }}</button>
+    <button class="fiveMoreForms btn btn-primary">{{ "5 more forms"|trans }}</button>
 {% endblock %}

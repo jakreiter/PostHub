@@ -71,6 +71,12 @@ class User implements UserInterface, \Serializable
      */
     private $newEmailToken;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="Location")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $location;
+
 
     /**
      * @ORM\Column(type="boolean", options={"default":0}, nullable=false)
@@ -414,6 +420,18 @@ class User implements UserInterface, \Serializable
                 $organization->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

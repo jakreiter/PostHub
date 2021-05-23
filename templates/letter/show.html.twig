@@ -1,39 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Letter{% endblock %}
+{% block title %}{{ "Letter"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Letter</h1>
+    <h1>{{ "Letter"|trans }}</h1>
+    <div class="container-fluid">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>{{ "Id"|trans }}Id</th>
+                <td>{{ letter.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Title"|trans }}</th>
+                <td>{{ letter.title }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Barcode"|trans }}</th>
+                <td>{{ letter.barcodeNumber }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Organization"|trans }}</th>
+                <td><a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
+                       class="">{{ letter.organization }}</a></td>
+            </tr>
+            <tr>
+                <th>{{ "Created"|trans }}</th>
+                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Updated"|trans }}</th>
+                <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2">
+                <a href="{{ path('letter_admin_index') }}"
+                   class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('dh_auditor_show_entity_history', {'id': letter.id, 'entity': 'App-Entity-Letter'}) }}"
+                   class="btn btn-outline-info btn-block">{{ "Audit"|trans }}</a>
+            </div>
+            <div class="col-md-2">
+                {{ include('letter/_delete_form.html.twig') }}
+            </div>
+            <div class="col-md-2">
+                <a href="{{ path('letter_admin_edit', {'id': letter.id}) }}"
+                   class="btn btn-primary btn-block">{{ "Edit"|trans }}</a>
+            </div>
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ letter.id }}</td>
-        </tr>
-        <tr>
-            <th>Title</th>
-            <td>{{ letter.title }}</td>
-        </tr>
-        <tr>
-            <th>Barcode</th>
-            <td>{{ letter.barcodeNumber }}</td>
-        </tr>
-        <tr>
-            <th>Organization</th>
-            <td><a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}" class="">{{ letter.organization }}</a></td>
-        </tr>
-        <tr>
-            <th>Created</th>
-            <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        <tr>
-            <th>Updated</th>
-            <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        </tbody>
-    </table>
 
-
-    {{ include('letter/_delete_form.html.twig') }}
 {% endblock %}

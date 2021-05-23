@@ -31,7 +31,9 @@
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('letter_admin_show', {'id': letter.id}) }}" class="btn btn-success">show</a>
+                    <a href="{{ path('letter_admin_show', {'id': letter.id}) }}" class="btn btn-sm btn-success">show</a>
+                    <a href="{{ path('letter_admin_edit', {'id': letter.id}) }}" class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+
                 </td>
             </tr>
         {% else %}

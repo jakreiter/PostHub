@@ -24,6 +24,7 @@ class UserType extends AbstractType
             ->add('lastName')
             ->add('email')
             ->add('enabled')
+            ->add('location')
             ->add('roles', ChoiceType::class, [
                 'required' => true,
                 'multiple' => true,
