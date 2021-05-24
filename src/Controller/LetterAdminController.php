@@ -49,20 +49,25 @@ class LetterAdminController extends AbstractController
                 $letter->setOriginalName($uploadedFile->getClientOriginalName());
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+                $orgDir = $letter->getOrganization()->getId();
+                if (!is_dir($orgDir)) {
+                    mkdir($this->getParameter('upload_directory').DIRECTORY_SEPARATOR.$orgDir);
+                }
+                $newFilename =  $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+                $filenameInOrgdir = $orgDir.DIRECTORY_SEPARATOR.$newFilename;
 
                 // Move the file to the directory where brochures are stored
                 try {
                     $uploadedFile->move(
-                        $this->getParameter('upload_directory'),
+                        $this->getParameter('upload_directory').DIRECTORY_SEPARATOR.$orgDir,
                         $newFilename
                     );
                 } catch (FileException $e) {
                     // ... handle exception if something happens during file upload
                 }
-                $fileSize = filesize($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $newFilename);
+                $fileSize = filesize($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $filenameInOrgdir);
                 $letter->setSize($fileSize);
-                $letter->setFilename($newFilename);
+                $letter->setFilename($filenameInOrgdir);
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -98,7 +103,6 @@ class LetterAdminController extends AbstractController
     }
 
 
-
     /**
      * @Route("/edit:{id}", name="letter_admin_edit", methods={"GET","POST"})
      */
@@ -119,7 +123,7 @@ class LetterAdminController extends AbstractController
         ]);
     }
 
-    
+
     /**
      * @Route("/multi", name="letter_multi", methods="GET")
      */

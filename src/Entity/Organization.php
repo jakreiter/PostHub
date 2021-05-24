@@ -82,9 +82,15 @@ class Organization
             'text' => $this->getName().' '.($this->getScan()?'📷':'x'),
             'name' => $this->getName(),
             'scan' => $this->getScan(),
-            'locationId' => $this->getLocation()->getId(),
-            'locationName' => $this->getLocation()->getName(),
+
         ];
+        if ($this->getLocation()) {
+            $arr['locationId'] =$this->getLocation()->getId();
+            $arr['locationName'] =$this->getLocation()->getName();
+        } else {
+            $arr['locationId'] = null;
+            $arr['locationName'] = '';
+        }
         return $arr;
     }
 
