@@ -1,0 +1,25 @@
+<div class="container-fluid bg-page">
+    <div class="row">
+        <div class="col-md-6">
+            {{ form_start(form, { 'attr': {'not-novalidate': 'novalidate'} }) }}
+            <input name="username" type="text" autocomplete="username" value="{{ user.username }}"
+                   style="display: none">
+
+            {{ form_row(form.password) }}
+            <div class="alert alert-info" role="alert">
+                {{ "PasswordRequirements"|trans }}
+            </div>
+            {{ form_row(form.newPassword) }}
+
+            <button class="btn btn-primary">{{ button_label|default('SaveButtonTitle'|trans) }}</button>
+
+            {{ form_end(form) }}
+        </div>
+        <div class="col-md-6">
+            <h2>{{ "Password inspirations"|trans }}</h2>
+            {% for randomPassword in randomPasswords %}
+                <div>{{ randomPassword }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

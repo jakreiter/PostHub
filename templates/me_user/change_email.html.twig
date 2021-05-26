@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "ChangeEmailTitle"|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "ChangeEmailTitle"|trans }}</h1>
+
+    {{ include('me_user/change_email_form.html.twig', {'button_label': 'UpdateButtonTitle'|trans}) }}
+
+
+{% endblock %}

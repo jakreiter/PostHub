@@ -7,7 +7,11 @@ parameters:
     application_name: '%env(APPLICATION_NAME)%'
     upload_directory: '%kernel.project_dir%/scan'
     project_dir: '%kernel.project_dir%'
-
+    recaptcha_sitekey: '%env(RECAPTCHA_SITEKEY)%'
+    recaptcha_secret: '%env(RECAPTCHA_SECRET)%'
+    recaptcha_proxy: '%env(RECAPTCHA_PROXY)%'
+    recaptcha_score_threshold: '%env(RECAPTCHA_SCORE_THRESHOLD)%'
+    email_sender: '%env(EMAIL_SENDER)%'
 
 services:
     # default configuration for services in *this* file

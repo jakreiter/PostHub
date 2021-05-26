@@ -1,0 +1,12 @@
+{{ form_start(form, {
+    'attr': {
+        'id': "pass_reset_form"
+    }
+}) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary g-recaptcha" type="submit"
+            data-sitekey="{{ recaptcha_sitekey }}"
+            data-callback='captchaPassResetFormSubmit'
+            data-action='submit'>{{ button_label|default('ResetButtonTitle'|trans) }}</button>
+{{ form_end(form) }}
+

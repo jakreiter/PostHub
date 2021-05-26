@@ -3,3 +3,4 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         application_name: '%application_name%'
+        recaptcha_sitekey: '%recaptcha_sitekey%'

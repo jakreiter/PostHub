@@ -35,8 +35,8 @@ class DownloadController extends AbstractController
     {
 
         if (
-            ($this->getUser()->hasRole('ROLE_ADMIN'))
-            || ($this->getUser()->hasRole('ROLE_LOCATION_MODERATOR') && $letter->getOrganization()->getLocation() == $this->getUser()->getLocation())
+            ($this->getUser()->isGranted('ROLE_ADMIN'))
+            || ($this->getUser()->isGranted('ROLE_LOCATION_MODERATOR') && $letter->getOrganization()->getLocation() == $this->getUser()->getLocation())
             || ($this->getUser()->getId() && $letter->getOrganization()->getOwner() == $this->getUser())
         ) {
 

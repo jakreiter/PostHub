@@ -16,6 +16,10 @@ import 'bootstrap';
 import 'tablesorter';
 
 import 'select2';
+import capPassReset from './js/captcha_submit_pass_reset';
+import capRegister from './js/captcha_submit_register';
+global.captchaPassResetFormSubmit = capPassReset;
+global.captchaRegisterFormSubmit = capRegister;
 
 var posthubLetterForms = [];
 var posthubFormNumber = 0;

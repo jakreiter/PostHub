@@ -1,0 +1,12 @@
+{# templates/emails/registration.html.twig #}
+<h1>{{ "PasswordResetRequestForNewAccountTitle"|trans }}</h1>
+
+<a href="{{ uri }}">{{ "ClickToSetNewPasswordForNewAccountLinkTitle"|trans }}</a>
+<span style="font-size: 1px; opacity: 1%; color: #fff; background: #fff">{{ uri }}</span>
+<br>
+
+
+{{ "Your username"|trans }}:    {{ user.username }}
+
+
+{% include 'emails/mail_footer.html.twig' %}

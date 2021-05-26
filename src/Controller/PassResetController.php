@@ -52,7 +52,7 @@ class PassResetController extends AbstractController
             $recaptchaScoreThreshold = $parameterBag->get('recaptcha_score_threshold');
 
             if ($humanProbability < $recaptchaScoreThreshold) {
-                $this->addFlash('danger', "You have been identified as a non-human being.<br> You can try to do some human activities, like visiting macrobond.com or using Google services, and then try again.");
+                $this->addFlash('danger', "You have been identified as a non-human being.<br> You can try to do some human activities, like visiting google.com or using Google services, and then try again.");
             } else {
 
                 $requestedUser = $userRepository->findOneByEmail($passResetEmail->getEmail());
@@ -162,28 +162,6 @@ class PassResetController extends AbstractController
                         ->getManager()
                         ->flush();
 
-
-                    if ($thisIsPasswordSettingForTheNewAccount) {
-                        // alert Admin
-                        $uri = $this->generateUrl('user_show', ['id' => $user->getId()],
-                            UrlGeneratorInterface::ABSOLUTE_URL);
-
-                        $message = (new Email())
-                            ->subject($translator->trans('New forum user'))
-                            ->to($_ENV['ADMIN_CONTACT_EMAIL'])
-                            ->html(
-                                $this->renderView(
-                                    'emails/new_user_admin_alert.html.twig',
-                                    [
-                                        'uri' => $uri,
-                                        'user' => $user
-                                    ]
-                                ),
-                                'text/html'
-                            );
-
-                        $mailer->send($message);
-                    }
 
                     $this->addFlash('success', $translator->trans('Password changed.'));
                     return $this->redirectToRoute('login');

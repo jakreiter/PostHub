@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset password{% endblock %}
+
+{% block body %}
+    <h1>{{ "PasswordResetRequestTitle"|trans }}</h1>
+    <div class="container-fluid">
+        <div class="bg-page">
+            {{ include('pass_reset/_form_email.html.twig', {'button_label': 'RequestPasswordResetSubmitButtonTitle'|trans}) }}
+
+        </div>
+    </div>
+{% endblock %}
