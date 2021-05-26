@@ -26,7 +26,12 @@
                 <td>{{ letter.title }}</td>
                 <td>{{ letter.organization }}</td>
                 <td>{{ letter.status }}</td>
-                <td>{{ letter.originalName }}</td>
+                <td>
+                    {% if letter.originalName %}
+                        <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
+                           class="">{{ letter.originalName }}</a>
+                    {% endif %}
+                </td>
                 <td>{{ letter.barcodeNumber }}</td>
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>

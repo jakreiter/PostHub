@@ -25,6 +25,18 @@
                        class="">{{ letter.organization }}</a></td>
             </tr>
             <tr>
+                <th>{{ "Location"|trans }}</th>
+                <td>{% if letter.organization %}{{ letter.organization.location }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>{{ "Scan"|trans }}</th>
+                <td>{% if letter.originalName %}
+                    <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
+                       class="">{{ letter.originalName }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
                 <th>{{ "Created"|trans }}</th>
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
             </tr>

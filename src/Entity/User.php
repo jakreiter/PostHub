@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -23,7 +22,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements UserInterface, \Serializable
 {
     const ROLE_DEFAULT = 'ROLE_USER';
-    const ALL_ROLES = ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
+    const ALL_ROLES = ['ROLE_USER', 'ROLE_LOCATION_MODERATOR', 'ROLE_LOCATION_ADMIN', 'ROLE_ADMIN'];
 
     /**
      * @ORM\Column(type="integer")
