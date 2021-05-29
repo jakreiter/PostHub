@@ -5,7 +5,7 @@
                 <div class="col-md-2">
                     <div class="form-group"><label for="letter_title" class="required">Title</label>
                         <input type="text"
-                               id="letter_title"
+                               id="letter_title{{ dummyFormNumber }}"
                                name="letter[title]"
                                readonly class="form-control-plaintext"
                                value="{{ letter.title }}">
@@ -14,7 +14,7 @@
                 <div class="col-md-2">
                     <div class="form-group"><label class="" for="letter_organization">Organization</label>
                         <input type="text"
-                               id="letter_organization"
+                               id="letter_organization{{ dummyFormNumber }}"
                                name="letter[organization]"
                                readonly class="form-control-plaintext"
                                value="{{ letter.organization }}">
@@ -23,7 +23,7 @@
                 <div class="col-md-2">
                     <div class="form-group"><label class="" for="letter_status">Status</label>
                         <input type="text"
-                               id="letter_status"
+                               id="letter_status{{ dummyFormNumber }}"
                                name="letter[status]"
                                readonly class="form-control-plaintext"
                                value="{{ letter.status }}">
@@ -33,7 +33,7 @@
                     <div class="form-group"><label class="" for="letter_status">Status</label>
                         <input type="text"
                                name="letter[file]"
-                               id="letter_status"
+                               id="letter_status{{ dummyFormNumber }}"
                                readonly class="form-control-plaintext"
                                value="{{ letter.originalName }}">
                     </div>
@@ -42,7 +42,7 @@
                     <div class="form-group"><label for="letter_barcodeNumber">Barcode number</label>
                         <input type="text"
                                name="letter[barcodeNumber]"
-                               id="letter_barcodeNumber"
+                               id="letter_barcodeNumber{{ dummyFormNumber }}"
                                readonly class="form-control-plaintext"
                                value="{{ letter.barcodeNumber }}">
                     </div>
@@ -51,7 +51,7 @@
                     <div class="form-group"><label for="letter_id">Id</label>
                         <input type="text"
                                name="letter[id]"
-                               id="letter_id"
+                               id="letter_id{{ dummyFormNumber }}"
                                readonly class="form-control-plaintext"
                                value="{{ letter.id }}">
                     </div>

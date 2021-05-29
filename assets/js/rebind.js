@@ -49,6 +49,8 @@ export default function rebind() {
 
     $('.submitAllForms').off().on("click", function (event, errorMessage) {
         submitAllLetterForms();
+        $('.oneMoreForm').hide();
+        $('.fiveMoreForms').hide();
     });
 
 

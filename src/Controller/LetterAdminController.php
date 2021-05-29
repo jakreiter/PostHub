@@ -51,15 +51,15 @@ class LetterAdminController extends AbstractController
                 $safeFilename = $slugger->slug($originalFilename);
                 $orgDir = $letter->getOrganization()->getId();
                 if (!is_dir($orgDir)) {
-                    mkdir($this->getParameter('upload_directory').DIRECTORY_SEPARATOR.$orgDir);
+                    mkdir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir);
                 }
-                $newFilename =  $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-                $filenameInOrgdir = $orgDir.DIRECTORY_SEPARATOR.$newFilename;
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+                $filenameInOrgdir = $orgDir . DIRECTORY_SEPARATOR . $newFilename;
 
                 // Move the file to the directory where brochures are stored
                 try {
                     $uploadedFile->move(
-                        $this->getParameter('upload_directory').DIRECTORY_SEPARATOR.$orgDir,
+                        $this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir,
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -74,9 +74,10 @@ class LetterAdminController extends AbstractController
             $entityManager->persist($letter);
             $entityManager->flush();
 
-            //$this->addFlash('success', 'Saved. id:'.$letter->getId());
+            $dummyFormNumber = 'L'.$letter->getId();
             return $this->render('letter/saved.html.twig', [
                 'letter' => $letter,
+                'dummyFormNumber' => $dummyFormNumber
             ]);
         }
         if ($rich) {
