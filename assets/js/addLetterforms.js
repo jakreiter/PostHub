@@ -6,7 +6,6 @@ import rebind from './rebind';
 export default function addLetterforms(numberOfForms) {
     console.log("addLetterforms("+numberOfForms+")");
     for (var nf = 0; nf < numberOfForms; nf++) {
-        posthubFormNumber++;
         console.log(posthubLetterForms);
         posthubLetterForms.push(posthubFormNumber);
         let html = $("#template_form").html();
@@ -21,6 +20,7 @@ export default function addLetterforms(numberOfForms) {
         $("#forforms").append(koddod);
         organizationSelectAjaxize(posthubFormNumber);
         newLetterFormsAjaxize();
+        posthubFormNumber++;
     }
     rebind();
 }

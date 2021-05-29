@@ -1,6 +1,7 @@
 
 import organizationSelectAjaxize from "./organizationSelectAjaxize";
 import rebind from './rebind';
+import submitNextLetterForm from "./submitNextLetterForm";
 
 // newLetterFormsAjaxize
 export default function newLetterFormsAjaxize() {
@@ -19,9 +20,10 @@ export default function newLetterFormsAjaxize() {
             data: formData,
             success: function (data) {
                 let prntdv = $(form).closest('div');
-                posthubFormNumber = prntdv.data('formNumber');
+                let thisFormNumber = prntdv.data('formNumber');
                 prntdv.html(data);
-                organizationSelectAjaxize(posthubFormNumber);
+                organizationSelectAjaxize(thisFormNumber);
+                if (posthubSendingAllLetterForms) submitNextLetterForm();
                 rebind();
             },
             error: function (data) {
@@ -33,6 +35,7 @@ export default function newLetterFormsAjaxize() {
 
                 let statusTarget = $(form).closest('div.statusDiv');
                 statusTarget.html("<p class='text-danger'>Submit failed.</p>");
+                if (posthubSendingAllLetterForms) submitNextLetterForm();
             },
             cache: false,
             contentType: false,

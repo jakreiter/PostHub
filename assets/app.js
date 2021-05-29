@@ -22,9 +22,11 @@ global.captchaPassResetFormSubmit = capPassReset;
 global.captchaRegisterFormSubmit = capRegister;
 
 var posthubLetterForms = [];
+var posthubLetterFormsToSubmit = [];
 var posthubFormNumber = 0;
 
 global.posthubLetterForms = posthubLetterForms;
+global.posthubLetterFormsToSubmit = posthubLetterFormsToSubmit;
 global.posthubFormNumber = posthubFormNumber;
 
 import rebind from './js/rebind';

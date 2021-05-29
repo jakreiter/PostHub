@@ -13,6 +13,20 @@
     </div>
 
     <br>
-    <button class="oneMoreForm btn btn-primary">{{ "One more form"|trans }}</button>
-    <button class="fiveMoreForms btn btn-primary">{{ "5 more forms"|trans }}</button>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <button class="oneMoreForm btn btn-primary btn-block">{{ "One more form"|trans }}</button>
+            </div>
+            <div class="col-md-3">
+                <button class="fiveMoreForms btn btn-primary btn-block">{{ "5 more forms"|trans }}</button>
+            </div>
+            <div class="col-md-3"></div>
+            <div class="col-md-3">
+                <button class="submitAllForms btn btn-success btn-block">{{ "Submit all"|trans }}</button>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

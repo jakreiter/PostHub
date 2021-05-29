@@ -1,6 +1,10 @@
 import userSelectAjaxize from "./userSelectAjaxize";
 import addLetterforms from "./addLetterforms";
 import newLetterFormsAjaxize from "./newLetterFormsAjaxize";
+import submitAllLetterForms from "./submitAllLetterForms";
+
+var posthubSendingAllLetterForms = false;
+global.posthubSendingAllLetterForms = posthubSendingAllLetterForms;
 
 // rebind
 export default function rebind() {
@@ -41,6 +45,10 @@ export default function rebind() {
     });
     $('.fiveMoreForms').off().on("click", function (event, errorMessage) {
         addLetterforms(5);
+    });
+
+    $('.submitAllForms').off().on("click", function (event, errorMessage) {
+        submitAllLetterForms();
     });
 
 
