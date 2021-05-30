@@ -14,6 +14,7 @@ global.$ = global.jQuery = $;
 // the bootstrap module doesn't export/return anything
 import 'bootstrap';
 import 'tablesorter';
+require('@fortawesome/fontawesome-free/js/all.js');
 
 import 'select2';
 import capPassReset from './js/captcha_submit_pass_reset';

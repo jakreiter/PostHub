@@ -23,8 +23,15 @@ class LetterAdminController extends AbstractController
      */
     public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
-        $dql   = "SELECT letter FROM App:Letter letter";
-        $query = $em->createQuery($dql);
+        $filterBuilder = $em->createQueryBuilder()
+            ->select([
+                'Letter', 'Organization'
+            ])
+            ->from('App\Entity\Letter', 'Letter')
+            ->leftJoin('Letter.organization', 'Organization')
+            ;
+
+        $query = $filterBuilder->getQuery();
 
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
