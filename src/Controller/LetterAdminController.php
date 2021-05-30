@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Repository\LetterRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,10 +21,22 @@ class LetterAdminController extends AbstractController
     /**
      * @Route("/", name="letter_admin_index", methods={"GET"})
      */
-    public function index(LetterRepository $letterRepository): Response
+    public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
+        $dql   = "SELECT letter FROM App:Letter letter";
+        $query = $em->createQuery($dql);
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        $letters = $query->getResult();
+
         return $this->render('letter/index.html.twig', [
-            'letters' => $letterRepository->findAll(),
+            'letters' => $letters,
+            'pagination'=>$pagination
         ]);
     }
 

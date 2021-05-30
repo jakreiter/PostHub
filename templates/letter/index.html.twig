@@ -8,8 +8,12 @@
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Title</th>
+                <th{% if pagination.isSorted('letter.Id') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Id', 'letter.id') }}
+                </th>
+                <th{% if pagination.isSorted('letter.Title') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Title', 'letter.title') }}
+                </th>
                 <th>Organization</th>
                 <th>Status</th>
                 <th>Scan</th>
@@ -47,4 +51,8 @@
         </tbody>
     </table>
 
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}
