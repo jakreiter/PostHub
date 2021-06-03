@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\Filter\UserFilterType;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,11 +58,53 @@ class UserAdminController extends AbstractController
     /**
      * @Route("/", name="user_admin_index", methods={"GET"})
      */
-    public function index(UserRepository $userRepository): Response
+    public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
+        $filterForm = $this->createForm(UserFilterType::class);
+
+        $filterBuilder = $em->createQueryBuilder()
+            ->select([
+                'User'
+            ])
+            ->from('App\Entity\User', 'User')
+            ;
+
+
+        if ($request->query->has($filterForm->getName())) {
+            $filter = $request->query->get($filterForm->getName());
+            $filterForm->submit($filter);
+
+            if (isset($filter['username']) && $filter['username']) {
+                $filterBuilder->andWhere('User.username LIKE :username')->setParameter('username', '%'.$filter['username'].'%');
+            }
+            if (isset($filter['firstName']) && $filter['firstName']) {
+                $filterBuilder->andWhere('User.firstName LIKE :firstName')->setParameter('firstName', '%'.$filter['firstName'].'%');
+            }
+            if (isset($filter['lastName']) && $filter['lastName']) {
+                $filterBuilder->andWhere('User.lastName LIKE :lastName')->setParameter('lastName', '%'.$filter['lastName'].'%');
+            }
+            if (isset($filter['email']) && $filter['email']) {
+                $filterBuilder->andWhere('User.email LIKE :email')->setParameter('email', $filter['email']);
+            }
+
+        }
+
+        $query = $filterBuilder->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
+        );
+
+        $users = $query->getResult();
+
         return $this->render('user_admin/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $users,
+            'pagination' => $pagination,
+            'form' => $filterForm->createView(),
         ]);
+
     }
 
     /**

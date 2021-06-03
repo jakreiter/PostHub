@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Organization;
 use App\Form\OrganizationType;
+use App\Form\Filter\OrganizationFilterType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -54,11 +57,50 @@ class OrganizationAdminController extends AbstractController
     /**
      * @Route("/", name="organization_admin_index", methods={"GET"})
      */
-    public function index(OrganizationRepository $organizationRepository): Response
+    public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
+        $filterForm = $this->createForm(OrganizationFilterType::class);
+
+        $filterBuilder = $em->createQueryBuilder()
+            ->select([
+                'Organization', 'Owner', 'Location'
+            ])
+            ->from('App\Entity\Organization', 'Organization')
+            ->leftJoin('Organization.owner', 'Owner')
+            ->leftJoin('Organization.location', 'Location')
+            ;
+
+
+        if ($request->query->has($filterForm->getName())) {
+            $filter = $request->query->get($filterForm->getName());
+            $filterForm->submit($filter);
+
+            if (isset($filter['name']) && $filter['name']) {
+                $filterBuilder->andWhere('Organization.name LIKE :name')->setParameter('name', '%'.$filter['name'].'%');
+            }
+            if (isset($filter['location']) && $filter['location']) {
+                $filterBuilder->andWhere('Location.id = :location')->setParameter('location', $filter['location']);
+            }
+
+
+        }
+
+        $query = $filterBuilder->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
+        );
+
+        $organizations = $query->getResult();
+
         return $this->render('organization_admin/index.html.twig', [
-            'organizations' => $organizationRepository->findAll(),
+            'organizations' => $organizations,
+            'pagination' => $pagination,
+            'form' => $filterForm->createView(),
         ]);
+
     }
 
     /**

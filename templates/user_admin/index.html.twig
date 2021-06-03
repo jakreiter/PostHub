@@ -8,6 +8,37 @@
     <p><a href="{{ path('user_admin_new') }}" class="btn btn-success">{{ "Create new"|trans }}</a>
     </p>
 
+    {{ form_start(form, {'action': path('user_admin_index'), 'method': 'GET'}) }}
+
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.username) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.firstName) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.lastName) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.email) }}
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
+
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <a href="{{ path('user_admin_index') }}"
+               class="btn btn-dark">{{ "Reset filter"|trans }}</a>
+
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -16,7 +47,6 @@
             <th>{{ "First name"|trans }}</th>
             <th>{{ "Last name"|trans }}</th>
             <th>{{ "Email"|trans }}</th>
-            <th>{{ "Location"|trans }}</th>
             <th>{{ "Enabled"|trans }}</th>
             <th>{{ "Roles"|trans }}</th>
             <th>{{ "Created"|trans }}</th>
@@ -32,7 +62,6 @@
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.location }}</td>
                 <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
                 <td>{% for role in user.roles %}
                         <span class="badge badge-info">{{ role|trans }}</span>
@@ -55,4 +84,8 @@
         </tbody>
     </table>
 
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

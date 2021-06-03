@@ -7,6 +7,34 @@
 
     <p><a href="{{ path('organization_admin_new') }}" class="btn btn-success">{{ "Create new"|trans }}</a>
     </p>
+
+
+    {{ form_start(form, {'action': path('organization_admin_index'), 'method': 'GET'}) }}
+
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.location) }}
+        </div>
+
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
+
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <a href="{{ path('letter_admin_index') }}"
+               class="btn btn-dark">{{ "Reset filter"|trans }}</a>
+
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -41,4 +69,8 @@
         </tbody>
     </table>
 
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 {% endblock %}

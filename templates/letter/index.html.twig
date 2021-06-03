@@ -3,11 +3,11 @@
 {% block title %}Letter index{% endblock %}
 
 {% block body %}
-    <h1>Letter index</h1>
+    <h1>Letters</h1>
 
     {{ form_start(form, {'action': path('letter_admin_index'), 'method': 'GET'}) }}
 
-    <div class="row letter_row">
+    <div class="row">
         <div class="col-md-2">
             {{ form_row(form.title) }}
         </div>
@@ -22,7 +22,7 @@
         </div>
         <div class="col-md-1">
             <label style="min-width: 100px;"> &nbsp; </label>
-                <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
+            <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
 
         </div>
         <div class="col-md-1">
@@ -34,7 +34,7 @@
     </div>
 
     {{ form_end(form) }}
-<br>
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -82,7 +82,8 @@
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('letter_admin_show', {'id': letter.id}) }}" class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
+                    <a href="{{ path('letter_admin_show', {'id': letter.id}) }}"
+                       class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
                     <a href="{{ path('letter_admin_edit', {'id': letter.id}) }}"
                        class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
 
