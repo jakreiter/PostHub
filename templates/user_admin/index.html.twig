@@ -43,14 +43,28 @@
         <thead>
         <tr>
             <th>{{ "Id"|trans }}</th>
-            <th>{{ "Username"|trans }}</th>
-            <th>{{ "First name"|trans }}</th>
-            <th>{{ "Last name"|trans }}</th>
-            <th>{{ "Email"|trans }}</th>
-            <th>{{ "Enabled"|trans }}</th>
+            <th{% if pagination.isSorted('User.username') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Username'|trans, 'User.username') }}
+            </th>
+            <th{% if pagination.isSorted('User.firstName') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'First name'|trans, 'User.firstName') }}
+            </th>
+            <th{% if pagination.isSorted('User.lastName') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Last name'|trans, 'User.lastName') }}
+            </th>
+            <th{% if pagination.isSorted('User.email') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Email'|trans, 'User.email') }}
+            </th>
+            <th{% if pagination.isSorted('User.enabled') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Enabled'|trans, 'User.enabled') }}
+            </th>
             <th>{{ "Roles"|trans }}</th>
-            <th>{{ "Created"|trans }}</th>
-            <th>{{ "Updated"|trans }}</th>
+            <th{% if pagination.isSorted('User.created') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Created'|trans, 'User.created') }}
+            </th>
+            <th{% if pagination.isSorted('User.updated') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Updated'|trans, 'User.updated') }}
+            </th>
             <th></th>
         </tr>
         </thead>

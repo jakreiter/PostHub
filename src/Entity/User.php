@@ -218,6 +218,11 @@ class User implements UserInterface, \Serializable
         return $this->enabled;
     }
 
+    public function getName(): ?string
+    {
+        return $this->__toString();
+    }
+
     public function getFirstName(): ?string
     {
         return $this->firstName;

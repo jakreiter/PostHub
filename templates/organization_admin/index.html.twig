@@ -39,10 +39,18 @@
         <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>Location</th>
-            <th>Owner</th>
-            <th>Scan</th>
+            <th{% if pagination.isSorted('Organization.name') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Name'|trans, 'Organization.name') }}
+            </th>
+            <th{% if pagination.isSorted('Location.name') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Location'|trans, 'Location.name') }}
+            </th>
+            <th{% if pagination.isSorted('Owner.username') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Owner'|trans, 'Owner.username') }}
+            </th>
+            <th{% if pagination.isSorted('Organization.scan') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Scan'|trans, 'Organization.scan') }}
+            </th>
             <th>actions</th>
         </tr>
         </thead>
