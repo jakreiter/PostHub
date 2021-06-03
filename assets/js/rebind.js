@@ -1,4 +1,5 @@
 import userSelectAjaxize from "./userSelectAjaxize";
+import organizationFilterSelectAjaxize from "./organizationFilterSelectAjaxize";
 import addLetterforms from "./addLetterforms";
 import newLetterFormsAjaxize from "./newLetterFormsAjaxize";
 import submitAllLetterForms from "./submitAllLetterForms";
@@ -14,6 +15,7 @@ export default function rebind() {
     });
 
     userSelectAjaxize();
+    organizationFilterSelectAjaxize();
     /*
      * Hacky fix for a bug in select2 with jQuery 3.6.0's new nested-focus "protection"
      * see: https://github.com/select2/select2/issues/5993

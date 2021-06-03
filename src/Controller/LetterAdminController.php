@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\LetterType;
+use App\Form\Filter\LetterFilterType;
 use App\Entity\Letter;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
@@ -23,27 +24,50 @@ class LetterAdminController extends AbstractController
      */
     public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
+        $filterForm = $this->createForm(LetterFilterType::class);
+
         $filterBuilder = $em->createQueryBuilder()
             ->select([
-                'Letter', 'Organization'
+                'Letter', 'Organization', 'LetterStatus'
             ])
             ->from('App\Entity\Letter', 'Letter')
             ->leftJoin('Letter.organization', 'Organization')
-            ;
+            ->leftJoin('Letter.status', 'LetterStatus');
+
+
+        if ($request->query->has($filterForm->getName())) {
+            $filter = $request->query->get($filterForm->getName());
+            $filterForm->submit($filter);
+
+            if (isset($filter['title']) && $filter['title']) {
+                $filterBuilder->andWhere('Letter.title LIKE :title')->setParameter('title', '%'.$filter['title'].'%');
+            }
+            if (isset($filter['organization']) && $filter['organization']) {
+                $filterBuilder->andWhere('Organization.id = :organization')->setParameter('organization', $filter['organization']);
+            }
+            if (isset($filter['status']) && $filter['status']) {
+                $filterBuilder->andWhere('LetterStatus.id = :status')->setParameter('status', $filter['status']);
+            }
+            if (isset($filter['barcodeNumber']) && $filter['barcodeNumber']) {
+                $filterBuilder->andWhere('Letter.barcodeNumber = :barcodeNumber')->setParameter('barcodeNumber', $filter['barcodeNumber']);
+            }
+
+        }
 
         $query = $filterBuilder->getQuery();
 
         $pagination = $paginator->paginate(
             $query, /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
         );
 
         $letters = $query->getResult();
 
         return $this->render('letter/index.html.twig', [
             'letters' => $letters,
-            'pagination'=>$pagination
+            'pagination' => $pagination,
+            'form' => $filterForm->createView(),
         ]);
     }
 
@@ -56,7 +80,7 @@ class LetterAdminController extends AbstractController
 
         $rich = $request->get('rich');
         $letter = new Letter();
-
+        $letter->setCreatedByUser($this->getUser());
         $form = $this->createForm(LetterType::class, $letter);
         $form->handleRequest($request);
 
@@ -94,7 +118,7 @@ class LetterAdminController extends AbstractController
             $entityManager->persist($letter);
             $entityManager->flush();
 
-            $dummyFormNumber = 'L'.$letter->getId();
+            $dummyFormNumber = 'L' . $letter->getId();
             return $this->render('letter/saved.html.twig', [
                 'letter' => $letter,
                 'dummyFormNumber' => $dummyFormNumber
@@ -133,6 +157,7 @@ class LetterAdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $letter->setModifiedByUser($this->getUser());
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('letter_admin_index');

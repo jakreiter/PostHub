@@ -75,6 +75,18 @@ class Letter
      */
     private $updated;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $createdByUser;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $modifiedByUser;
+
 
     public function __toString()
     {
@@ -190,6 +202,30 @@ class Letter
     public function setTitle(string $title): self
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    public function getCreatedByUser(): ?User
+    {
+        return $this->createdByUser;
+    }
+
+    public function setCreatedByUser(?User $createdByUser): self
+    {
+        $this->createdByUser = $createdByUser;
+
+        return $this;
+    }
+
+    public function getModifiedByUser(): ?User
+    {
+        return $this->modifiedByUser;
+    }
+
+    public function setModifiedByUser(?User $modifiedByUser): self
+    {
+        $this->modifiedByUser = $modifiedByUser;
 
         return $this;
     }
