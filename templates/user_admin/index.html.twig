@@ -42,7 +42,9 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>{{ "Id"|trans }}</th>
+            <th{% if pagination.isSorted('User.id') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Id'|trans, 'User.id') }}
+            </th>
             <th{% if pagination.isSorted('User.username') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Username'|trans, 'User.username') }}
             </th>
