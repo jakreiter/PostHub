@@ -36,7 +36,7 @@ class LetterType extends AbstractType
                 'required' => true,
                 'placeholder' => '',
                 'attr' => array(
-                    'class' => 'organization-ajax-select'
+                    'class' => 'organization-ajax-filter-select'
                 )
             ])
             ->add('status')

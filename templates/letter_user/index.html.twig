@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Letter index{% endblock %}
+
+{% block body %}
+    <h1>Letters</h1>
+
+    {{ form_start(form, {'action': path('letter_user_index', {'id':organization.id}), 'method': 'GET'}) }}
+
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.title) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.status) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.barcodeNumber) }}
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
+
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <a href="{{ path('letter_admin_index') }}"
+               class="btn btn-dark">{{ "Reset filter"|trans }}</a>
+
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th{% if pagination.isSorted('letter.Id') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Id'|trans, 'letter.id') }}
+            </th>
+            <th{% if pagination.isSorted('letter.Title') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Title'|trans, 'Letter.title') }}
+            </th>
+            <th{% if pagination.isSorted('letter.Organization') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Organization'|trans, 'Organization.name') }}
+            </th>
+            <th{% if pagination.isSorted('letter.Status') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Status'|trans, 'LetterStatus.name') }}
+            </th>
+            <th{% if pagination.isSorted('letter.originalName') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Scan file'|trans, 'Letter.originalName') }}
+            </th>
+            <th{% if pagination.isSorted('letter.BarcodeNumber') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Barcode number'|trans, 'Letter.barcodeNumber') }}
+            </th>
+            <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
+            </th>
+            <th{% if pagination.isSorted('letter.Updated') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Updated'|trans, 'Letter.updated') }}
+            </th>
+            <th>{{ "Actions"|trans }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for letter in letters %}
+            <tr>
+                <td style="font-size: 75%;">{{ letter.id }}</td>
+                <td>{{ letter.title }}</td>
+                <td>{{ letter.organization }}</td>
+                <td>{{ letter.status }}</td>
+                <td>
+                    {% if letter.originalName %}
+                        <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
+                           class="">{{ letter.originalName }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ letter.barcodeNumber }}</td>
+                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('letter_user_show', {'organization': letter.organization.id, 'letter_id': letter.id}) }}"
+                       class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
+                </td>
+            </tr>
+        {% else %}
+
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

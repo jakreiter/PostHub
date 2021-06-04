@@ -45,7 +45,6 @@ City: City
 Edit Location: Edit Location
 Save: Save
 Delete: Delete
-
 First name: First name
 Last name: Last name
 Enabled: Enabled
@@ -96,3 +95,5 @@ Confirm: Confirm
 Password inspirations: Password inspirations
 forUser: for
 Password change: Password change
+
+Switch organization: Switch organization

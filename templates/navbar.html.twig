@@ -52,7 +52,19 @@
                            href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
                     </div>
                 </li>
-
+            {% else %}
+                {% if app.user.organizations is defined and app.user.organizations|length>1 %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
+                           aria-haspopup="true" aria-expanded="false">{{ "Switch organization"|trans }}</a>
+                        <div class="dropdown-menu">
+                            {% for organization in app.user.organizations %}
+                                <a class="dropdown-item"
+                                   href="{{ path('letter_user_index', {id:organization.id}) }}">{{ organization.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </li>
+                {% endif %}
             {% endif %}
             <!--
             <li class="nav-item">

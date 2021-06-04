@@ -94,7 +94,7 @@ class LetterAdminController extends AbstractController
                 // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
                 $orgDir = $letter->getOrganization()->getId();
-                if (!is_dir($orgDir)) {
+                if (!is_dir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir)) {
                     mkdir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir);
                 }
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
