@@ -36,7 +36,7 @@ class LetterFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => '',
                 'attr' => array(
-                    'class' => 'organization-ajax-select'
+                    'class' => 'organization-ajax-filter-select'
                 )
             ])
             ->add('status', EntityType::class, [
