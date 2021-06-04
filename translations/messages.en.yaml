@@ -45,3 +45,54 @@ City: City
 Edit Location: Edit Location
 Save: Save
 Delete: Delete
+
+First name: First name
+Last name: Last name
+Enabled: Enabled
+Roles: Roles
+Audit: Audit
+Changes have been saved.: Changes have been saved.
+User: User
+Id: Id
+FirstName: First name
+Created: Created
+Updated: Updated
+LastPassResetRequest: Last password reset request
+PassResetToken: Password reset token
+IpAddressDuringRegistration: Ip address during registration
+Edit User: Edit User
+Edit: Edit
+Scan: Scan
+Location: Location
+Locations: Locations
+Owner: Owner
+Create new User: Create new User
+Create new: Create new
+ROLE_USER: User
+ROLE_ADMIN: Admin
+ROLE_SUPER_ADMIN: SuperAdmin
+Edit Organization: Edit Organization
+Users: Users
+Letter: Letter
+Edit Letter: Edit Letter
+Adding information about multiple letters: Adding information about multiple letters
+5 more forms: 5 more forms
+One more form: One more form
+Letters: Letters
+Access denied: Access denied
+You do not have access to this resource.: You do not have access to this resource.
+RequestPasswordResetSubmitButtonTitle: Reset password
+Submit all: Submit all
+Filter: Filter
+Reset filter: Reset filter
+Scan file: Scan file
+Actions: Actions
+Password changed.: Password changed.
+New passwords not match.: New passwords not match.
+Error: Error
+Wrong or expired link.: Wrong or expired link.
+PasswordRequirements: The new password must be at least 20 characters long. This is the only limitation.
+Confirm: Confirm
+Password inspirations: Password inspirations
+forUser: for
+Password change: Password change
