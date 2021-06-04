@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\PassSetter;
+use App\Form\UserPassSetType;
+use App\Model\PassHelperTools;
+use App\Model\StringTools;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\User;
@@ -13,7 +17,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 
 /**
@@ -43,11 +49,11 @@ class UserAdminController extends AbstractController
             $orgArrs = [];
             if (count($users)) {
                 foreach ($users as $user) {
-                    $orgArrs[]=$user->toArray();
+                    $orgArrs[] = $user->toArray();
                 }
             }
             $reaponseArr = [
-                'results'=>$orgArrs
+                'results' => $orgArrs
             ];
             $response = new JsonResponse();
             $response->setData($reaponseArr);
@@ -66,8 +72,7 @@ class UserAdminController extends AbstractController
             ->select([
                 'User'
             ])
-            ->from('App\Entity\User', 'User')
-            ;
+            ->from('App\Entity\User', 'User');
 
 
         if ($request->query->has($filterForm->getName())) {
@@ -75,13 +80,13 @@ class UserAdminController extends AbstractController
             $filterForm->submit($filter);
 
             if (isset($filter['username']) && $filter['username']) {
-                $filterBuilder->andWhere('User.username LIKE :username')->setParameter('username', '%'.$filter['username'].'%');
+                $filterBuilder->andWhere('User.username LIKE :username')->setParameter('username', '%' . $filter['username'] . '%');
             }
             if (isset($filter['firstName']) && $filter['firstName']) {
-                $filterBuilder->andWhere('User.firstName LIKE :firstName')->setParameter('firstName', '%'.$filter['firstName'].'%');
+                $filterBuilder->andWhere('User.firstName LIKE :firstName')->setParameter('firstName', '%' . $filter['firstName'] . '%');
             }
             if (isset($filter['lastName']) && $filter['lastName']) {
-                $filterBuilder->andWhere('User.lastName LIKE :lastName')->setParameter('lastName', '%'.$filter['lastName'].'%');
+                $filterBuilder->andWhere('User.lastName LIKE :lastName')->setParameter('lastName', '%' . $filter['lastName'] . '%');
             }
             if (isset($filter['email']) && $filter['email']) {
                 $filterBuilder->andWhere('User.email LIKE :email')->setParameter('email', $filter['email']);
@@ -142,6 +147,63 @@ class UserAdminController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/change_password", name="user_admin_change_password", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function changePassword(Request $request, User $user, UserPasswordEncoderInterface $encoder,
+                                   TranslatorInterface $translator): Response
+    {
+
+        for ($i = 0; $i < 10; $i++) {
+            $randomPasswords[] = PassHelperTools::randomString();
+        }
+        $randomPasswords[] = StringTools::randomString() . StringTools::randomString() . StringTools::randomString();
+
+        if ($user) {
+
+            $passSetter = new PassSetter();
+            $form = $this->createForm(UserPassSetType::class, $passSetter);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                if ($passSetter->getNewPassword() == $passSetter->getNewPassword2()) {
+
+                    $plainPassword = $passSetter->getNewPassword();
+                    $encoded = $encoder->encodePassword($user, $plainPassword);
+                    $user->setPassword($encoded);
+                    $user->setPassResetToken(null);
+                    $user->setLastPassResetRequest(null);
+                    $this->getDoctrine()
+                        ->getManager()
+                        ->flush();
+
+
+                    $this->addFlash('success', $translator->trans('Password changed.'));
+                    return $this->redirectToRoute('user_admin_edit', ['id' => $user->getId()]);
+                } else {
+                    $this->addFlash('danger', $translator->trans('New passwords not match.'));
+                }
+                return $this->redirectToRoute('user_admin_change_password', ['id' => $user->getId()]);
+            }
+
+            return $this->render('user_admin/set_pass.html.twig', [
+                'passChanger' => $passSetter,
+                'form' => $form->createView(),
+                'randomPasswords' => $randomPasswords,
+                'user'=>$user
+            ]);
+        } else {
+            return $this->render('error/common.html.twig', [
+                'error' => [
+                    'title' => $translator->trans('Error'),
+                    'description' => $translator->trans('Wrong or expired link.')
+                ]
+            ]);
+        }
+
+    }
+
+    /**
      * @Route("/{id}/edit", name="user_admin_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, User $user, TranslatorInterface $translator): Response
@@ -152,7 +214,7 @@ class UserAdminController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash('success', $translator->trans('Changes have been saved.'));
-            return $this->redirectToRoute('user_admin_show', ['id'=>$user->getId()]);
+            return $this->redirectToRoute('user_admin_show', ['id' => $user->getId()]);
         }
 
         return $this->render('user_admin/edit.html.twig', [
@@ -166,7 +228,7 @@ class UserAdminController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();

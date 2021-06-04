@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Change password{% endblock %}
+
+{% block body %}
+    <h1>{{ "ChangePasswordTitle"|trans }} {{ "forUser"|trans }} <strong>{{ user }}</strong></h1>
+
+    {{ include('me_user/set_pass_form.html.twig', {'button_label': 'Confirm'|trans}) }}
+
+
+{% endblock %}
