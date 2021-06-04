@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}User{% endblock %}
+
+{% block body %}
+    <h1>User</h1>
+    <div class="bg-page">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>{{ "Username"|trans }}</th>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ user.email }}
+                    <a href="{{ path('self_user_change_email_init') }}" class="btn btn-primary">{{ "Change"|trans }}</a>
+                </td>
+            </tr>
+            <tr>
+                <th>{{ "Enabled"|trans }}</th>
+                <td>{{ user.enabled ? 'Yes'|trans : 'No'|trans }}</td>
+            </tr>
+            <tr>
+                <th>Role</th>
+                <td> {% for role in user.roles %}
+                        {{ role|trans }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

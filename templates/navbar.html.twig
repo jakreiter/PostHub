@@ -82,10 +82,10 @@
                                 class="badge badge-secondary">admin</span>{% endif %}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
+                        <a class="dropdown-item" href="{{ path('self_user_change_pass') }}">{{ "ChangePasswordLinkTitle"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('self_user_show') }}">{{ "SelfUserShowLinkTitle"|trans }}</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('logout') }}"
-                           title="Logout">{{ "LogoutLinkTitle"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('logout') }}" title="Logout">{{ "LogoutLinkTitle"|trans }}</a>
                     </div>
                 </li>
             {% else %}
@@ -93,6 +93,7 @@
                     <a href="{{ path('login') }}" class="btn btn-success">{{ "LogInActionButtonTitle"|trans }}</a>
                 </li>
             {% endif %}
+
 
         </ul>
     </div>

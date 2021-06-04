@@ -97,3 +97,14 @@ forUser: for
 Password change: Password change
 
 Switch organization: Switch organization
+
+SelfUserShowLinkTitle: Account information
+EmailChengeProcedure: A message about the change of e-mail address will be sent to both e-mails (old and new). To confirm the change of address, click on the link received to the new e-mail address.
+ChangeEmailTitle: Change e-mail address
+ChangeEmailConfitmationTitle: Confirmation of changing the e-mail address
+The e-mail address change process has started. Check your e-mail now and click the link that verifies the new e-mail address.: The e-mail address change process has started. Check your e-mail now and click the link that verifies the new e-mail address.
+New email: New email
+Current e-mail address: Obecny adres e-mail
+The request is out of date or has expired.: The request is out of date or has expired.
+The email address has been changed.: The email address has been changed.
+Change: Change
