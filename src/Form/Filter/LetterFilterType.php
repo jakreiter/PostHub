@@ -78,10 +78,10 @@ class LetterFilterType extends AbstractType
                             },
                             'multiple' => false,
                             'expanded' => false,
-                            'required' => true,
+                            'required' => false,
                             'placeholder' => '',
                             'attr' => array(
-                                'class' => 'organization-ajax-select'
+                                'class' => 'organization-ajax-filter-select'
                             )
                         ]);
                     }

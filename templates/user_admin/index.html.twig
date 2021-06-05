@@ -90,6 +90,10 @@
                        class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
                     <a href="{{ path('user_admin_edit', {'id': user.id}) }}"
                        class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+                    {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}
+                        <a href="{{ path('home', {'_switch_user': user.username}) }}"
+                           class="btn btn-sm btn-dark">{{ "Impersonate"|trans }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

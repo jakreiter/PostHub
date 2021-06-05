@@ -12,6 +12,8 @@ export default function organizationFilterSelectAjaxize()
             delay: 250 // milliseconds
         },
         minimumInputLength: 2,
+        placeholder: "",
+        allowClear: true,
         templateResult: formatOrganizationOption,
         templateSelection: formatOrganizationSelection
     });
