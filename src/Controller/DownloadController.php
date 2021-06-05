@@ -40,7 +40,7 @@ class DownloadController extends AbstractController
             || ($this->getUser()->getId() && $letter->getOrganization()->getOwner() == $this->getUser())
         ) {
 
-
+            $entityManager = $this->getDoctrine()->getManager();
             $file = $this->fileLetterService->getFilePath($letter);
             if (file_exists($file)) {
                 $response = new BinaryFileResponse($file);
@@ -49,6 +49,12 @@ class DownloadController extends AbstractController
                     ResponseHeaderBag::DISPOSITION_INLINE,
                     $letter->getOriginalName()
                 );
+                if ( $this->getUser()->getId() && $letter->getOrganization()->getOwner() == $this->getUser() ) {
+                    // downloaded by owner
+                    $letter->setSeen(true);
+                    $letter->setDownloadedByUser($this->getUser());
+                    $entityManager->flush();
+                }
                 return $response;
             }
             throw $this->createNotFoundException('The file has already been deleted.');

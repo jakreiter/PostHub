@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Letter;
+use App\Entity\Organization;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -17,6 +18,19 @@ class LetterRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Letter::class);
+    }
+
+    public function getNumberOfUnseenPerOrganization(Organization $organization)
+    {
+        $cnt = $this->createQueryBuilder('a')
+            ->select('COUNT(a)')
+            ->andWhere('a.organization = :organization')->setParameter('organization', $organization)
+            ->andWhere('a.seen = false')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        if (!$cnt) $cnt = 0;
+        return (int)$cnt;
     }
 
     // /**

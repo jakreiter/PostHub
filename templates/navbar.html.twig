@@ -56,13 +56,19 @@
                 {% if app.user.organizations is defined and app.user.organizations|length>1 %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">{{ "Switch organization"|trans }}</a>
+                           aria-haspopup="true" aria-expanded="false">{{ organization }}</a>
                         <div class="dropdown-menu">
                             {% for organization in app.user.organizations %}
                                 <a class="dropdown-item"
                                    href="{{ path('letter_user_index', {id:organization.id}) }}">{{ organization.name }}</a>
                             {% endfor %}
                         </div>
+                    </li>
+                {% elseif app.user.organizations is defined %}
+                    <li class="nav-item">
+
+                        <a class="nav-link" href="{{ path('letter_user_index', {'id':app.user.organizations[0].id}) }}">{{ app.user.organizations[0].name }}</a>
+
                     </li>
                 {% endif %}
             {% endif %}

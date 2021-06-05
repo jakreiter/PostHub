@@ -10,6 +10,12 @@ use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
 /**
  * @ORM\Entity(repositoryClass=LetterRepository::class)
+ * @ORM\Table(uniqueConstraints={
+ *      @ORM\UniqueConstraint(name="unique_barcode_number", columns={"barcode_number"})
+ * }, indexes={
+ *      @ORM\Index(name="seen_in_organization_index", columns={"organization_id", "seen"}),
+ *      @ORM\Index(name="downloaded_by_user_index", columns={"downloaded_by_user_id"})
+ * })
  * @Audit\Auditable()
  * @Audit\Security(view={"ROLE_ADMIN"})
  */
@@ -61,6 +67,17 @@ class Letter
      * @ORM\Column(type="integer", nullable=true)
      */
     private $size;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
+     */
+    private $seen;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $downloadedByUser;
 
     /**
      * @ORM\Column(type="datetime")
@@ -229,6 +246,33 @@ class Letter
 
         return $this;
     }
+
+    public function getSeen(): ?bool
+    {
+        return $this->seen;
+    }
+
+    public function setSeen(bool $seen): self
+    {
+        $this->seen = $seen;
+
+        return $this;
+    }
+
+    public function getDownloadedByUser(): ?User
+    {
+        return $this->downloadedByUser;
+    }
+
+    public function setDownloadedByUser(?User $downloadedByUser): self
+    {
+        $this->downloadedByUser = $downloadedByUser;
+
+        return $this;
+    }
+
+
+
 
 
 }
