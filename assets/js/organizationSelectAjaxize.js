@@ -1,7 +1,7 @@
 import formatOrganizationOption from './formatOrganizationOption';
 import formatOrganizationSelection from './formatOrganizationSelection';
 
-export default function (posthubFormNumber)
+export default function organizationSelectAjaxize(posthubFormNumber)
 {
     console.log("organizationSelectAjaxize("+posthubFormNumber+")");
     $('#ifp' + posthubFormNumber + ' select.organization-ajax-select').select2({

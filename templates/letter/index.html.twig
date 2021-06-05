@@ -59,9 +59,6 @@
             <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
             </th>
-            <th{% if pagination.isSorted('letter.Updated') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Updated'|trans, 'Letter.updated') }}
-            </th>
             <th>{{ "Actions"|trans }}</th>
         </tr>
         </thead>
@@ -70,7 +67,11 @@
             <tr>
                 <td style="font-size: 75%;">{{ letter.id }}</td>
                 <td>{{ letter.title }}</td>
-                <td>{{ letter.organization }}</td>
+                <td>{% if letter.organization %}
+                    <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
+                       class="">{{ letter.organization }}</a>
+                    {% endif %}
+                </td>
                 <td>{{ letter.status }}</td>
                 <td>
                     {% if letter.originalName %}
@@ -79,8 +80,7 @@
                     {% endif %}
                 </td>
                 <td>{{ letter.barcodeNumber }}</td>
-                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</td>
                 <td>
                     <a href="{{ path('letter_admin_show', {'id': letter.id}) }}"
                        class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>

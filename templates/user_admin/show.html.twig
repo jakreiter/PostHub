@@ -5,9 +5,9 @@
 {% block body %}
     <h1>{{ "User"|trans }} <strong>{{ user.username }}</strong></h1>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
 
                 <table class="table">
                     <tbody>
@@ -38,7 +38,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
 
                 <table class="table">
                     <tbody>
@@ -64,6 +64,43 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="col-md-4">
+                <h2>{{ "Owned organizations"|trans }}</h2>
+                {% if user.organizations|length>0 %}
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>{{ 'Name'|trans }}
+                        </th>
+                        <th>
+                            {{ 'Location'|trans }}
+                        </th>
+
+                        <th>{{ 'Scan'|trans }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for organization in user.organizations %}
+                        <tr>
+                            <td>{{ organization.id }}</td>
+                            <td><a href="{{ path('organization_admin_show', {'id': organization.id}) }}"
+                                   class="">{{ organization.name }}</a></td>
+                            <td>{{ organization.location }}</td>
+                            <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                    <p>{{ "none"|trans }}</p>
+                {% endif %}
             </div>
         </div>
     </div>

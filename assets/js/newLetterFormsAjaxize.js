@@ -2,6 +2,7 @@
 import organizationSelectAjaxize from "./organizationSelectAjaxize";
 import rebind from './rebind';
 import submitNextLetterForm from "./submitNextLetterForm";
+import makeUnikeFormFieldIds from "./makeUnikeFormFieldIds";
 
 // newLetterFormsAjaxize
 export default function newLetterFormsAjaxize() {
@@ -32,7 +33,9 @@ export default function newLetterFormsAjaxize() {
                     console.log(statusTarget);
                     statusTarget.html("<p class='error-text text-danger text-sm-center'>Session expired. Please <a href='/login' target='_blank'>log in in new window</a>.</p>");
                 } else {
-                    prntdv.html(data);
+                    console.log('ajax fail s2. on '+thisFormNumber);
+                    let html = makeUnikeFormFieldIds(data, thisFormNumber+1000);
+                    prntdv.html(html);
                     organizationSelectAjaxize(thisFormNumber);
                     if (posthubSendingAllLetterForms) submitNextLetterForm();
                     rebind();

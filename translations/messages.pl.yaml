@@ -25,7 +25,7 @@ menuHLetters: Listy
 letterMulti: Dodawanie wielu listów
 menuLetterNew: Nowy list
 Title: Tytuł
-Organization: Organizazja
+Organization: Organizacja
 Status: Status
 Scan (PDF file): Skan (Plik PDF)
 Barcode number: Kod kreskowy
@@ -108,3 +108,7 @@ CurrentEmail: Obecny adres e-mail
 The request is out of date or has expired.: Żądanie jest nieaktualne lub wygasło.
 The email address has been changed.: Adres e-mail został zmieniony.
 Change: Zmień
+
+Owned organizations: Posidane organizacje
+none: brak
+

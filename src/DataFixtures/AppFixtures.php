@@ -39,6 +39,16 @@ class AppFixtures extends Fixture
         $manager->persist($letterStatus);
 
 
+        $letterStatus = new LetterStatus();
+        $letterStatus->setName('In the office/scan');
+        $manager->persist($letterStatus);
+
+
+        $letterStatus = new LetterStatus();
+        $letterStatus->setName('Sent by traditional mail');
+        $manager->persist($letterStatus);
+
+
 
         $users = [];
         $user = new User();

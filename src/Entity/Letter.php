@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Ramsey\Uuid\Doctrine\UuidGenerator;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=LetterRepository::class)
@@ -18,6 +20,7 @@ use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
  * })
  * @Audit\Auditable()
  * @Audit\Security(view={"ROLE_ADMIN"})
+ * @Assert\EnableAutoMapping()
  */
 class Letter
 {
@@ -33,13 +36,13 @@ class Letter
 
     /**
      * @ORM\ManyToOne(targetEntity="Organization", inversedBy="letters")
-     * @ORM\JoinColumn(onDelete="CASCADE")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
      */
     private $organization;
 
     /**
      * @ORM\ManyToOne(targetEntity="LetterStatus")
-     * @ORM\JoinColumn(onDelete="SET NULL")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $status;
 
@@ -71,7 +74,7 @@ class Letter
     /**
      * @ORM\Column(type="boolean", nullable=false, options={"default":false})
      */
-    private $seen;
+    private $seen=false;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -104,6 +107,12 @@ class Letter
      */
     private $modifiedByUser;
 
+    public function __construct()
+    {
+        $this->created = new \DateTime();
+        $this->updated = new \DateTime();
+
+    }
 
     public function __toString()
     {

@@ -60,7 +60,9 @@
                 <td>{{ organization.id }}</td>
                 <td>{{ organization.name }}</td>
                 <td>{{ organization.location }}</td>
-                <td>{{ organization.owner }}</td>
+                <td>{% if organization.owner %}<a href="{{ path('user_admin_show', {'id': organization.owner.id}) }}"
+                                                  class="">{{ organization.owner }}</a>
+                    {% endif %}</td>
                 <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
                 <td>
                     <a href="{{ path('organization_admin_show', {'id': organization.id}) }}"

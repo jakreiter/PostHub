@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Letter;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
+use App\Repository\LetterStatusRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -36,10 +37,20 @@ class LetterType extends AbstractType
                 'required' => true,
                 'placeholder' => '',
                 'attr' => array(
-                    'class' => 'organization-ajax-filter-select'
+                    'class' => 'organization-ajax-select'
                 )
             ])
-            ->add('status')
+            ->add('status', EntityType::class, [
+                'class' => 'App:LetterStatus',
+                'query_builder' => function (LetterStatusRepository $er) {
+                    return $er->createQueryBuilder('o')
+                        ->orderBy('o.id', 'ASC')
+                        ;
+                },
+                'multiple' => false,
+                'expanded' => false,
+                'required' => true,
+            ])
             ->add('file', FileType::class, [
                 'label' => 'Scan (PDF file)',
 
@@ -47,7 +58,7 @@ class LetterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '1024k',
+                        'maxSize' => '2048k',
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',

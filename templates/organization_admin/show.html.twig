@@ -7,26 +7,34 @@
 
     <table class="table">
         <tbody>
-            <tr>
-                <th>{{ "Id"|trans }}</th>
-                <td>{{ organization.id }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Name"|trans }}</th>
-                <td>{{ organization.name }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Location"|trans }}</th>
-                <td>{{ organization.location }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Owner"|trans }}</th>
-                <td>{{ organization.owner }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Scan"|trans }}</th>
-                <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
-            </tr>
+        <tr>
+            <th>{{ "Id"|trans }}</th>
+            <td>{{ organization.id }}</td>
+        </tr>
+        <tr>
+            <th>{{ "Name"|trans }}</th>
+            <td>{{ organization.name }}</td>
+        </tr>
+        <tr>
+            <th>{{ "Location"|trans }}</th>
+            <td>{% if organization.location %}
+                <a href="{{ path('location_admin_show', {'id': organization.location.id}) }}" class="">{{ organization.location }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ "Owner"|trans }}</th>
+            <td>
+                {% if organization.owner %}
+                    <a href="{{ path('user_admin_show', {'id': organization.owner.id}) }}"
+                                              class="">{{ organization.owner }}</a>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <th>{{ "Scan"|trans }}</th>
+            <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
+        </tr>
         </tbody>
     </table>
 
