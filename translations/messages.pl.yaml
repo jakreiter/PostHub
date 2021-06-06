@@ -113,3 +113,11 @@ Owned organizations: Posidane organizacje
 none: brak
 Impersonate: Podszyj się
 Exit impersonation: Zakończ podszywanie się
+ResetPasswordRequestMailTitle: Resetowanie hasła do konta
+ClickToSetNewPasswordLinkTitle: Kliknij tutaj, aby ustawić nowe hasło do konta
+The message was generated automatically, please do not reply to it.: Ta wiadomość została wygenerowana automatycznie. Proszę na nią nie odpowiadać.
+lastRequestTooClose: Reset hasła był już żądany w ciagu ostatnich 24 godzin. Nie możesz żądać kolejnego. Odczekaj dobę, lub dokończ rozpoczęty proces (odbierz e-mail i wywołaj link).
+PasswordResetRequestTitle: Resetowanie hasła
+Password reset request sent.: Żądanie resetu hasła zostało zgłoszone. Sprawdź skrzynkę e-mail, aby wykonać dalsze kroki tej procedury.
+Your username: Twoja nazwa użytkownika
+
