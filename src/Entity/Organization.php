@@ -12,6 +12,9 @@ use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
 /**
  * @ORM\Entity(repositoryClass=OrganizationRepository::class)
+ * @ORM\Table(indexes={
+ *      @ORM\Index(name="created_index", columns={"created"})
+ * })
  * @Audit\Auditable()
  * @Audit\Security(view={"ROLE_ADMIN"})
  */

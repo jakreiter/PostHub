@@ -16,7 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *      @ORM\UniqueConstraint(name="unique_barcode_number", columns={"barcode_number"})
  * }, indexes={
  *      @ORM\Index(name="seen_in_organization_index", columns={"organization_id", "seen"}),
- *      @ORM\Index(name="downloaded_by_user_index", columns={"downloaded_by_user_id"})
+ *      @ORM\Index(name="seen_in_organization_index", columns={"organization_id", "seen"}),
+ *      @ORM\Index(name="downloaded_by_user_index", columns={"downloaded_by_user_id"}),
+ *      @ORM\Index(name="created_index", columns={"created"})
  * })
  * @Audit\Auditable()
  * @Audit\Security(view={"ROLE_ADMIN"})

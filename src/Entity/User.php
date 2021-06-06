@@ -12,7 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Table(name="user")
+ * @ORM\Table(indexes={
+ *      @ORM\Index(name="created_index", columns={"created"})
+ * })
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity("username")
  * @UniqueEntity("email")
