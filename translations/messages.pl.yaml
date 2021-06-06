@@ -120,4 +120,7 @@ lastRequestTooClose: Reset hasła był już żądany w ciagu ostatnich 24 godzin
 PasswordResetRequestTitle: Resetowanie hasła
 Password reset request sent.: Żądanie resetu hasła zostało zgłoszone. Sprawdź skrzynkę e-mail, aby wykonać dalsze kroki tej procedury.
 Your username: Twoja nazwa użytkownika
-
+You don't have any organization or role assigned to your account. Report to your system administrator if you believe this is a bug.: Nie masz przypisanej do konta żadnej organizacji ani roli. Zgłoś się do administratora systemu, jeśli uważasz, że to błąd.
+administrator's e-mail: e-mail administratora
+HelloDefault: Brak domyślnej funkcji do przekierowania
+Report: Zgłoś

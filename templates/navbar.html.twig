@@ -64,7 +64,7 @@
                             {% endfor %}
                         </div>
                     </li>
-                {% elseif app.user.organizations is defined %}
+                {% elseif app.user.organizations is defined and app.user.organizations|length>0 %}
                     <li class="nav-item">
 
                         <a class="nav-link" href="{{ path('letter_user_index', {'id':app.user.organizations[0].id}) }}">{{ app.user.organizations[0].name }}</a>

@@ -3,7 +3,12 @@
 {% block title %}New letter{% endblock %}
 
 {% block body %}
-    <h1>Hello</h1>
-
-
+    <p></p>
+    <div class="jumbotron">
+        <h1 class="display-4">{{ "HelloDefault"|trans }}</h1>
+        <p class="lead">{{ "You don't have any organization or role assigned to your account. Report to your system administrator if you believe this is a bug."|trans }}</p>
+        <hr class="my-4">
+        <p>{{ "administrator's e-mail"|trans }}: <a class="" href="mailto:{{ admin_contact_email }}?subject={{ application_name }} {{ app.user.username }}" role="button">{{ admin_contact_email }}</a></p>
+        <a class="btn btn-primary btn-lg" href="mailto:{{ admin_contact_email }}?subject={{ application_name }} {{ app.user.username }}" role="button">{{ "Report"|trans }}</a>
+    </div>
 {% endblock %}

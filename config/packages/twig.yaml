@@ -3,4 +3,5 @@ twig:
     form_themes: ['bootstrap_4_layout.html.twig']
     globals:
         application_name: '%application_name%'
+        admin_contact_email: '%env(ADMIN_CONTACT_EMAIL)%'
         recaptcha_sitekey: '%recaptcha_sitekey%'
