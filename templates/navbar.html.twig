@@ -15,7 +15,7 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ "menuUsers"|trans }}</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('user_admin_index') }}">{{ "menuUsers"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('user_admin_index', {'sort':'User.created', 'direction':'desc'}) }}">{{ "menuUsers"|trans }}</a>
                         <a class="dropdown-item" href="{{ path('user_admin_new') }}">{{ "menuAddUser"|trans }}</a>
                     </div>
                 </li>
@@ -24,7 +24,7 @@
                        aria-haspopup="true" aria-expanded="false">{{ "menuOrganizations"|trans }}</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item"
-                           href="{{ path('organization_admin_index') }}">{{ "menuOrganizations"|trans }}</a>
+                           href="{{ path('organization_admin_index', {'sort':'Organization.created', 'direction':'desc'}) }}">{{ "menuOrganizations"|trans }}</a>
                         <a class="dropdown-item"
                            href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
                     </div>
@@ -46,7 +46,7 @@
                        aria-haspopup="true" aria-expanded="false">{{ "menuHLetters"|trans }}</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item"
-                           href="{{ path('letter_admin_index') }}">{{ "Letters"|trans }}</a>
+                           href="{{ path('letter_admin_index', {'sort':'Letter.created', 'direction':'desc'}) }}">{{ "Letters"|trans }}</a>
                         <a class="dropdown-item" href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
                         <a class="dropdown-item"
                            href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
