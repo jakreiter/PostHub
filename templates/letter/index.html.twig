@@ -3,7 +3,7 @@
 {% block title %}Letter index{% endblock %}
 
 {% block body %}
-    <h1>Letters</h1>
+    <h1>{{ "Letters"|trans }}</h1>
 
     {{ form_start(form, {'action': path('letter_admin_index'), 'method': 'GET'}) }}
 
