@@ -49,7 +49,7 @@ class Letter
     private $status;
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=false)
+     * @ORM\Column(type="string", length=100, nullable=false)
      */
     private $title;
 
@@ -96,6 +96,24 @@ class Letter
      * @ORM\Column(type="datetime")
      */
     private $updated;
+
+    /**
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $scanOrdered;
+
+    /**
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $scanInserted;
+
+    /**
+     *
+     * @ORM\Column(type="float", nullable=false, options={"default":0})
+     */
+    private $scanDue=0;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -282,8 +300,40 @@ class Letter
         return $this;
     }
 
+    public function getScanOrdered(): ?\DateTimeInterface
+    {
+        return $this->scanOrdered;
+    }
 
+    public function setScanOrdered(?\DateTimeInterface $scanOrdered): self
+    {
+        $this->scanOrdered = $scanOrdered;
 
+        return $this;
+    }
 
+    public function getScanInserted(): ?\DateTimeInterface
+    {
+        return $this->scanInserted;
+    }
+
+    public function setScanInserted(?\DateTimeInterface $scanInserted): self
+    {
+        $this->scanInserted = $scanInserted;
+
+        return $this;
+    }
+
+    public function getScanDue(): ?float
+    {
+        return $this->scanDue;
+    }
+
+    public function setScanDue(float $scanDue): self
+    {
+        $this->scanDue = $scanDue;
+
+        return $this;
+    }
 
 }

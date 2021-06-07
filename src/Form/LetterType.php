@@ -68,6 +68,37 @@ class LetterType extends AbstractType
                 ],
             ])
             ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+                    /** @var @var Letter $letter */
+                    $letter = $event->getData();
+
+                    $submittedOrganizationId = $letter->getOrganization()->getId();
+                    if ($submittedOrganizationId) {
+                        $form->add('organization', EntityType::class, [
+                            'class' => 'App:Organization',
+                            'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
+                                return $er->createQueryBuilder('o')
+                                    ->andWhere('o.id = :submittedOrganizationId')
+                                    ->setParameter('submittedOrganizationId', $submittedOrganizationId);
+                            },
+                            'choice_label' => function (Organization $organization) {
+                                return $organization->getName().' '.($organization->getScan()?'📷':'x');
+                            },
+                            'multiple' => false,
+                            'expanded' => false,
+                            'required' => true,
+                            'placeholder' => '',
+                            'attr' => array(
+                                'class' => 'organization-ajax-filter-select'
+                            )
+                        ]);
+                    }
+
+                }
+            )
+            ->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
                     $form = $event->getForm();
@@ -90,7 +121,7 @@ class LetterType extends AbstractType
                             'required' => true,
                             'placeholder' => '',
                             'attr' => array(
-                                'class' => 'organization-ajax-select'
+                                'class' => 'organization-ajax-filter-select'
                             )
                         ]);
                     }
