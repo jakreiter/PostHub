@@ -113,7 +113,7 @@ class Letter
      *
      * @ORM\Column(type="float", nullable=false, options={"default":0})
      */
-    private $scanDue=0;
+    private $scanDue=0.0;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -131,6 +131,8 @@ class Letter
     {
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
+        $this->scanDue = 0.0;
+        $this->scanOrdered = null;
 
     }
 
@@ -302,11 +304,13 @@ class Letter
 
     public function getScanOrdered(): ?\DateTimeInterface
     {
+        if (!$this->scanOrdered) return null;
         return $this->scanOrdered;
     }
 
     public function setScanOrdered(?\DateTimeInterface $scanOrdered): self
     {
+
         $this->scanOrdered = $scanOrdered;
 
         return $this;

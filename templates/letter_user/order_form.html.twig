@@ -1,0 +1,29 @@
+{{ form_start(form) }}
+{% include 'letter_user/letter_info.html.twig' %}
+<div class="container">
+    <table class="table">
+        <tbody>
+        <tr>
+            <th>{{ "Order value"|trans }}</th>
+            <td><strong>{{ single_scan_price }}</strong> {{ single_scan_currency }}</td>
+        </tr>
+    </table>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{{ path('letter_user_index', {'id': letter.organization.id }) }}"
+               class="btn btn-secondary btn-block">{{ "Cancel"|trans }}</a>
+        </div>
+
+        <div class="col-md-8">
+
+            <button class="btn btn-warning btn-block">{{ 'I confirm the scan order. It undertakes to pay for the performance of this service.'|trans }}</button>
+
+
+        </div>
+
+    </div>
+</div>
+{{ form_end(form) }}
+

@@ -12,6 +12,8 @@ parameters:
     recaptcha_proxy: '%env(RECAPTCHA_PROXY)%'
     recaptcha_score_threshold: '%env(RECAPTCHA_SCORE_THRESHOLD)%'
     email_sender: '%env(EMAIL_SENDER)%'
+    single_scan_price: '%env(SINGLE_SCAN_PRICE)%'
+    single_scan_currency: '%env(SINGLE_SCAN_CURRENCY)%'
 
 services:
     # default configuration for services in *this* file

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Letter index{% endblock %}
+{% block title %}{{ "Letters"|trans }} - {{ application_name }}{% endblock %}
 
 {% block body %}
     <h1>Letters</h1>
@@ -33,11 +33,8 @@
     {{ form_end(form) }}
 
     <table class="table table-bordered">
-        <thead>
+        <thead class="thead-light">
         <tr>
-            <th{% if pagination.isSorted('letter.Id') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Id'|trans, 'letter.id') }}
-            </th>
             <th{% if pagination.isSorted('letter.Title') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Title'|trans, 'Letter.title') }}
             </th>
@@ -56,13 +53,15 @@
             <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
             </th>
+            <th{% if pagination.isSorted('letter.ScanOrdered') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Scan ordered'|trans, 'Letter.scanOrdered') }}
+            </th>
             <th>{{ "Actions"|trans }}</th>
         </tr>
         </thead>
         <tbody>
         {% for letter in letters %}
             <tr>
-                <td style="font-size: 75%;">{{ letter.id }}</td>
                 <td>{{ letter.title }}</td>
                 <td>{{ letter.organization }}</td>
                 <td>{{ letter.status }}</td>
@@ -74,9 +73,14 @@
                 </td>
                 <td>{{ letter.barcodeNumber }}</td>
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ letter.scanOrdered ? 'Yes'|trans : 'No'|trans }}</td>
                 <td>
-                    <a href="{{ path('letter_user_show', {'organization': letter.organization.id, 'letter_id': letter.id}) }}"
+                    <a href="{{ path('letter_user_show', {'organization': letter.organization.id, 'letter': letter.id}) }}"
                        class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
+                    {% if (not letter.organization.scan) and (not letter.scanOrdered) %}
+                        <a href="{{ path('letter_user_order_scan', {'organization': letter.organization.id, 'letter': letter.id}) }}"
+                           class="btn btn-sm btn-primary">{{ "Order scan"|trans }}</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

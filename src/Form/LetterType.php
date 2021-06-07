@@ -30,7 +30,7 @@ class LetterType extends AbstractType
                         ->setMaxResults(5);
                 },
                 'choice_label' => function (Organization $organization) {
-                    return $organization->getName().' '.($organization->getScan()?'📷':'x');
+                    return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : 'x');
                 },
                 'multiple' => false,
                 'expanded' => false,
@@ -44,8 +44,7 @@ class LetterType extends AbstractType
                 'class' => 'App:LetterStatus',
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
-                        ->orderBy('o.id', 'ASC')
-                        ;
+                        ->orderBy('o.id', 'ASC');
                 },
                 'multiple' => false,
                 'expanded' => false,
@@ -73,9 +72,8 @@ class LetterType extends AbstractType
                     $form = $event->getForm();
                     /** @var @var Letter $letter */
                     $letter = $event->getData();
-
-                    $submittedOrganizationId = $letter->getOrganization()->getId();
-                    if ($submittedOrganizationId) {
+                    if ($letter->getOrganization()) {
+                        $submittedOrganizationId = $letter->getOrganization()->getId();
                         $form->add('organization', EntityType::class, [
                             'class' => 'App:Organization',
                             'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
@@ -84,7 +82,7 @@ class LetterType extends AbstractType
                                     ->setParameter('submittedOrganizationId', $submittedOrganizationId);
                             },
                             'choice_label' => function (Organization $organization) {
-                                return $organization->getName().' '.($organization->getScan()?'📷':'x');
+                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : 'x');
                             },
                             'multiple' => false,
                             'expanded' => false,
@@ -114,7 +112,7 @@ class LetterType extends AbstractType
                                     ->setParameter('submittedOrganizationId', $submittedOrganizationId);
                             },
                             'choice_label' => function (Organization $organization) {
-                                return $organization->getName().' '.($organization->getScan()?'📷':'x');
+                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : 'x');
                             },
                             'multiple' => false,
                             'expanded' => false,
@@ -127,8 +125,7 @@ class LetterType extends AbstractType
                     }
 
                 }
-            );
-        ;
+            );;
     }
 
     public function configureOptions(OptionsResolver $resolver)

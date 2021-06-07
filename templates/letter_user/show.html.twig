@@ -4,53 +4,19 @@
 
 {% block body %}
     <h1>{{ "Letter"|trans }}</h1>
-    <div class="container-fluid">
-        <table class="table">
-            <tbody>
-            <tr>
-                <th>{{ "Id"|trans }}Id</th>
-                <td>{{ letter.id }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Title"|trans }}</th>
-                <td>{{ letter.title }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Barcode"|trans }}</th>
-                <td>{{ letter.barcodeNumber }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Location"|trans }}</th>
-                <td>{% if letter.organization %}{{ letter.organization.location }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>{{ "Scan"|trans }}</th>
-                <td>{% if letter.originalName %}
-                    <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
-                       class="">{{ letter.originalName }}</a>
-                    {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <th>{{ "Created"|trans }}</th>
-                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>{{ "Updated"|trans }}</th>
-                <td>{{ letter.updated ? letter.updated|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="container-fluid">
+    {% include 'letter_user/letter_info.html.twig' %}
+    <div class="container">
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-6">
                 <a href="{{ path('letter_user_index', {'id': letter.organization.id}) }}"
                    class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
             </div>
-            <div class="col-md-2">
-                <a href="{{ path('letter_admin_edit', {'id': letter.id}) }}"
-                   class="btn btn-primary btn-block">{{ "Edit"|trans }}</a>
+            <div class="col-md-6">
+
+                {% if (not letter.organization.scan) and (not letter.scanOrdered) %}
+                <a href="{{ path('letter_user_order_scan', {'organization': letter.organization.id, 'letter': letter.id}) }}"
+                   class="btn btn-primary btn-block">{{ "Order scan"|trans }}</a>
+                {% endif %}
             </div>
         </div>
     </div>

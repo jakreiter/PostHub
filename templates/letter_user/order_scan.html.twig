@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Ordering a scan of a letter"|trans }} - {{ application_name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "Ordering a scan of a letter"|trans }}</h1>
+
+    {{ include('letter_user/order_form.html.twig') }}
+
+
+
+{% endblock %}

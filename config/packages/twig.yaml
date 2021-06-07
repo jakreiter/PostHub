@@ -5,3 +5,5 @@ twig:
         application_name: '%application_name%'
         admin_contact_email: '%env(ADMIN_CONTACT_EMAIL)%'
         recaptcha_sitekey: '%recaptcha_sitekey%'
+        single_scan_price: '%single_scan_price%'
+        single_scan_currency: '%single_scan_currency%'

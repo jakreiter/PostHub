@@ -1,0 +1,41 @@
+
+    <div class="container">
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>{{ "Id"|trans }}</th>
+                <td>{{ letter.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Barcode"|trans }}</th>
+                <td>{{ letter.barcodeNumber }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Title"|trans }}</th>
+                <td>{{ letter.title }}</td>
+            </tr>
+            <tr>
+                <th>{{ "Location"|trans }}</th>
+                <td>{% if letter.organization %}{{ letter.organization.location }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>{{ "Scan file"|trans }}</th>
+                <td>{% if letter.originalName %}
+                    <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
+                       class="">{{ letter.originalName }}</a>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ "Created"|trans }}</th>
+                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            {% if letter.scanOrdered %}
+            <tr>
+                <th>{{ "Scan order date"|trans }}</th>
+                <td>{{ letter.scanOrdered ? letter.scanOrdered|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>

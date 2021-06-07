@@ -56,7 +56,7 @@
                 {% if app.user.organizations is defined and app.user.organizations|length>1 %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">{{ organization }}</a>
+                           aria-haspopup="true" aria-expanded="false">{{ app.user.organizations[0] }}</a>
                         <div class="dropdown-menu">
                             {% for organization in app.user.organizations %}
                                 <a class="dropdown-item"

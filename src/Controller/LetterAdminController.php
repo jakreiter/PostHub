@@ -13,12 +13,19 @@ use App\Form\LetterType;
 use App\Form\Filter\LetterFilterType;
 use App\Entity\Letter;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use App\Service\FileLetterService;
 
 /**
  * @Route("/kadmin/letter")
  */
 class LetterAdminController extends AbstractController
 {
+    private $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
     /**
      * @Route("/", name="letter_admin_index", methods={"GET"})
      */
@@ -75,7 +82,7 @@ class LetterAdminController extends AbstractController
      * @Route("/new", name="letter_new", methods="GET|POST")
      */
 
-    public function newAction(Request $request, SluggerInterface $slugger): Response
+    public function newAction(Request $request): Response
     {
 
         $rich = $request->get('rich');
@@ -89,29 +96,7 @@ class LetterAdminController extends AbstractController
 
             $uploadedFile = $form->get('file')->getData();
             if ($uploadedFile) {
-                $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $letter->setOriginalName($uploadedFile->getClientOriginalName());
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $orgDir = $letter->getOrganization()->getId();
-                if (!is_dir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir)) {
-                    mkdir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir);
-                }
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
-                $filenameInOrgdir = $orgDir . DIRECTORY_SEPARATOR . $newFilename;
-
-                // Move the file to the directory where brochures are stored
-                try {
-                    $uploadedFile->move(
-                        $this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir,
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-                $fileSize = filesize($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $filenameInOrgdir);
-                $letter->setSize($fileSize);
-                $letter->setFilename($filenameInOrgdir);
+                $this->handleFileUpload($uploadedFile, $letter);
             }
 
             $entityManager = $this->getDoctrine()->getManager();
@@ -151,12 +136,19 @@ class LetterAdminController extends AbstractController
     /**
      * @Route("/edit:{id}", name="letter_admin_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Letter $letter): Response
+    public function edit(Request $request, Letter $letter, FileLetterService $letterService): Response
     {
         $form = $this->createForm(LetterType::class, $letter);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $uploadedFile = $form->get('file')->getData();
+            if ($uploadedFile) {
+                $letterService->deleteFile($letter);
+                $this->handleFileUpload($uploadedFile, $letter);
+            }
+
             $letter->setModifiedByUser($this->getUser());
             $this->getDoctrine()->getManager()->flush();
 
@@ -202,6 +194,33 @@ class LetterAdminController extends AbstractController
         }
 
         return $this->redirectToRoute('letter_admin_index');
+    }
+
+    private function handleFileUpload($uploadedFile, Letter $letter): void
+    {
+        $originalFilename = pathinfo($uploadedFile->getClientOriginalName(), PATHINFO_FILENAME);
+        $letter->setOriginalName($uploadedFile->getClientOriginalName());
+        // this is needed to safely include the file name as part of the URL
+        $safeFilename = $this->slugger->slug($originalFilename);
+        $orgDir = $letter->getOrganization()->getId();
+        if (!is_dir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir)) {
+            mkdir($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir);
+        }
+        $newFilename = $safeFilename . '-' . uniqid() . '.' . $uploadedFile->guessExtension();
+        $filenameInOrgdir = $orgDir . DIRECTORY_SEPARATOR . $newFilename;
+
+        // Move the file to the directory where files are stored
+        try {
+            $uploadedFile->move(
+                $this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $orgDir,
+                $newFilename
+            );
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
+        $fileSize = filesize($this->getParameter('upload_directory') . DIRECTORY_SEPARATOR . $filenameInOrgdir);
+        $letter->setSize($fileSize);
+        $letter->setFilename($filenameInOrgdir);
     }
 
 }
