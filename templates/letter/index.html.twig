@@ -36,11 +36,8 @@
     {{ form_end(form) }}
 
     <table class="table table-bordered">
-        <thead>
+        <thead class="thead-light">
         <tr>
-            <th{% if pagination.isSorted('letter.Id') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Id'|trans, 'letter.id') }}
-            </th>
             <th{% if pagination.isSorted('letter.Title') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Title'|trans, 'Letter.title') }}
             </th>
@@ -65,7 +62,6 @@
         <tbody>
         {% for letter in letters %}
             <tr>
-                <td style="font-size: 75%;">{{ letter.id }}</td>
                 <td>{{ letter.title }}</td>
                 <td>{% if letter.organization %}
                     <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"

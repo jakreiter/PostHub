@@ -40,7 +40,7 @@
 
 
     <table class="table table-bordered">
-        <thead>
+        <thead class="thead-light">
         <tr>
             <th{% if pagination.isSorted('User.id') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Id'|trans, 'User.id') }}
