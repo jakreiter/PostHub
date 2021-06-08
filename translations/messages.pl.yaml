@@ -136,3 +136,11 @@ You cannot order a scan because we scan all correspondence for your account.: Yo
 You cannot order a scan because it has already been ordered.: Nie możesz zamówić skanu, ponieważ został on już zamówiony.
 Cancel: Anuluj
 Order value: Wartość zamówienia
+Letters handover: Przekazywanie listów
+Statuses: Statusy
+Barcodes: Kody kreskowe
+handoverTitle: Protokół przekazania korespondencji
+handoverDeclaration1: Ja, niżej podpisany kwituję odbiór przesyłek adresowanych do
+handoverDeclaration2: Oświadczam ponadto, że nie wnoszę żadnych zastrzeżeń co do stanu przekazanej mi korespondencji.
+Sender: Nadawca
+Date of receipt of the letter: Data otrzymania przesyłki

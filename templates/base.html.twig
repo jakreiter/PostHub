@@ -13,9 +13,9 @@
     {% endblock %}
 </head>
 <body>
-
+{% block navbar %}
 {% include 'navbar.html.twig' %}
-
+{% endblock %}
 
 <div class="main_content">
     {% for flash_message in app.session.flashbag.get('danger') %}

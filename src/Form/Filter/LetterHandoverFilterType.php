@@ -6,7 +6,7 @@ use App\Entity\Organization;
 use App\Entity\LetterStatus;
 use App\Repository\OrganizationRepository;
 use App\Repository\LetterStatusRepository;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,13 +14,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-class LetterFilterType extends AbstractType
+class LetterHandoverFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, ['required'=>false])
-            ->add('barcodeNumber', TextType::class, ['required'=>false])
+            ->add('barcodes', TextareaType::class, [
+                'required'=>false,
+                'attr'=> [
+                    'rows'=>3
+                ]
+            ])
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
@@ -33,14 +37,15 @@ class LetterFilterType extends AbstractType
                 },
                 'multiple' => false,
                 'expanded' => false,
-                'required' => false,
+                'required' => true,
                 'placeholder' => '',
                 'attr' => array(
                     'class' => 'organization-ajax-filter-select'
                 )
             ])
-            ->add('status', EntityType::class, [
+            ->add('statuses', EntityType::class, [
                 'class' => 'App:LetterStatus',
+                'label' => 'Statuses',
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC')
@@ -49,12 +54,12 @@ class LetterFilterType extends AbstractType
                 'choice_label' => function (LetterStatus $letterStatus) {
                     return $letterStatus->getName();
                 },
-                'multiple' => false,
-                'expanded' => false,
+                'multiple' => true,
+                'expanded' => true,
                 'required' => false,
                 'placeholder' => '',
                 'attr' => array(
-
+                    'class'=>''
                 )
             ])
 

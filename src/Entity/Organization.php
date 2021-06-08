@@ -82,7 +82,7 @@ class Organization
     {
         $arr = [
             'id' => $this->getId(),
-            'text' => $this->getName().' '.($this->getScan()?'📷':'x'),
+            'text' => $this->getName().' '.($this->getScan()?'📷':'🔒'),
             'name' => $this->getName(),
             'scan' => $this->getScan(),
 

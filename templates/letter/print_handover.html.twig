@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Letters handover"|trans }} - {{ application_name }}{% endblock %}
+{% block navbar %}{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-9">
+
+        </div>
+        <div class="col-md-3 text-right">
+            {{ todaysDate|date('Y-m-d') }}
+        </div>
+    </div>
+    <h1>{{ "handoverTitle"|trans }}</h1>
+
+    {% if letters|length>0 %}
+
+        {% set organization = letters[0].organization %}
+
+
+
+        <table class="table table-bordered" style="max-width: 50%;">
+            <tr>
+                <th>Odbiorca</th>
+                <td>{{ organization.name }}</td>
+            </tr>
+        </table>
+
+        <table class="table table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>
+                    {{ 'Sender'|trans }}
+                </th>
+                <th>
+                    {{ 'Organization'|trans }}
+                </th>
+
+                <th>
+                    {{ 'Barcode number'|trans }}
+                </th>
+                <th>
+                    {{ 'Date of receipt of the letter'|trans }}
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for letter in letters %}
+                <tr>
+                    <td>{{ letter.title }}</td>
+                    <td>{% if letter.organization %}
+                            <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
+                               class="">{{ letter.organization }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ letter.barcodeNumber }}</td>
+                    <td>{{ letter.created ? letter.created|date('Y-m-d') : '' }}</td>
+                </tr>
+            {% else %}
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6">
+                <p>{{ "handoverDeclaration1"|trans }}<br><strong>{{ organization.name }}</strong>.</p>
+                <p>{{ "handoverDeclaration2"|trans }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+
+            </div>
+            <div class="col-md-6">
+                <br>
+                <br>
+                ....................................................................................
+            </div>
+        </div>
+
+    {% endif %}
+
+{% endblock %}

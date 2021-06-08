@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Letters handover"|trans }} - {{ application_name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "Letters handover"|trans }}</h1>
+
+    {{ form_start(filterForm, {'method': 'GET'}) }}
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(filterForm.organization) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(filterForm.statuses) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(filterForm.barcodes) }}
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
+
+        </div>
+        <div class="col-md-1">
+            <label style="min-width: 100px;"> &nbsp; </label>
+            <a href="{{ path('letter_admin_handover') }}"
+               class="btn btn-dark">{{ "Reset filter"|trans }}</a>
+
+        </div>
+    </div>
+    {{ form_end(filterForm) }}
+
+    {% if selectForm is defined and selectForm.letters|length>0 %}
+        {{ form_start(selectForm, {'method': 'POST'}) }}
+        {{ form_errors(selectForm.letters) }}
+
+        <table class="table table-bordered">
+            <thead class="thead-light">
+            <tr>
+                <th>
+                    {{ 'Title'|trans }}
+                </th>
+                <th>
+                    {{ 'Organization'|trans }}
+                </th>
+                <th>
+                    {{ 'Status'|trans }}
+                </th>
+                <th>
+                    {{ 'Scan file'|trans }}
+                </th>
+                <th>
+                    {{ 'Barcode number'|trans }}
+                </th>
+                <th>
+                    {{ 'Created'|trans }}
+                </th>
+                <th>{{ "Actions"|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for letterField in selectForm.letters %}
+                {% set index = letterField.vars.value %}
+
+                {% set letter = letters[index] %}
+                <tr>
+                    <td>{{ form_row(letterField) }}</td>
+                    <td>{% if letter.organization %}
+                            <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
+                               class="">{{ letter.organization }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ letter.status }}</td>
+                    <td>
+                        {% if letter.originalName %}
+                            <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
+                               class="">{{ letter.originalName }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ letter.barcodeNumber }}</td>
+                    <td>{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</td>
+                    <td>
+                        <a href="{{ path('letter_admin_show', {'id': letter.id}) }}"
+                           class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
+                        <a href="{{ path('letter_admin_edit', {'id': letter.id}) }}"
+                           class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+
+                    </td>
+                </tr>
+
+            {% endfor %}
+            </tbody>
+        </table>
+        {# pagination #}
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        {{ form_end(selectForm) }}
+    {% endif %}
+
+{% endblock %}

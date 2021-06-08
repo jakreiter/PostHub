@@ -138,7 +138,7 @@ class Letter
 
     public function __toString()
     {
-        return $this->getTitle().' '.$this->getOrganization()->getName();
+        return $this->getTitle();
     }
 
     public function getCreated(): ?\DateTimeInterface

@@ -15,7 +15,8 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
                        aria-haspopup="true" aria-expanded="false">{{ "menuUsers"|trans }}</a>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{{ path('user_admin_index', {'sort':'User.created', 'direction':'desc'}) }}">{{ "menuUsers"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('user_admin_index', {'sort':'User.created', 'direction':'desc'}) }}">{{ "menuUsers"|trans }}</a>
                         <a class="dropdown-item" href="{{ path('user_admin_new') }}">{{ "menuAddUser"|trans }}</a>
                     </div>
                 </li>
@@ -47,6 +48,9 @@
                     <div class="dropdown-menu">
                         <a class="dropdown-item"
                            href="{{ path('letter_admin_index', {'sort':'Letter.created', 'direction':'desc'}) }}">{{ "Letters"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('letter_admin_handover') }}">{{ "Letters handover"|trans }}</a>
+
                         <a class="dropdown-item" href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
                         <a class="dropdown-item"
                            href="{{ path('letter_new', {rich:1}) }}">{{ "menuLetterNew"|trans }}</a>
@@ -67,7 +71,8 @@
                 {% elseif app.user.organizations is defined and app.user.organizations|length>0 %}
                     <li class="nav-item">
 
-                        <a class="nav-link" href="{{ path('letter_user_index', {'id':app.user.organizations[0].id}) }}">{{ app.user.organizations[0].name }}</a>
+                        <a class="nav-link"
+                           href="{{ path('letter_user_index', {'id':app.user.organizations[0].id}) }}">{{ app.user.organizations[0].name }}</a>
 
                     </li>
                 {% endif %}
@@ -88,13 +93,17 @@
                                 class="badge badge-secondary">admin</span>{% endif %}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{ path('self_user_change_pass') }}">{{ "ChangePasswordLinkTitle"|trans }}</a>
-                        <a class="dropdown-item" href="{{ path('self_user_show') }}">{{ "SelfUserShowLinkTitle"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('self_user_change_pass') }}">{{ "ChangePasswordLinkTitle"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('self_user_show') }}">{{ "SelfUserShowLinkTitle"|trans }}</a>
                         <div class="dropdown-divider"></div>
                         {% if is_granted('IS_IMPERSONATOR') %}
-                            <a class="dropdown-item" href="{{ impersonation_exit_path(path('home') ) }}">{{ "Exit impersonation"|trans }}</a>
+                            <a class="dropdown-item"
+                               href="{{ impersonation_exit_path(path('home') ) }}">{{ "Exit impersonation"|trans }}</a>
                         {% endif %}
-                        <a class="dropdown-item" href="{{ path('logout') }}" title="Logout">{{ "LogoutLinkTitle"|trans }}</a>
+                        <a class="dropdown-item" href="{{ path('logout') }}"
+                           title="Logout">{{ "LogoutLinkTitle"|trans }}</a>
                     </div>
                 </li>
             {% else %}

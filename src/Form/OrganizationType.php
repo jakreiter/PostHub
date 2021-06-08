@@ -39,6 +39,36 @@ class OrganizationType extends AbstractType
                 )
             ])
             ->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                function (FormEvent $event) {
+                    $form = $event->getForm();
+                    /** @var Organization $organization */
+                    $organization = $event->getData();
+                    if ($organization->getOwner()) {
+                        $loadedUserId = $organization->getOwner()->getId();
+                        $form->add('owner', EntityType::class, [
+                            'class' => 'App:User',
+                            'query_builder' => function (UserRepository $er) use ($loadedUserId) {
+                                return $er->createQueryBuilder('o')
+                                    ->andWhere('o.id = :loadedUserId')
+                                    ->setParameter('loadedUserId', $loadedUserId);
+                            },
+                            'choice_label' => function (User $owner) {
+                                return $owner->getUsername().' ('.$owner->getEmail().')';
+                            },
+                            'multiple' => false,
+                            'expanded' => false,
+                            'required' => true,
+                            'placeholder' => '',
+                            'attr' => array(
+                                'class' => 'organization-ajax-filter-select'
+                            )
+                        ]);
+                    }
+
+                }
+            )
+            ->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
                     $form = $event->getForm();

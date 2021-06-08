@@ -25,8 +25,10 @@ export default function rebind() {
      */
 
     $(document).on('select2:open', () => {
+        console.log('select2:open');
         document.querySelector('.select2-search__field').focus();
     });
+
 
 
     $(function () {

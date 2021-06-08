@@ -30,7 +30,7 @@ class LetterType extends AbstractType
                         ->setMaxResults(5);
                 },
                 'choice_label' => function (Organization $organization) {
-                    return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : 'x');
+                    return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
                 },
                 'multiple' => false,
                 'expanded' => false,
@@ -82,7 +82,7 @@ class LetterType extends AbstractType
                                     ->setParameter('submittedOrganizationId', $submittedOrganizationId);
                             },
                             'choice_label' => function (Organization $organization) {
-                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : 'x');
+                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
                             },
                             'multiple' => false,
                             'expanded' => false,
@@ -112,7 +112,7 @@ class LetterType extends AbstractType
                                     ->setParameter('submittedOrganizationId', $submittedOrganizationId);
                             },
                             'choice_label' => function (Organization $organization) {
-                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : 'x');
+                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
                             },
                             'multiple' => false,
                             'expanded' => false,

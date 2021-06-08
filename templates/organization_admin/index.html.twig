@@ -73,6 +73,8 @@
                        class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
                     <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}"
                        class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+                    <a href="{{ path('letter_admin_index', {'fi[organization]': organization.id}) }}"
+                       class="btn btn-sm btn-secondary">{{ "Letters"|trans }}</a>
                 </td>
             </tr>
         {% else %}

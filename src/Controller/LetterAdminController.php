@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\LetterHandoverSelectType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -11,7 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\Form\LetterType;
 use App\Form\Filter\LetterFilterType;
+use App\Form\Filter\LetterHandoverFilterType;
 use App\Entity\Letter;
+use App\Repository\OrganizationRepository;
+use App\Repository\LetterStatusRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Service\FileLetterService;
 
@@ -26,6 +30,101 @@ class LetterAdminController extends AbstractController
     {
         $this->slugger = $slugger;
     }
+
+    /**
+     * @Route("/print_handover", name="letter_admin_print_handover", methods={"GET", "POST"})
+     */
+    public function printHandover(PaginatorInterface $paginator, EntityManagerInterface $em, Request $request, OrganizationRepository $organizationRepository, LetterStatusRepository $letterStatusRepository): Response
+    {
+        $letters = [];
+        $selectForm = $this->createForm(LetterHandoverSelectType::class);
+        $selectForm->handleRequest($request);
+        if ($selectForm->isSubmitted() && $selectForm->isValid()) {
+            $letters = $selectForm->get('letters')->getData();
+        }
+
+        return $this->render('letter/print_handover.html.twig', [
+            'letters' => $letters,
+        ]);
+    }
+
+    /**
+     * @Route("/handover", name="letter_admin_handover", methods={"GET","POST"})
+     */
+    public function lettersHandover(PaginatorInterface $paginator, EntityManagerInterface $em, Request $request, OrganizationRepository $organizationRepository, LetterStatusRepository $letterStatusRepository): Response
+    {
+        $filter = ['statuses' => [$letterStatusRepository->find(4), $letterStatusRepository->find(6)]];
+        $filterForm = $this->createForm(LetterHandoverFilterType::class, $filter);
+
+        $filterBuilder = $em->createQueryBuilder()
+            ->select([
+                'Letter', 'Organization', 'LetterStatus'
+            ])
+            ->from('App\Entity\Letter', 'Letter')
+            ->leftJoin('Letter.organization', 'Organization')
+            ->leftJoin('Letter.status', 'LetterStatus')
+            ->indexBy('Letter', 'Letter.id')
+        ;
+
+
+        if ($request->query->has($filterForm->getName())) {
+
+            $filter = $request->query->get($filterForm->getName());
+            $filterForm->submit($filter);
+            $organization = $organizationRepository->find($filter['organization']);
+            $filterBuilder->andWhere('Letter.organization = :organization')->setParameter('organization', $organization);
+            if (isset($filter['statuses']) && $filter['statuses']) {
+                $filterBuilder->andWhere('LetterStatus.id IN (:statuses)')->setParameter('statuses', $filter['statuses']);
+            }
+            if (isset($filter['barcodes']) && $filter['barcodes'] && trim($filter['barcodes'])) {
+                $barcodes = explode("\n", $filter['barcodes']);
+                $barcodes = array_map('trim', $barcodes);
+                if ($barcodes)
+                    $filterBuilder->andWhere('Letter.barcodeNumber IN (:barcodeNumbers)')->setParameter('barcodeNumbers', $barcodes);
+            }
+
+            $query = $filterBuilder->getQuery();
+
+            $pagination = $paginator->paginate(
+                $query, /* query NOT result */
+                $request->query->getInt('page', 1), /*page number*/
+                500 /*limit per page*/
+            );
+
+            $letters = $query->getResult();
+
+            $selectForm = $this->createForm(LetterHandoverSelectType::class, [], ['letters'=>$letters]);
+            $selectForm->handleRequest($request);
+            if ($selectForm->isSubmitted() && $selectForm->isValid()) {
+
+                $selectedLetters = $selectForm->get('letters')->getData();
+                return $this->render('letter/print_handover.html.twig', [
+                    'letters' => $selectedLetters,
+                    'todaysDate' => new \DateTime()
+                ]);
+            }
+
+            return $this->render('letter/handover.html.twig', [
+                'letters' => $letters,
+                'filterForm' => $filterForm->createView(),
+                'selectForm'=>$selectForm->createView(),
+                'pagination' => $pagination,
+            ]);
+
+        } else {
+            $letters = [];
+            $pagination = null;
+        }
+
+
+        return $this->render('letter/handover.html.twig', [
+            'letters' => $letters,
+            'filterForm' => $filterForm->createView(),
+            'pagination' => $pagination,
+        ]);
+    }
+
+
     /**
      * @Route("/", name="letter_admin_index", methods={"GET"})
      */
@@ -47,7 +146,7 @@ class LetterAdminController extends AbstractController
             $filterForm->submit($filter);
 
             if (isset($filter['title']) && $filter['title']) {
-                $filterBuilder->andWhere('Letter.title LIKE :title')->setParameter('title', '%'.$filter['title'].'%');
+                $filterBuilder->andWhere('Letter.title LIKE :title')->setParameter('title', '%' . $filter['title'] . '%');
             }
             if (isset($filter['organization']) && $filter['organization']) {
                 $filterBuilder->andWhere('Organization.id = :organization')->setParameter('organization', $filter['organization']);
