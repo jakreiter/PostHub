@@ -31,7 +31,7 @@
     {{ form_end(filterForm) }}
 
     {% if selectForm is defined and selectForm.letters|length>0 %}
-        {{ form_start(selectForm, {'method': 'POST'}) }}
+        {{ form_start(selectForm, {'method': 'POST', 'attr': {'target':'_blank'}}) }}
         {{ form_errors(selectForm.letters) }}
 
         <table class="table table-bordered">

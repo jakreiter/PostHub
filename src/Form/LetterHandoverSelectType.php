@@ -22,7 +22,12 @@ class LetterHandoverSelectType extends AbstractType
             'expanded' => true,
             'required' => false,
         ]);
-        $builder->add('submit', SubmitType::class, [
+        $builder->add('printoutBtn', SubmitType::class, [
+            'label' => 'Prepare a printout of the handover',
+            'attr' => ['class' => 'btn btn-primary'],
+        ]);
+        $builder->add('changeStatusBtn', SubmitType::class, [
+            'label' => 'Prepare a printout of the handover and Change status to Given to the recipient',
             'attr' => ['class' => 'btn btn-primary'],
         ]);
     }
