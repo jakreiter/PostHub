@@ -43,7 +43,7 @@ class FileLetterService
     public function deleteFile(Letter $letter): bool
     {
         $filePath = $this->getFilePath($letter);
-        if (file_exists($filePath)) {
+        if ($letter->getFileName() && file_exists($filePath)) {
             $unlinkResult = unlink($filePath);
             if ($this->output) $this->output->writeln("<value>" . $filePath . "</value>\t file deleted");
             $letter->setFileName(null);

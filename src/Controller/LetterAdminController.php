@@ -166,6 +166,14 @@ class LetterAdminController extends AbstractController
             if (isset($filter['barcodeNumber']) && $filter['barcodeNumber']) {
                 $filterBuilder->andWhere('Letter.barcodeNumber = :barcodeNumber')->setParameter('barcodeNumber', $filter['barcodeNumber']);
             }
+            if (isset($filter['hasScanOrdered']) && $filter['hasScanOrdered']) {
+                if (-1==$filter['hasScanOrdered']) $filterBuilder->andWhere('Letter.scanOrdered IS NULL');
+                if ( 1==$filter['hasScanOrdered']) $filterBuilder->andWhere('Letter.scanOrdered IS NOT NULL');
+            }
+            if (isset($filter['hasOrderedScanInserted']) && $filter['hasOrderedScanInserted']) {
+                if (-1 == $filter['hasOrderedScanInserted']) $filterBuilder->andWhere('Letter.scanInserted IS NULL');
+                if (1 == $filter['hasOrderedScanInserted']) $filterBuilder->andWhere('Letter.scanInserted IS NOT NULL');
+            }
 
         }
 
@@ -255,6 +263,9 @@ class LetterAdminController extends AbstractController
             if ($uploadedFile) {
                 $letterService->deleteFile($letter);
                 $this->handleFileUpload($uploadedFile, $letter);
+                if ($letter->getScanOrdered() && $letter->getFileName()) {
+                    $letter->setScanInserted(new \DateTime());
+                }
             }
 
             $letter->setModifiedByUser($this->getUser());

@@ -7,6 +7,7 @@ use App\Entity\LetterStatus;
 use App\Repository\OrganizationRepository;
 use App\Repository\LetterStatusRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -56,6 +57,20 @@ class LetterFilterType extends AbstractType
                 'attr' => array(
 
                 )
+            ])
+            ->add('hasScanOrdered', ChoiceType::class, [
+                'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => ['No'=>-1, 'Yes'=>1],
+
+            ])
+            ->add('hasOrderedScanInserted', ChoiceType::class, [
+                'required' => false,
+                'multiple' => false,
+                'expanded' => false,
+                'choices' => ['No'=>-1, 'Yes'=>1],
+
             ])
 
             ->addEventListener(

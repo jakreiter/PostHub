@@ -144,3 +144,10 @@ handoverDeclaration1: Ja, niżej podpisany kwituję odbiór przesyłek adresowan
 handoverDeclaration2: Oświadczam ponadto, że nie wnoszę żadnych zastrzeżeń co do stanu przekazanej mi korespondencji.
 Sender: Nadawca
 Date of receipt of the letter: Data otrzymania przesyłki
+Has scan ordered: Czy zamówiono skan
+No: Nie
+Yes: Tak
+Has ordered scan inserted: Czy zrealizowano zamówiony skan
+Scan ordered on: Data zamówienia skanu
+Ordered scan inserted on: Data realizacji zamówionego skanu
+Scan due: Należność za skan

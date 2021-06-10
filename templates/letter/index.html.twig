@@ -20,6 +20,16 @@
         <div class="col-md-2">
             {{ form_row(form.barcodeNumber) }}
         </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2">
+            {{ form_row(form.hasScanOrdered) }}
+        </div>
+        <div class="col-md-2">
+            {{ form_row(form.hasOrderedScanInserted) }}
+        </div>
+        <div class="col-md-2">
+        </div>
         <div class="col-md-1">
             <label style="min-width: 100px;"> &nbsp; </label>
             <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
@@ -56,6 +66,15 @@
             <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
             </th>
+            <th{% if pagination.isSorted('letter.ScanOrdered') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Scan ordered on'|trans, 'Letter.scanOrdered') }}
+            </th>
+            <th{% if pagination.isSorted('letter.ScanInserted') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Ordered scan inserted on'|trans, 'Letter.scanInserted') }}
+            </th>
+            <th{% if pagination.isSorted('letter.ScanDue') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Scan due'|trans, 'Letter.scanDue') }}
+            </th>
             <th>{{ "Actions"|trans }}</th>
         </tr>
         </thead>
@@ -77,6 +96,9 @@
                 </td>
                 <td>{{ letter.barcodeNumber }}</td>
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ letter.scanOrdered ? letter.scanOrdered|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ letter.scanInserted ? letter.scanInserted|date('Y-m-d H:i') : '' }}</td>
+                <td>{{ letter.scanDue  }}</td>
                 <td>
                     <a href="{{ path('letter_admin_show', {'id': letter.id}) }}"
                        class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
