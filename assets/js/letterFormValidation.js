@@ -1,13 +1,13 @@
 
-export default function letterFormValidation(formDomLocation) {
+export default function letterFormValidation(jform) {
     let valid = true;
 
-    if (!$(formDomLocation+' .ltr_title').val()) {
-        $(formDomLocation+' .ltr_title').addClass('is-invalid');
+    if (!jform.find('.ltr_title').first().val()) {
+         jform.find('.ltr_title').first().addClass('is-invalid');
         valid = false;
     }
-    if (!$(formDomLocation+' .ltr_organization').val()) {
-        $(formDomLocation+' .ltr_organization').addClass('is-invalid');
+    if (!jform.find('.ltr_organization').first().val()) {
+         jform.find('.ltr_organization').first().addClass('is-invalid');
         valid = false;
     }
 

@@ -9,7 +9,7 @@ export default function submitNextLetterForm() {
         console.log("A formAction: " + formAction);
         if (formAction.length > 1) {
             console.log("A sendingAllLetterForms: " + posthubSendingAllLetterForms);
-            if (letterFormValidation(formDomLocation)) {
+            if (letterFormValidation($(formDomLocation))) {
                 $(formDomLocation).submit();
             } else {
                 console.log("invalid form " + formDomLocation);
