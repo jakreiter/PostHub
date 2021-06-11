@@ -6,6 +6,7 @@ use App\Entity\Letter;
 use App\Entity\Organization;
 use App\Repository\OrganizationRepository;
 use App\Repository\LetterStatusRepository;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -20,7 +21,11 @@ class LetterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title')
+            ->add('title', TextType::class, [
+                'attr' => [
+                    'class' => 'ltr_title' // form-control
+                ]
+            ])
             ->add('barcodeNumber')
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
@@ -36,9 +41,9 @@ class LetterType extends AbstractType
                 'expanded' => false,
                 'required' => true,
                 'placeholder' => '',
-                'attr' => array(
-                    'class' => 'organization-ajax-select'
-                )
+                'attr' => [
+                    'class' => 'ltr_organization organization-ajax-select'
+                ]
             ])
             ->add('status', EntityType::class, [
                 'class' => 'App:LetterStatus',
