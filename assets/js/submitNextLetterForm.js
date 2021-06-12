@@ -6,19 +6,21 @@ export default function submitNextLetterForm() {
         let firstFormNumber = posthubLetterFormsToSubmit.shift();
         let formDomLocation = "#ifp" + firstFormNumber + " form";
         let formAction = $(formDomLocation).attr('action');
-        console.log("A formAction: " + formAction);
+        console.log(firstFormNumber+" A formAction: " + formAction);
         if (formAction.length > 1) {
             console.log("A sendingAllLetterForms: " + posthubSendingAllLetterForms);
             if (letterFormValidation($(formDomLocation))) {
                 $(formDomLocation).submit();
             } else {
                 console.log("invalid form " + formDomLocation);
+                if (posthubSendingAllLetterForms) submitNextLetterForm();
             }
-            console.log("B sendingAllLetterForms: " + posthubSendingAllLetterForms);
+
         }
-        if (posthubSendingAllLetterForms) submitNextLetterForm();
+
 
     } else {
         posthubSendingAllLetterForms = false;
     }
 }
+
