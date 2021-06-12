@@ -41,7 +41,7 @@ export default function rebind() {
 
     $('form.deleteForm').off();
     $("form.deleteForm").submit(function (event) {
-        var confirmed = confirm('Are you sure you want to delete this item?')
+        var confirmed = confirm('Are you sure you want to delete this item?');
         if (!confirmed) event.preventDefault();
         return confirmed;
     });
