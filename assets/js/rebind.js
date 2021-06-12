@@ -24,8 +24,10 @@ export default function rebind() {
      * TODO: Recheck with the select2 GH issue and remove once this is fixed on their side
      */
 
-    $(document).on('select2:open', () => {
+    $(document).on('select2:open', (e) => {
         console.log('select2:open');
+        console.log(e.target);
+        $(e.target).removeClass('is-invalid');
         document.querySelector('.select2-search__field').focus();
     });
 

@@ -14,6 +14,10 @@ export default function letterFormValidation(jform) {
         jform.find('.ltr_organization').first().addClass('is-invalid');
         valid = false;
     }
-
+    $( ".is-invalid" ).focus(function() {
+        console.log( "focus on input.is-invalid1" );
+        console.log(this);
+        $(this).removeClass('is-invalid');
+    });
     return valid;
 }
