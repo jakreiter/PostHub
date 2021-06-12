@@ -16,6 +16,8 @@ export default function submitNextLetterForm() {
                 if (posthubSendingAllLetterForms) submitNextLetterForm();
             }
 
+        } else {
+            if (posthubSendingAllLetterForms) submitNextLetterForm();
         }
 
 
