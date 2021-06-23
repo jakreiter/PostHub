@@ -54,7 +54,6 @@ class AppFixtures extends Fixture
         $user = new User();
         $email = $_ENV['ADMIN_EMAIL_INITIAL'];
         $user->setEmail($email);
-        $user->setUsername('Admin');
         $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $user->setEnabled(true);
         $plainPassword = $_ENV['ADMIN_PASS_INITIAL'];
@@ -75,7 +74,6 @@ class AppFixtures extends Fixture
 
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
-            $user->setUsername($username);
             $email = $username.'@'.$_ENV['MAIL_DOMAIN_FOR_FIXURES'];
             $user->setEmail( $email );
             $user->setEnabled(true);

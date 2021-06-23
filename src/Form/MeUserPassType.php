@@ -14,7 +14,6 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class MeUserPassType extends AbstractType
 {
-    const MIN_PASS_LEN = 20;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -36,8 +35,8 @@ class MeUserPassType extends AbstractType
                         'message' => 'Please enter a password.',
                     ]),
                     new Length([
-                        'min' => self::MIN_PASS_LEN,
-                        'minMessage' => 'Your password should be at least ' . self::MIN_PASS_LEN . ' characters.',
+                        'min' => $_ENV['MIN_PASSWORD_LENGTH'],
+                        //'minMessage' => 'Your password should be at least ' . $_ENV['MIN_PASSWORD_LENGTH'] . ' characters.',
                         'max' => 4096,
                     ]),
                 ],

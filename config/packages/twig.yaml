@@ -4,6 +4,7 @@ twig:
     globals:
         application_name: '%application_name%'
         admin_contact_email: '%env(ADMIN_CONTACT_EMAIL)%'
+        min_password_length: '%env(MIN_PASSWORD_LENGTH)%'
         recaptcha_sitekey: '%recaptcha_sitekey%'
         single_scan_price: '%single_scan_price%'
         single_scan_currency: '%single_scan_currency%'

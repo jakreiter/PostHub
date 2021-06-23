@@ -24,11 +24,11 @@ class OrganizationType extends AbstractType
                 'class' => 'App:User',
                 'query_builder' => function (UserRepository $er) {
                     return $er->createQueryBuilder('u')
-                        ->orderBy('u.username', 'ASC')
+                        ->orderBy('u.email', 'ASC')
                         ->setMaxResults(5);
                 },
                 'choice_label' => function (User $user) {
-                    return $user->getUsername().' ('.$user->getEmail().')';
+                    return $user->getEmail();
                 },
                 'multiple' => false,
                 'expanded' => false,
@@ -54,7 +54,7 @@ class OrganizationType extends AbstractType
                                     ->setParameter('loadedUserId', $loadedUserId);
                             },
                             'choice_label' => function (User $owner) {
-                                return $owner->getUsername().' ('.$owner->getEmail().')';
+                                return $owner->getEmail();
                             },
                             'multiple' => false,
                             'expanded' => false,
@@ -84,7 +84,7 @@ class OrganizationType extends AbstractType
                                     ->setParameter('submittedUserId', $submittedUserId);
                             },
                             'choice_label' => function (User $owner) {
-                                return $owner->getUsername().' ('.$owner->getEmail().')';
+                                return $owner->getEmail();
                             },
                             'multiple' => false,
                             'expanded' => false,

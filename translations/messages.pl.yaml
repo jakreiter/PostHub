@@ -92,7 +92,7 @@ Password changed.: Hasło zmienione.
 New passwords not match.: Hasła nie są takie same.
 Error: Błąd
 Wrong or expired link.: Nieporawny lub wygasły link.
-PasswordRequirements: Nowe hasło musi mieć co najmniej 20 znaków. To jedyne ograniczenie.
+PasswordRequirements: Nowe hasło musi mieć co najmniej %num% znaków. To jedyne ograniczenie.
 Confirm: Zatwierdź
 Password inspirations: Inspiracje do haseł
 forUser: dla
@@ -151,3 +151,5 @@ Has ordered scan inserted: Czy zrealizowano zamówiony skan
 Scan ordered on: Data zamówienia skanu
 Ordered scan inserted on: Data realizacji zamówionego skanu
 Scan due: Należność za skan
+
+E-mail: E-mail

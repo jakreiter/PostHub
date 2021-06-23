@@ -8,10 +8,6 @@
         <table class="table">
             <tbody>
             <tr>
-                <th>{{ "Username"|trans }}</th>
-                <td>{{ user.username }}</td>
-            </tr>
-            <tr>
                 <th>Email</th>
                 <td>{{ user.email }}
                     <a href="{{ path('self_user_change_email_init') }}" class="btn btn-primary">{{ "Change"|trans }}</a>

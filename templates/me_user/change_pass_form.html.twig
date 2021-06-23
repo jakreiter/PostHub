@@ -7,7 +7,7 @@
 
             {{ form_row(form.password) }}
             <div class="alert alert-info" role="alert">
-                {{ "PasswordRequirements"|trans }}
+                {{ 'PasswordRequirements'|trans({'%num%': min_password_length}) }}
             </div>
             {{ form_row(form.newPassword) }}
 

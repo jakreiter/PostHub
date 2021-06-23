@@ -24,15 +24,16 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon1"><svg
                                                 xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                fill="currentColor" class="bi bi-person-fill" viewBox="0 0 16 16">
-                                      <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-                                    </svg></span>
+                                                fill="currentColor" class="bi bi-mailbox" viewBox="0 0 16 16">
+  <path d="M4 4a3 3 0 0 0-3 3v6h6V7a3 3 0 0 0-3-3zm0-1h8a4 4 0 0 1 4 4v6a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V7a4 4 0 0 1 4-4zm2.646 1A3.99 3.99 0 0 1 8 7v6h7V7a3 3 0 0 0-3-3H6.646z"/>
+  <path d="M11.793 8.5H9v-1h5a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.354-.146l-.853-.854zM5 7c0 .552-.448 0-1 0s-1 .552-1 0a1 1 0 0 1 2 0z"/>
+</svg></span>
                                 </div>
-                                <label for="inputEmail" class="sr-only">Username</label>
+                                <label for="inputEmail" class="sr-only">E-mail</label>
                                 <input name="_username" type="text"
                                        id="inputEmail"
                                        class="form-control"
-                                       placeholder="{{ "Username"|trans }}" required
+                                       placeholder="{{ "E-mail"|trans }}" required
                                        autofocus data-toggle="tooltip"
                                        data-placement="top"
                                        autocomplete="username"
@@ -72,8 +73,8 @@
 
                     </div>
                     <div class="login-bottom-tips"><p class="text-center">
-                        <a href="{{ path('pass_reset_email') }}"
-                           class="">{{ "Forgot username or password?"|trans }}</a>
+                            <a href="{{ path('pass_reset_email') }}"
+                               class="">{{ "Forgot username or password?"|trans }}</a>
                         </p>
                     </div>
                 </div>

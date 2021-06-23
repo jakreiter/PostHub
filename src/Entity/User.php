@@ -16,7 +16,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      @ORM\Index(name="created_index", columns={"created"})
  * })
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity("username")
  * @UniqueEntity("email")
  * @Audit\Auditable()
  * @Audit\Security(view={"ROLE_ADMIN"})
@@ -34,11 +33,6 @@ class User implements UserInterface, \Serializable
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=25, unique=true)
-     * @Assert\NotBlank
-     */
-    private $username;
 
     /**
      * @ORM\Column(type="string", length=127, unique=false, nullable=true)
@@ -136,8 +130,7 @@ class User implements UserInterface, \Serializable
     {
         $arr = [
             'id' => $this->getId(),
-            'text' => $this->getUsername().' ('.$this->getEmail().')',
-            'username' => $this->getUsername(),
+            'text' => $this->getEmail(),
             'email' => $this->getEmail(),
             'firstName' => $this->getFirstName(),
             'lastName' => $this->getLastName(),
@@ -152,16 +145,13 @@ class User implements UserInterface, \Serializable
         if ($this->getFirstName()) $niceName .= $this->getFirstName();
         if ($this->getLastName()) $niceName .= ' ' . $this->getLastName();
         if ($niceName) {
-            $niceName .= ' (' . $this->getUsername() . ')';
+            $niceName .= ' (' . $this->getEmail() . ')';
             return $niceName;
         }
-        return $this->getUsername();
+        return $this->getEmail();
     }
 
-    public function getUsername()
-    {
-        return $this->username;
-    }
+
 
     public function getSalt()
     {
@@ -183,7 +173,7 @@ class User implements UserInterface, \Serializable
     {
         return serialize(array(
             $this->id,
-            $this->username,
+            $this->email,
             $this->password,
             $this->enabled
             // see section on salt below
@@ -196,7 +186,7 @@ class User implements UserInterface, \Serializable
     {
         list (
             $this->id,
-            $this->username,
+            $this->email,
             $this->password,
             $this->enabled
             ) = unserialize($serialized, ['allowed_classes' => false]);
@@ -290,13 +280,6 @@ class User implements UserInterface, \Serializable
         return $this->id;
     }
 
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     public function setPassword(?string $password): self
     {
         $this->password = $password;
@@ -304,9 +287,14 @@ class User implements UserInterface, \Serializable
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->getEmail();
     }
 
     public function setEmail(string $email): self
