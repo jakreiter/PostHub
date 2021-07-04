@@ -30,15 +30,15 @@
                            href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
                     </div>
                 </li>
-                {% if is_granted('ROLE_LOCATION_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                           aria-haspopup="true" aria-expanded="false">{{ "menuLocations"|trans }}</a>
+                           aria-haspopup="true" aria-expanded="false">{{ "menuSettings"|trans }}</a>
                         <div class="dropdown-menu">
                             <a class="dropdown-item"
                                href="{{ path('location_admin_index') }}">{{ "menuLocations"|trans }}</a>
                             <a class="dropdown-item"
-                               href="{{ path('location_admin_new') }}">{{ "menuAddLocation"|trans }}</a>
+                               href="{{ path('scan_plan_admin_index') }}">{{ "ScanPlans"|trans }}</a>
                         </div>
                     </li>
                 {% endif %}

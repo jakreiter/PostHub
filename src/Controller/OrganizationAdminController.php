@@ -63,11 +63,12 @@ class OrganizationAdminController extends AbstractController
 
         $filterBuilder = $em->createQueryBuilder()
             ->select([
-                'Organization', 'Owner', 'Location'
+                'Organization', 'Owner', 'Location', 'ScanPlan'
             ])
             ->from('App\Entity\Organization', 'Organization')
             ->leftJoin('Organization.owner', 'Owner')
             ->leftJoin('Organization.location', 'Location')
+            ->leftJoin('Organization.scanPlan', 'ScanPlan')
             ;
 
 

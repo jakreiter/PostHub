@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Organization{% endblock %}
+{% block title %}{{ "New Organization"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Create new Organization</h1>
+    <h1>{{ "New Organization"|trans }}</h1>
 
     {{ include('organization_admin/_form.html.twig') }}
 

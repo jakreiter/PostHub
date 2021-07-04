@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Organization;
 use App\Entity\User;
+use App\Entity\ScanPlan;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,12 @@ class OrganizationType extends AbstractType
         $builder
             ->add('name')
             ->add('commaSeparatedEmails', TextType::class, ['required'=>false])
-            ->add('scan')
+            ->add('scanPlan', EntityType::class, [
+                'class' => ScanPlan::class,
+                'required' => true,
+                'choice_translation_domain' => null,
+                'choice_label' => "name"
+                ])
             ->add('location')
             ->add('owner', EntityType::class, [
                 'class' => 'App:User',

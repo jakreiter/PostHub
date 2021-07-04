@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
-
+use App\Entity\ScanPlan;
 
 /**
  * @ORM\Entity(repositoryClass=OrganizationRepository::class)
@@ -38,9 +38,10 @@ class Organization
     private $commaSeparatedEmails;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity="ScanPlan")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $scan;
+    private $scanPlan;
 
     /**
      * @ORM\ManyToOne(targetEntity="Location")
@@ -121,14 +122,8 @@ class Organization
 
     public function getScan(): ?bool
     {
-        return $this->scan;
-    }
-
-    public function setScan(bool $scan): self
-    {
-        $this->scan = $scan;
-
-        return $this;
+        if (!$this->getScanPlan()) return false;
+        return $this->getScanPlan()->getScan();
     }
 
     public function getLocation(): ?Location
@@ -217,6 +212,18 @@ class Organization
     public function setCommaSeparatedEmails(?string $commaSeparatedEmails): self
     {
         $this->commaSeparatedEmails = $commaSeparatedEmails;
+
+        return $this;
+    }
+
+    public function getScanPlan(): ?ScanPlan
+    {
+        return $this->scanPlan;
+    }
+
+    public function setScanPlan(?ScanPlan $scanPlan): self
+    {
+        $this->scanPlan = $scanPlan;
 
         return $this;
     }

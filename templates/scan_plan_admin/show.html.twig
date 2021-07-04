@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "ScanPlan"|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "ScanPlan"|trans }}</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ scan_plan.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ scan_plan.name }}</td>
+            </tr>
+            <tr>
+                <th>Scan</th>
+                <td>{{ scan_plan.scan ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('scan_plan_admin_index') }}" class="btn btn-sm btn-primary">back to list</a>
+
+    <a href="{{ path('scan_plan_admin_edit', {'id': scan_plan.id}) }}" class="btn btn-sm btn-primary">edit</a>
+
+    {{ include('scan_plan_admin/_delete_form.html.twig') }}
+{% endblock %}

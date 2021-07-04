@@ -22,6 +22,7 @@ LogInActionButtonTitle: Zaloguj się
 menuUsers: Użytkownicy
 menuAddUser: Dodaj użytkownika
 menuHLetters: Listy
+menuSettings: Ustawienia
 letterMulti: Dodawanie wielu listów
 menuLetterNew: Nowy list
 Title: Tytuł
@@ -154,3 +155,12 @@ Scan due: Należność za skan
 
 E-mail: E-mail
 Comma separated emails: Adresy e-mail rozdzielone przecinkami
+ScanPlan: Plan skanowania
+Scan plan: Plan skanowania
+ScanPlans: Plany skanowania
+New Organization: Nowa organizacja
+New ScanPlan: Nowy plan skanowania
+ScanNo: Nie
+ScanNoPaid: Nie, opłacone
+ScanYesPaid: Tak, opłacone
+ScanYesAll: Tak, wszystkie

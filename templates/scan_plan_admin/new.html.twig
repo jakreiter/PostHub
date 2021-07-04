@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "New ScanPlan"|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "New ScanPlan"|trans }}</h1>
+
+    {{ include('scan_plan_admin/_form.html.twig') }}
+
+    <a href="{{ path('scan_plan_admin_index') }}" class="btn btn-secondary">back to list</a>
+{% endblock %}
