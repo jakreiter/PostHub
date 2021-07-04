@@ -11,6 +11,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 
 class OrganizationType extends AbstractType
 {
@@ -18,6 +20,7 @@ class OrganizationType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('commaSeparatedEmails', TextType::class, ['required'=>false])
             ->add('scan')
             ->add('location')
             ->add('owner', EntityType::class, [

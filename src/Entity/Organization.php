@@ -33,6 +33,11 @@ class Organization
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $commaSeparatedEmails;
+
+    /**
      * @ORM\Column(type="boolean")
      */
     private $scan;
@@ -203,4 +208,18 @@ class Organization
 
         return $this;
     }
+
+    public function getCommaSeparatedEmails(): ?string
+    {
+        return $this->commaSeparatedEmails;
+    }
+
+    public function setCommaSeparatedEmails(?string $commaSeparatedEmails): self
+    {
+        $this->commaSeparatedEmails = $commaSeparatedEmails;
+
+        return $this;
+    }
+
+
 }
