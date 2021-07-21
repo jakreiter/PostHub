@@ -3,7 +3,9 @@
 namespace App\Form\Filter;
 
 use App\Entity\Location;
+use App\Entity\ScanPlan;
 use App\Repository\LocationRepository;
+use App\Repository\ScanPlanRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +23,7 @@ class OrganizationFilterType extends AbstractType
                 'query_builder' => function (LocationRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC')
-                        ->setMaxResults(5);
+                        ;
                 },
                 'choice_label' => function (Location $location) {
                     return $location->getName();
@@ -31,9 +33,29 @@ class OrganizationFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => '',
                 'attr' => array(
-                    'class' => 'location-ajax-select'
+                    'class' => 'location-select'
                 )
-            ]);
+            ])
+            ->add('scanPlan', EntityType::class, [
+                'class' => ScanPlan::class,
+                'query_builder' => function (ScanPlanRepository $er) {
+                    return $er->createQueryBuilder('o')
+                        ->orderBy('o.name', 'ASC')
+                        ;
+                },
+                'choice_label' => function (ScanPlan $scanPlan) {
+                    return $scanPlan->getName();
+                },
+                'choice_translation_domain' => null,
+                'multiple' => false,
+                'expanded' => false,
+                'required' => false,
+                'placeholder' => '',
+                'attr' => array(
+                    'class' => ''
+                )
+            ])
+        ;
     }
 
     public function getBlockPrefix()

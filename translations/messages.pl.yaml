@@ -164,3 +164,6 @@ ScanNo: Nie
 ScanNoPaid: Nie, opłacone
 ScanYesPaid: Tak, opłacone
 ScanYesAll: Tak, wszystkie
+Scan report: Raport skanów
+numberOfScannedLetters: Liczba skanów
+scanLettersDue: Należność

@@ -20,6 +20,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class OrganizationAdminController extends AbstractController
 {
+    private $em;
+    private $environment;
+
+    public function __construct(EntityManagerInterface $em, $environment)
+    {
+        $this->em = $em;
+        $this->environment = $environment;
+
+    }
+
     /**
      * @Route("/find.{_format}",
      *      requirements = { "_format" = "html|json" },
@@ -42,11 +52,11 @@ class OrganizationAdminController extends AbstractController
             $orgArrs = [];
             if (count($organizations)) {
                 foreach ($organizations as $organization) {
-                    $orgArrs[]=$organization->toArray();
+                    $orgArrs[] = $organization->toArray();
                 }
             }
             $reaponseArr = [
-                'results'=>$orgArrs
+                'results' => $orgArrs
             ];
             $response = new JsonResponse();
             $response->setData($reaponseArr);
@@ -54,37 +64,83 @@ class OrganizationAdminController extends AbstractController
         }
     }
 
+
     /**
-     * @Route("/", name="organization_admin_index", methods={"GET"})
+     * @Route("/scan_report", name="scan_report", methods={"GET"})
      */
-    public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
+    public function scanReportPerOrganization(PaginatorInterface $paginator, Request $request): Response
     {
         $filterForm = $this->createForm(OrganizationFilterType::class);
 
-        $filterBuilder = $em->createQueryBuilder()
-            ->select([
-                'Organization', 'Owner', 'Location', 'ScanPlan'
-            ])
-            ->from('App\Entity\Organization', 'Organization')
-            ->leftJoin('Organization.owner', 'Owner')
-            ->leftJoin('Organization.location', 'Location')
-            ->leftJoin('Organization.scanPlan', 'ScanPlan')
+        $filterBuilder = $this->orgFilter($request, $filterForm);
+
+        $query = $filterBuilder->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
+        );
+
+        $organizations = $query->getResult();
+
+
+
+        if ($organizations && count($organizations)) {
+            if ('dev' == $this->environment) {
+                dump($organizations);
+            }
+            $em = $this->em;
+            $query = $em->createQuery('SELECT organization.id,
+                                            COUNT(letter.id) AS letters, 
+                                            SUM(letter.scanDue) AS due 
+                                            FROM App\Entity\Letter letter
+                                            LEFT JOIN letter.organization organization
+                                            INDEX BY organization.id 
+                                            WHERE (letter.organization IN (:organizations))                       
+                                            
+                                            GROUP BY organization.id')
+                                            ->setParameter('organizations', $organizations);
+            $lettersPerOrgs = $query->getResult();
+            if ('dev' == $this->environment) {
+                dump($lettersPerOrgs);
+            }
+            /*
+            $lettersPerOrgs = $scanReportQueryBuilder = $em->createQueryBuilder()
+                ->select([ 'Organization.id', 'COUNT(Letter)'])
+                ->from('App\Entity\Letter', 'Letter')
+                ->leftJoin('Letter.organization', 'Organization')
+                ->andWhere('Letter.organization IN (:organizations)')->setParameter('organizations', $organizations)
+                ->groupBy('Letter.organization')
+                //->indexBy('Organization','Organization.id')
+                ->getQuery()
+                ->getResult()
             ;
-
-
-        if ($request->query->has($filterForm->getName())) {
-            $filter = $request->query->get($filterForm->getName());
-            $filterForm->submit($filter);
-
-            if (isset($filter['name']) && $filter['name']) {
-                $filterBuilder->andWhere('Organization.name LIKE :name')->setParameter('name', '%'.$filter['name'].'%');
+            if ('dev' == $this->environment) {
+                dump($lettersPerOrgs);
             }
-            if (isset($filter['location']) && $filter['location']) {
-                $filterBuilder->andWhere('Location.id = :location')->setParameter('location', $filter['location']);
-            }
-
+            */
 
         }
+
+
+        return $this->render('organization_admin/scan_report.html.twig', [
+            'organizations' => $organizations,
+            'lettersPerOrgs'=> $lettersPerOrgs,
+            'pagination' => $pagination,
+            'form' => $filterForm->createView(),
+        ]);
+
+    }
+
+    /**
+     * @Route("/", name="organization_admin_index", methods={"GET"})
+     */
+    public function index(PaginatorInterface $paginator, Request $request): Response
+    {
+        $filterForm = $this->createForm(OrganizationFilterType::class);
+
+        $filterBuilder = $this->orgFilter($request, $filterForm);
 
         $query = $filterBuilder->getQuery();
 
@@ -103,6 +159,7 @@ class OrganizationAdminController extends AbstractController
         ]);
 
     }
+
 
     /**
      * @Route("/new", name="organization_admin_new", methods={"GET","POST"})
@@ -169,5 +226,37 @@ class OrganizationAdminController extends AbstractController
         }
 
         return $this->redirectToRoute('organization_admin_index');
+    }
+
+    private function orgFilter(Request $request, \Symfony\Component\Form\FormInterface $filterForm): \Doctrine\ORM\QueryBuilder
+    {
+        $em = $this->em;
+        $filterBuilder = $em->createQueryBuilder()
+            ->select([
+                 'Organization', 'Owner', 'Location', 'ScanPlan'
+            ])
+            ->from('App\Entity\Organization', 'Organization')
+            ->leftJoin('Organization.owner', 'Owner')
+            ->leftJoin('Organization.location', 'Location')
+            ->leftJoin('Organization.scanPlan', 'ScanPlan')
+            ->indexBy('Organization','Organization.id')
+        ;
+
+
+        if ($request->query->has($filterForm->getName())) {
+            $filter = $request->query->get($filterForm->getName());
+            $filterForm->submit($filter);
+
+            if (isset($filter['name']) && $filter['name']) {
+                $filterBuilder->andWhere('Organization.name LIKE :name')->setParameter('name', '%' . $filter['name'] . '%');
+            }
+            if (isset($filter['location']) && $filter['location']) {
+                $filterBuilder->andWhere('Location.id = :location')->setParameter('location', $filter['location']);
+            }
+            if (isset($filter['scanPlan']) && $filter['scanPlan']) {
+                $filterBuilder->andWhere('ScanPlan.id = :scanPlan')->setParameter('scanPlan', $filter['scanPlan']);
+            }
+        }
+        return $filterBuilder;
     }
 }

@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Organizations{% endblock %}
+{% block title %}{{ "Scan report"|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ "Organizations"|trans }}</h1>
+    <h1>{{ "Scan report"|trans }}</h1>
 
     <p><a href="{{ path('organization_admin_new') }}" class="btn btn-success">{{ "Create new"|trans }}</a>
     </p>
@@ -57,7 +57,9 @@
             <th{% if pagination.isSorted('Organization.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Organization.created') }}
             </th>
-            <th>actions</th>
+            <th class="text-right">{{ "numberOfScannedLetters"|trans }}</th>
+            <th>{{ "scanLettersDue"|trans }}</th>
+            <th class="text-right">actions</th>
         </tr>
         </thead>
         <tbody>
@@ -71,6 +73,12 @@
                     {% endif %}</td>
                 <td>{{ organization.scanPlan|trans }}</td>
                 <td>{{ organization.created ? organization.created|date('Y-m-d H:i') : '' }}</td>
+                <td class="text-right">{% if lettersPerOrgs[organization.id] is defined %}
+                       {{  lettersPerOrgs[organization.id].letters }}
+                    {% endif %}</td>
+                <td class="text-right">{% if lettersPerOrgs[organization.id] is defined %}
+                        {{ lettersPerOrgs[organization.id].due }}
+                    {% endif %}</td>
                 <td>
                     <a href="{{ path('organization_admin_show', {'id': organization.id}) }}"
                        class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
