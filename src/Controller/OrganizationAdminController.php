@@ -7,6 +7,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Organization;
 use App\Form\OrganizationType;
 use App\Form\Filter\OrganizationFilterType;
+use App\Form\Filter\ScanReportFilterType;
 use App\Repository\OrganizationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -70,7 +71,11 @@ class OrganizationAdminController extends AbstractController
      */
     public function scanReportPerOrganization(PaginatorInterface $paginator, Request $request): Response
     {
-        $filterForm = $this->createForm(OrganizationFilterType::class);
+        $defaultData= [
+            'orderedFrom'=> new \DateTime('first day of last month'),
+            'orderedTill'=> new \DateTime('last day of last month'),
+        ];
+        $filterForm = $this->createForm(ScanReportFilterType::class, $defaultData);
 
         $filterBuilder = $this->orgFilter($request, $filterForm);
 
@@ -87,20 +92,40 @@ class OrganizationAdminController extends AbstractController
 
 
         if ($organizations && count($organizations)) {
-            if ('dev' == $this->environment) {
-                dump($organizations);
+            if ('dev' == $this->environment) dump($organizations);
+
+            if ($request->query->has($filterForm->getName())) {
+                $filter = $request->query->get($filterForm->getName());
+                if ('dev' == $this->environment) dump($filter);
+                $orderedFrom = $filter['orderedFrom'];
+                $orderedTill = $filter['orderedTill'];
+            } else {
+                $orderedFrom = $defaultData['orderedFrom'];
+                $orderedTill = $defaultData['orderedTill'];
+                $orderedFrom->setTime(0,0,0);
+                $orderedTill->setTime(23,59,59);
+
             }
+            if ('dev' == $this->environment) {
+                dump($orderedFrom);
+                dump($orderedTill);
+            }
+
             $em = $this->em;
-            $query = $em->createQuery('SELECT organization.id,
+
+                $query = $em->createQuery('SELECT organization.id,
                                             COUNT(letter.id) AS letters, 
                                             SUM(letter.scanDue) AS due 
                                             FROM App\Entity\Letter letter
                                             LEFT JOIN letter.organization organization
                                             INDEX BY organization.id 
-                                            WHERE (letter.organization IN (:organizations))                       
-                                            
+                                            WHERE (letter.organization IN (:organizations))      
+                                            AND letter.scanOrdered IS NOT NULL
+                                            AND letter.scanOrdered BETWEEN :orderedFrom AND :orderedTill
                                             GROUP BY organization.id')
-                                            ->setParameter('organizations', $organizations);
+                                            ->setParameter('organizations', $organizations)
+                                            ->setParameter('orderedFrom', $orderedFrom)
+                                            ->setParameter('orderedTill', $orderedTill);
             $lettersPerOrgs = $query->getResult();
             if ('dev' == $this->environment) {
                 dump($lettersPerOrgs);

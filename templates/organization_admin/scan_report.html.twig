@@ -9,7 +9,7 @@
     </p>
 
 
-    {{ form_start(form, {'action': path('organization_admin_index'), 'method': 'GET'}) }}
+    {{ form_start(form, {'method': 'GET'}) }}
 
     <div class="row">
         <div class="col-md-2">
@@ -20,6 +20,15 @@
         </div>
         <div class="col-md-2">
             {{ form_row(form.scanPlan) }}
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            {{ form_row(form.orderedFrom) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_row(form.orderedTill) }}
         </div>
 
         <div class="col-md-1">

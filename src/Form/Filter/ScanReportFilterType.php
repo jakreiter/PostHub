@@ -8,11 +8,12 @@ use App\Repository\LocationRepository;
 use App\Repository\ScanPlanRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class OrganizationFilterType extends AbstractType
+class ScanReportFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -56,7 +57,14 @@ class OrganizationFilterType extends AbstractType
                 )
             ])
         ;
-
+        $builder->add('orderedFrom', DateType::class, [
+            // renders it as a single text box
+            'widget' => 'single_text',
+        ]);
+        $builder->add('orderedTill', DateType::class, [
+            // renders it as a single text box
+            'widget' => 'single_text',
+        ]);
     }
 
     public function getBlockPrefix()
