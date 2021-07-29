@@ -73,6 +73,19 @@ class Letter
      */
     private $size;
 
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Notification", inversedBy="letters")
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $notification;
+
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
+     */
+    private $notificationSent=false;
+
     /**
      * @ORM\Column(type="boolean", nullable=false, options={"default":false})
      */
@@ -96,6 +109,12 @@ class Letter
      * @ORM\Column(type="datetime")
      */
     private $updated;
+
+    /**
+     *
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastAttemptToSendNotification;
 
     /**
      *
@@ -336,6 +355,42 @@ class Letter
     public function setScanDue(float $scanDue): self
     {
         $this->scanDue = $scanDue;
+
+        return $this;
+    }
+
+    public function getNotificationSent(): ?bool
+    {
+        return $this->notificationSent;
+    }
+
+    public function setNotificationSent(bool $notificationSent): self
+    {
+        $this->notificationSent = $notificationSent;
+
+        return $this;
+    }
+
+    public function getLastAttemptToSendNotification(): ?\DateTimeInterface
+    {
+        return $this->lastAttemptToSendNotification;
+    }
+
+    public function setLastAttemptToSendNotification(?\DateTimeInterface $lastAttemptToSendNotification): self
+    {
+        $this->lastAttemptToSendNotification = $lastAttemptToSendNotification;
+
+        return $this;
+    }
+
+    public function getNotification(): ?Notification
+    {
+        return $this->notification;
+    }
+
+    public function setNotification(?Notification $notification): self
+    {
+        $this->notification = $notification;
 
         return $this;
     }
