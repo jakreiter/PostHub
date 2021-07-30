@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Requiring notification"|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "Requiring notification"|trans }}</h1>
+
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>Id</th>
+            <th{% if pagination.isSorted('Organization.name') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Name'|trans, 'Organization.name') }}
+            </th>
+            <th{% if pagination.isSorted('Location.name') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Location'|trans, 'Location.name') }}
+            </th>
+            <th{% if pagination.isSorted('Owner.username') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Owner'|trans, 'Owner.email') }}
+            </th>
+            <th{% if pagination.isSorted('ScanPlan.name') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'ScanPlan'|trans, 'ScanPlan.name') }}
+            </th>
+            <th class="text-right">{{ "Number of letters to be notified"|trans }}</th>
+            <th class="text-right">{{ "Last attempt to send a notification"|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for organization in organizations %}
+            <tr>
+                <td>{{ organization.id }}</td>
+                <td>{{ organization.name }}</td>
+                <td>{{ organization.location }}</td>
+                <td>{% if organization.owner %}<a href="{{ path('user_admin_show', {'id': organization.owner.id}) }}"
+                                                  class="">{{ organization.owner }}</a>
+                    {% endif %}</td>
+                <td>{{ organization.scanPlan|trans }}</td>
+                <td class="text-right">
+                    {{ requiringNotificationInfoPerOrganization[organization.id].letters }}
+                </td>
+                <td class="text-right">
+                    {{ requiringNotificationInfoPerOrganization[organization.id].lastAttemptToSendNotification }}
+                </td>
+
+                <td>
+                    <a href="{{ path('organization_admin_show', {'id': organization.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a>
+                    <a href="{{ path('organization_admin_edit', {'id': organization.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
+                    <a href="{{ path('letter_admin_index', {'fi[organization]': organization.id}) }}"
+                       class="btn btn-sm btn-secondary">{{ "Letters"|trans }}</a>
+                </td>
+
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# display navigation #}
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+{% endblock %}

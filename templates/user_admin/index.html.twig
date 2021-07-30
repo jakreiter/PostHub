@@ -12,16 +12,13 @@
 
     <div class="row">
         <div class="col-md-2">
-            {{ form_row(form.username) }}
+            {{ form_row(form.email) }}
         </div>
         <div class="col-md-2">
             {{ form_row(form.firstName) }}
         </div>
         <div class="col-md-2">
             {{ form_row(form.lastName) }}
-        </div>
-        <div class="col-md-2">
-            {{ form_row(form.email) }}
         </div>
         <div class="col-md-1">
             <label style="min-width: 100px;"> &nbsp; </label>
@@ -45,8 +42,8 @@
             <th{% if pagination.isSorted('User.id') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Id'|trans, 'User.id') }}
             </th>
-            <th{% if pagination.isSorted('User.username') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Username'|trans, 'User.username') }}
+            <th{% if pagination.isSorted('User.email') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Email'|trans, 'User.email') }}
             </th>
             <th{% if pagination.isSorted('User.firstName') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'First name'|trans, 'User.firstName') }}

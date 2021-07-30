@@ -33,22 +33,21 @@ class LetterRepository extends ServiceEntityRepository
         return (int)$cnt;
     }
 
-    // /**
-    //  * @return Letter[] Returns an array of Letter objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+
+    public function findRequiringNotification()
     {
-        return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+        $maxLastAttemptToSendNotification = new \DateTime('-1 hour');
+        $queryBuilder = $this->createQueryBuilder('letter')
+            ->andWhere('letter.exampleField = :val')
+            ->andWhere('letter.lastAttemptToSendNotification <= :lastAttemptToSendNotification')
+            ->setParameter('lastAttemptToSendNotification', $maxLastAttemptToSendNotification)
+            ->addOrderBy('letter.organization', 'ASC')
+            ->addOrderBy('letter.lastAttemptToSendNotification', 'ASC');
+        return $queryBuilder->getQuery()->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Letter

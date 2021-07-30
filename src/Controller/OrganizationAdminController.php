@@ -9,6 +9,7 @@ use App\Form\OrganizationType;
 use App\Form\Filter\OrganizationFilterType;
 use App\Form\Filter\ScanReportFilterType;
 use App\Repository\OrganizationRepository;
+use App\Service\EmailNotificationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,11 +93,11 @@ class OrganizationAdminController extends AbstractController
 
 
         if ($organizations && count($organizations)) {
-            if ('dev' == $this->environment) dump($organizations);
+            //if ('dev' == $this->environment) dump($organizations);
 
             if ($request->query->has($filterForm->getName())) {
                 $filter = $request->query->get($filterForm->getName());
-                if ('dev' == $this->environment) dump($filter);
+                //if ('dev' == $this->environment) dump($filter);
                 $orderedFrom = $filter['orderedFrom'];
                 $orderedTill = $filter['orderedTill'];
             } else {
@@ -107,8 +108,8 @@ class OrganizationAdminController extends AbstractController
 
             }
             if ('dev' == $this->environment) {
-                dump($orderedFrom);
-                dump($orderedTill);
+                //dump($orderedFrom);
+                //dump($orderedTill);
             }
 
             $em = $this->em;
@@ -157,6 +158,48 @@ class OrganizationAdminController extends AbstractController
         ]);
 
     }
+
+    /**
+     * @Route("/notification_required", name="organization_notification_required", methods={"GET"})
+     */
+    public function RequiredNotificationPerOrganizationAction(PaginatorInterface $paginator, Request $request, EmailNotificationService $emailNotificationService): Response
+    {
+        $requiringNotificationInfoPerOrganization = $emailNotificationService->getNumberOfRequiringNotificationPerOrganization();
+        $orgIds =  array_keys($requiringNotificationInfoPerOrganization);
+        if ('dev' == $this->environment) dump($requiringNotificationInfoPerOrganization);
+
+
+
+        $em=$this->em;
+        $filterBuilder = $em->createQueryBuilder()
+            ->select([
+                'Organization', 'Owner', 'Location', 'ScanPlan'
+            ])
+            ->from('App\Entity\Organization', 'Organization')
+            ->leftJoin('Organization.owner', 'Owner')
+            ->leftJoin('Organization.location', 'Location')
+            ->leftJoin('Organization.scanPlan', 'ScanPlan')
+            ->indexBy('Organization','Organization.id')
+        ;
+        $filterBuilder->andWhere('Organization.id IN (:orgIds)')->setParameter('orgIds', $orgIds);
+        $query = $filterBuilder->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
+        );
+
+        $organizations = $query->getResult();
+
+        return $this->render('organization_admin/requiring_notification.html.twig', [
+            'organizations' => $organizations,
+            'pagination' => $pagination,
+            'requiringNotificationInfoPerOrganization' => $requiringNotificationInfoPerOrganization
+        ]);
+
+    }
+
 
     /**
      * @Route("/", name="organization_admin_index", methods={"GET"})

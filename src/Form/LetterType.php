@@ -94,7 +94,7 @@ class LetterType extends AbstractType
                             'required' => true,
                             'placeholder' => '',
                             'attr' => array(
-                                'class' => 'organization-ajax-filter-select'
+                                'class' => 'ltr_organization organization-ajax-filter-select'
                             )
                         ]);
                     }
@@ -124,7 +124,7 @@ class LetterType extends AbstractType
                             'required' => true,
                             'placeholder' => '',
                             'attr' => array(
-                                'class' => 'organization-ajax-filter-select'
+                                'class' => 'ltr_organization organization-ajax-filter-select'
                             )
                         ]);
                     }

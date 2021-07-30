@@ -29,6 +29,9 @@
                         <a class="dropdown-item"
                            href="{{ path('scan_report', {'sort':'Organization.name', 'direction':'asc'}) }}">{{ "Scan report"|trans }}</a>
                         <a class="dropdown-item"
+                           href="{{ path('organization_notification_required', {'sort':'Organization.name', 'direction':'asc'}) }}">{{ "Letters to be notified"|trans }}</a>
+
+                        <a class="dropdown-item"
                            href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
                     </div>
                 </li>
