@@ -13,6 +13,7 @@ use App\Form\Filter\LetterUserFilterType;
 use App\Entity\Letter;
 use App\Entity\Organization;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * @Route("/org_")
@@ -116,6 +117,7 @@ class LetterUserController extends AbstractController
      * @Route("{organization}/letter_show:{letter}/", name="letter_user_show", methods={"GET"}, requirements={
      * "organization": "\d+"
      * })
+     * @Security("is_granted('ROLE_USER')")
      */
     public function show(Organization $organization, Letter $letter): Response
     {
