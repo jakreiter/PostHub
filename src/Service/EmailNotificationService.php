@@ -49,7 +49,7 @@ class EmailNotificationService
         $this->output = $output;
     }
 
-    public function getNumberOfRequiringNotificationPerOrganization()
+    public function getNumberOfRequiringNewLetterNotificationPerOrganization()
     {
         $em = $this->em;
 
@@ -70,7 +70,7 @@ class EmailNotificationService
     public function sendNewLettersNotifications($maxNumberOfOrganizations = 0): array
     {
         $notifications = [];
-        $requiringNotificationInfoPerOrganization = $this->getNumberOfRequiringNotificationPerOrganization();
+        $requiringNotificationInfoPerOrganization = $this->getNumberOfRequiringNewLetterNotificationPerOrganization();
 
         $mailer = $this->mailer;
         $translator = $this->translator;

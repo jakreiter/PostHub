@@ -91,6 +91,7 @@ class Letter
      */
     private $seen=false;
 
+
     /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(onDelete="SET NULL")
@@ -413,5 +414,6 @@ class Letter
 
         return $this;
     }
+
 
 }

@@ -165,7 +165,7 @@ class OrganizationAdminController extends AbstractController
      */
     public function RequiredNotificationPerOrganizationAction(PaginatorInterface $paginator, Request $request, EmailNotificationService $emailNotificationService): Response
     {
-        $requiringNotificationInfoPerOrganization = $emailNotificationService->getNumberOfRequiringNotificationPerOrganization();
+        $requiringNotificationInfoPerOrganization = $emailNotificationService->getNumberOfRequiringNewLetterNotificationPerOrganization();
         $orgIds =  array_keys($requiringNotificationInfoPerOrganization);
         if ('dev' == $this->environment) dump($requiringNotificationInfoPerOrganization);
 

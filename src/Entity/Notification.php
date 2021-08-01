@@ -85,6 +85,7 @@ class Notification
         $this->created = new \DateTime();
         $this->updated = new \DateTime();
         $this->letters = new ArrayCollection();
+        $this->completedScans = new ArrayCollection();
 
 
     }
@@ -224,6 +225,7 @@ class Notification
 
         return $this;
     }
+
 
 
 }

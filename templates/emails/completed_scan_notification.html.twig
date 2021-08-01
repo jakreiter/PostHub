@@ -1,0 +1,19 @@
+{# templates/emails/registration.html.twig #}
+<h1>{{ "Completed scan notification"|trans }}</h1>
+
+
+<ol>
+{% for letter in letters %}
+   <li><a href="{{ url('letter_user_show', {'organization': letter.organization.id, 'letter': letter.id }) }}"
+          class="">{{ letter.title }}</a>
+      {% if letter.originalName %}
+          skan:
+         <a href="{{ url('letter_file_download_for_not_logged_in', {'id': letter.id, 'rapas': letter.rapas}) }}"
+            class="">{{ letter.originalName }}</a>
+      {% endif %}
+   </li>
+{% endfor %}
+</ol>
+
+
+{% include 'emails/mail_footer.html.twig' %}

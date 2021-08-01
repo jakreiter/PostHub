@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use App\Form\LetterHandoverSelectType;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -18,6 +19,11 @@ use App\Repository\OrganizationRepository;
 use App\Repository\LetterStatusRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Service\FileLetterService;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 
 /**
  * @Route("/kadmin/letter")
@@ -26,9 +32,12 @@ class LetterAdminController extends AbstractController
 {
     private $slugger;
 
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(SluggerInterface $slugger, TransportInterface $mailer, TranslatorInterface $translator,
+                                UrlGeneratorInterface $router)
     {
         $this->slugger = $slugger;
+        $this->mailer = $mailer;
+        $this->translator = $translator;
     }
 
     /**
@@ -265,6 +274,60 @@ class LetterAdminController extends AbstractController
                 $this->handleFileUpload($uploadedFile, $letter);
                 if ($letter->getScanOrdered() && $letter->getFileName()) {
                     $letter->setScanInserted(new \DateTime());
+                    $letter->setSeen(false);
+                    // e-mail Notification
+                    $organization = $letter->getOrganization();
+                    if ($organization) {
+                        $commaSeparatedEmails = null;
+                        if ($organization->getCommaSeparatedEmails())
+                            $commaSeparatedEmails = $organization->getCommaSeparatedEmails();
+                        else if ($organization->getOwner())
+                            $commaSeparatedEmails = $organization->getOwner()->getEmail();
+
+                        if ($commaSeparatedEmails) {
+                            $translator = $this->translator;
+                            $mailer = $this->mailer;
+
+                            $letters = [$letter];
+                            if (count($letters)) {
+                                $emails = explode(',', $commaSeparatedEmails);
+                                $subject = $translator->trans('Completed scan notification');
+                                $mailMessage = (new TemplatedEmail())
+                                    ->subject($subject)
+                                    ->htmlTemplate('emails/completed_scan_notification.html.twig')
+                                    ->context(['organization' => $organization, 'letters' => $letters]);
+
+                                foreach ($emails as $email) {
+                                    $mailMessage->addTo($email);
+                                }
+
+                                try {
+                                    $entMessageInfo = $mailer->send($mailMessage);
+                                    $messageId = $entMessageInfo->getMessageId();
+                                    $notification = new Notification();
+                                    $notification->setOrganization($organization);
+                                    $notification->setSentMessageId($messageId);
+                                    $notification->setTitle($subject);
+                                    $notification->setContents($entMessageInfo->getMessage()->toString());
+                                    $notification->setDebug($entMessageInfo->getDebug());
+                                    $notification->setRecipient($commaSeparatedEmails);
+                                    $this->getDoctrine()->getManager()->persist($notification);
+                                    $notifications[] = $notification;
+
+                                    foreach ($letters as $letter) {
+                                        /** @var Letter $letter */
+                                        if ($messageId) {
+                                            $letter->setNotificationSent(true);
+                                        }
+                                        //$letter->setNotification($notification);
+                                    }
+                                    $this->getDoctrine()->getManager()->flush();
+                                } catch (TransportExceptionInterface $e) {
+
+                                }
+                            }
+                        }
+                    }
                 }
             }
 
