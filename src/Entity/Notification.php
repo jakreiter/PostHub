@@ -27,6 +27,12 @@ class Notification
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="notifications")
+     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
+     */
+    private $organization;
+
+    /**
      * @ORM\Column(type="string", length=300, nullable=true)
      */
     private $sentMessageId;
@@ -52,6 +58,12 @@ class Notification
      * @ORM\Column(type="text", nullable=true)
      */
     private $contents;
+
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $debug;
 
 
     /**
@@ -185,6 +197,30 @@ class Notification
                 $letter->setNotification(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDebug(): ?string
+    {
+        return $this->debug;
+    }
+
+    public function setDebug(?string $debug): self
+    {
+        $this->debug = $debug;
+
+        return $this;
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): self
+    {
+        $this->organization = $organization;
 
         return $this;
     }

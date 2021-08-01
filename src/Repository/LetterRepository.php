@@ -35,14 +35,13 @@ class LetterRepository extends ServiceEntityRepository
 
 
 
-    public function findRequiringNotification()
+    public function findRequiringNotificationForOrganization(Organization $organization)
     {
-        $maxLastAttemptToSendNotification = new \DateTime('-1 hour');
+
         $queryBuilder = $this->createQueryBuilder('letter')
-            ->andWhere('letter.exampleField = :val')
-            ->andWhere('letter.lastAttemptToSendNotification <= :lastAttemptToSendNotification')
-            ->setParameter('lastAttemptToSendNotification', $maxLastAttemptToSendNotification)
-            ->addOrderBy('letter.organization', 'ASC')
+            ->andWhere('letter.notificationSent = false')
+            ->andWhere('letter.organization = :organization')
+            ->setParameter('organization', $organization)
             ->addOrderBy('letter.lastAttemptToSendNotification', 'ASC');
         return $queryBuilder->getQuery()->getResult()
         ;

@@ -21,6 +21,7 @@ class OrganizationType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('allowScanDownloadWithoutLogin')
             ->add('commaSeparatedEmails', TextType::class, ['required'=>false])
             ->add('scanPlan', EntityType::class, [
                 'class' => ScanPlan::class,

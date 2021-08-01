@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ organization.name }} - {{ "Notification"|trans }}{% endblock %}
+
+{% block body %}
+    <h1><strong>{{ organization.name }}</strong> {{ "Notification"|trans }}</h1>
+
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>{{ "Created"|trans }}</th>
+                        <td>{{ notification.created  ? notification.created |date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Title"|trans }}</th>
+                        <td>{{ notification.title }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="col-md-6">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>{{ "Recipients"|trans }}</th>
+                        <td>{{ notification.recipient }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "MessageId"|trans }}</th>
+                        <td>{{ notification.sentMessageId }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th>{{ "Contents"|trans }}</th>
+                        <td>{{ notification.contents|nl2br }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ "Notification debug info"|trans }}</th>
+                        <td>{{ notification.debug|nl2br }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>☺
+
+
+{% endblock %}

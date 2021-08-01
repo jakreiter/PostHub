@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
-use App\Entity\ScanPlan;
 
 /**
  * @ORM\Entity(repositoryClass=OrganizationRepository::class)
@@ -61,6 +60,16 @@ class Organization
     private $letters;
 
     /**
+     * @ORM\OneToMany(targetEntity="Notification", mappedBy="organization")
+     */
+    private $notifications;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false, options={"default":true})
+     */
+    private $allowScanDownloadWithoutLogin=true;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -76,6 +85,7 @@ class Organization
     public function __construct()
     {
         $this->letters = new ArrayCollection();
+        $this->notifications = new ArrayCollection();
     }
 
     public function __toString()
@@ -224,6 +234,48 @@ class Organization
     public function setScanPlan(?ScanPlan $scanPlan): self
     {
         $this->scanPlan = $scanPlan;
+
+        return $this;
+    }
+
+    public function getAllowScanDownloadWithoutLogin(): ?bool
+    {
+        return $this->allowScanDownloadWithoutLogin;
+    }
+
+    public function setAllowScanDownloadWithoutLogin(bool $allowScanDownloadWithoutLogin): self
+    {
+        $this->allowScanDownloadWithoutLogin = $allowScanDownloadWithoutLogin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Notification[]
+     */
+    public function getNotifications(): Collection
+    {
+        return $this->notifications;
+    }
+
+    public function addNotification(Notification $notification): self
+    {
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications[] = $notification;
+            $notification->setOrganization($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): self
+    {
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getOrganization() === $this) {
+                $notification->setOrganization(null);
+            }
+        }
 
         return $this;
     }

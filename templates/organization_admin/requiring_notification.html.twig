@@ -62,6 +62,11 @@
         </tbody>
     </table>
 
+    {% if organizations|length >0 %}
+        <a class="btn btn-primary"
+           href="{{ path('organization_admin_send_notifications') }}">{{ "Send notifications"|trans }}</a>
+    {% endif %}
+
     {# display navigation #}
     <div class="navigation">
         {{ knp_pagination_render(pagination) }}

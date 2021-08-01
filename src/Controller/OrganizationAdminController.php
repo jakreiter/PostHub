@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Notification;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Organization;
@@ -202,6 +203,20 @@ class OrganizationAdminController extends AbstractController
 
 
     /**
+     * @Route("/send_notifications", name="organization_admin_send_notifications", methods={"GET"})
+     */
+    public function sendNotifications(Request $request, EmailNotificationService $emailNotificationService): Response
+    {
+        $notifications = $emailNotificationService->sendNewLettersNotifications(30);
+
+        return $this->render('organization_admin/notifications_sent.html.twig', [
+            'notifications'=>$notifications
+        ]);
+
+    }
+
+
+    /**
      * @Route("/", name="organization_admin_index", methods={"GET"})
      */
     public function index(PaginatorInterface $paginator, Request $request): Response
@@ -259,6 +274,35 @@ class OrganizationAdminController extends AbstractController
     {
         return $this->render('organization_admin/show.html.twig', [
             'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/notifications", name="organization_notifications_admin_show", methods={"GET"})
+     */
+    public function showNotifications(Organization $organization): Response
+    {
+        return $this->render('organization_admin/notifications.html.twig', [
+            'organization' => $organization,
+        ]);
+    }
+
+    /**
+     * @Route("/{organization}/notification/{notification}", name="organization_notification_admin_show", methods={"GET"}, requirements={
+     * "organization": "\d+",
+     * "notification": "\d+"
+     * })
+     */
+    public function showNotification(Organization $organization, Notification $notification): Response
+    {
+        if ($notification->getOrganization()!=$organization) {
+            $response = $this->render('security/access_denied.html.twig');
+            $response->setStatusCode(Response::HTTP_FORBIDDEN);
+            return $response;
+        }
+        return $this->render('organization_admin/notification.html.twig', [
+            'organization' => $organization,
+            'notification' => $notification,
         ]);
     }
 

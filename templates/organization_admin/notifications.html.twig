@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ organization.name }} - {{ "Notifications"|trans }}{% endblock %}
+
+{% block body %}
+    <h1><strong>{{ organization.name }}</strong> {{ "Notifications"|trans }}</h1>
+
+
+
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>{{ "Created"|trans }}</th>
+            <th>{{ "Title"|trans }}</th>
+            <th>{{ "Recipients"|trans }}</th>
+            <th>{{ "MessageId"|trans }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for notification in organization.notifications %}
+            <tr>
+                <td>{{ notification.created  ? notification.created |date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ notification.title }}</td>
+                <td>{{ notification.recipient }}</td>
+                <td>{{ notification.sentMessageId }}</td>
+                <td><a href="{{ path('organization_notification_admin_show', {'organization': organization.id, 'notification': notification.id}) }}"
+                       class="btn btn-sm btn-primary">{{ "btnShow"|trans }}</a></td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
+{% endblock %}

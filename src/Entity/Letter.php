@@ -98,6 +98,11 @@ class Letter
     private $downloadedByUser;
 
     /**
+     * @ORM\Column(type="string", length=32, nullable=true)
+     */
+    private $rapas;
+
+    /**
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
      */
@@ -152,7 +157,9 @@ class Letter
         $this->updated = new \DateTime();
         $this->scanDue = 0.0;
         $this->scanOrdered = null;
-
+        $rapasBin = openssl_random_pseudo_bytes(6);
+        $rapasString = bin2hex($rapasBin);
+        $this->setRapas($rapasString);
     }
 
     public function __toString()
@@ -391,6 +398,18 @@ class Letter
     public function setNotification(?Notification $notification): self
     {
         $this->notification = $notification;
+
+        return $this;
+    }
+
+    public function getRapas(): ?string
+    {
+        return $this->rapas;
+    }
+
+    public function setRapas(?string $rapas): self
+    {
+        $this->rapas = $rapas;
 
         return $this;
     }

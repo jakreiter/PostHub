@@ -33,6 +33,8 @@
 
                         <a class="dropdown-item"
                            href="{{ path('organization_admin_new') }}">{{ "menuAddOrganization"|trans }}</a>
+                        <a class="dropdown-item"
+                           href="{{ path('organization_admin_send_notifications') }}">{{ "Send notifications"|trans }}</a>
                     </div>
                 </li>
                 {% if is_granted('ROLE_ADMIN') %}

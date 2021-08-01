@@ -15,7 +15,6 @@ use App\Service\FileLetterService;
 
 /**
  * @Route("/download")
- * @Security("is_granted('ROLE_USER')")
  */
 class DownloadController extends AbstractController
 {
@@ -27,11 +26,32 @@ class DownloadController extends AbstractController
         $this->fileLetterService = $fileLetterService;
     }
 
+    /**
+     * @Route("/letter_nl:{id}:{rapas}", name="letter_file_download_for_not_logged_in", methods={"GET"})
+     */
+    public function downloadActionForNotLoggedInUser(Letter $letter, $rapas, CoreSecurity $security): Response
+    {
+
+        if (
+            $letter->getOrganization()->getAllowScanDownloadWithoutLogin()
+        ) {
+            if ($rapas==$letter->getRapas()) {
+                return $this->downloadScan($letter, true);
+            } else {
+                return $this->redirectToRoute('letter_file_download', ['id'=>$letter->getId()]);
+            }
+        } else {
+            return $this->redirectToRoute('letter_file_download', ['id'=>$letter->getId()]);
+        }
+
+    }
+
 
     /**
      * @Route("/letter:{id}", name="letter_file_download", methods={"GET"})
+     * @Security("is_granted('ROLE_USER')")
      */
-    public function download(Letter $letter, CoreSecurity $security): Response
+    public function downloadActionForLoggedInUser(Letter $letter, CoreSecurity $security): Response
     {
 
         if (
@@ -39,25 +59,7 @@ class DownloadController extends AbstractController
             || ($security->isGranted('ROLE_LOCATION_MODERATOR') && $letter->getOrganization()->getLocation() == $this->getUser()->getLocation())
             || ($this->getUser()->getId() && $letter->getOrganization()->getOwner() == $this->getUser())
         ) {
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $file = $this->fileLetterService->getFilePath($letter);
-            if (file_exists($file)) {
-                $response = new BinaryFileResponse($file);
-                $response->setContentDisposition(
-                // ResponseHeaderBag::DISPOSITION_ATTACHMENT,
-                    ResponseHeaderBag::DISPOSITION_INLINE,
-                    $letter->getOriginalName()
-                );
-                if ( $this->getUser()->getId() && $letter->getOrganization()->getOwner() == $this->getUser() ) {
-                    // downloaded by owner
-                    $letter->setSeen(true);
-                    $letter->setDownloadedByUser($this->getUser());
-                    $entityManager->flush();
-                }
-                return $response;
-            }
-            throw $this->createNotFoundException('The file has already been deleted.');
+            return $this->downloadScan($letter, ($this->getUser()->getId() && $letter->getOrganization()->getOwner() == $this->getUser()));
         } else {
             $response = $this->render('security/access_denied.html.twig');
             $response->setStatusCode(Response::HTTP_FORBIDDEN);
@@ -84,5 +86,26 @@ class DownloadController extends AbstractController
         }
 
         return $this->redirectToRoute('home');
+    }
+
+    private function downloadScan(Letter $letter, $seen=false): BinaryFileResponse
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $file = $this->fileLetterService->getFilePath($letter);
+        if (file_exists($file)) {
+            $response = new BinaryFileResponse($file);
+            $response->setContentDisposition(
+            // ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+                ResponseHeaderBag::DISPOSITION_INLINE,
+                $letter->getOriginalName()
+            );
+
+                if ($seen) $letter->setSeen(true);
+                if ($this->getUser()) $letter->setDownloadedByUser($this->getUser());
+                $entityManager->flush();
+
+            return $response;
+        }
+        throw $this->createNotFoundException('The file has already been deleted.');
     }
 }

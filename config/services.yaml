@@ -15,6 +15,9 @@ parameters:
     single_scan_price: '%env(SINGLE_SCAN_PRICE)%'
     single_scan_currency: '%env(SINGLE_SCAN_CURRENCY)%'
     environment: "%kernel.environment%"
+    router.request_context.host: '%env(WEB_APP_HOST)%'
+    router.request_context.scheme: '%env(WEB_APP_SCHEME)%'
+    router.request_context.base_url: '%env(WEB_APP_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file
