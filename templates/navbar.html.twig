@@ -56,6 +56,9 @@
                         <a class="dropdown-item"
                            href="{{ path('letter_admin_index', {'sort':'Letter.created', 'direction':'desc'}) }}">{{ "Letters"|trans }}</a>
                         <a class="dropdown-item"
+                           href="{{ path('letter_admin_index', {'sort':'Letter.created', 'direction':'asc', 'fi': {'hasScanOrdered':1,'hasOrderedScanInserted':-1,} }) }}">{{ "Scan orders pending"|trans }}</a>
+
+                        <a class="dropdown-item"
                            href="{{ path('letter_admin_handover') }}">{{ "Letters handover"|trans }}</a>
 
                         <a class="dropdown-item" href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>

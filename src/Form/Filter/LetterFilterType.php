@@ -20,8 +20,8 @@ class LetterFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, ['required'=>false])
-            ->add('barcodeNumber', TextType::class, ['required'=>false])
+            ->add('title', TextType::class, ['required' => false])
+            ->add('barcodeNumber', TextType::class, ['required' => false])
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
@@ -30,7 +30,7 @@ class LetterFilterType extends AbstractType
                         ->setMaxResults(5);
                 },
                 'choice_label' => function (Organization $organization) {
-                    return $organization->getName().' '.($organization->getScan()?'📷':'🔒');
+                    return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
                 },
                 'multiple' => false,
                 'expanded' => false,
@@ -44,8 +44,7 @@ class LetterFilterType extends AbstractType
                 'class' => 'App:LetterStatus',
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
-                        ->orderBy('o.name', 'ASC')
-                        ;
+                        ->orderBy('o.name', 'ASC');
                 },
                 'choice_label' => function (LetterStatus $letterStatus) {
                     return $letterStatus->getName();
@@ -54,56 +53,53 @@ class LetterFilterType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'placeholder' => '',
-                'attr' => array(
-
-                )
+                'attr' => array()
             ])
             ->add('hasScanOrdered', ChoiceType::class, [
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'choices' => ['No'=>-1, 'Yes'=>1],
+                'choices' => ['No' => -1, 'Yes' => 1],
 
             ])
             ->add('hasOrderedScanInserted', ChoiceType::class, [
                 'required' => false,
                 'multiple' => false,
                 'expanded' => false,
-                'choices' => ['No'=>-1, 'Yes'=>1],
+                'choices' => ['No' => -1, 'Yes' => 1],
 
             ])
-
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
                     $form = $event->getForm();
 
                     $data = $event->getData();
-                    $submittedOrganizationId = $data['organization'];
-                    if ($submittedOrganizationId) {
-                        $form->add('organization', EntityType::class, [
-                            'class' => 'App:Organization',
-                            'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
-                                return $er->createQueryBuilder('o')
-                                    ->andWhere('o.id = :submittedOrganizationId')
-                                    ->setParameter('submittedOrganizationId', $submittedOrganizationId);
-                            },
-                            'choice_label' => function (Organization $organization) {
-                                return $organization->getName().' '.($organization->getScan()?'📷':'🔒');
-                            },
-                            'multiple' => false,
-                            'expanded' => false,
-                            'required' => false,
-                            'placeholder' => '',
-                            'attr' => array(
-                                'class' => 'organization-ajax-filter-select'
-                            )
-                        ]);
+                    if (isset($data['organization'])) {
+                        $submittedOrganizationId = $data['organization'];
+                        if ($submittedOrganizationId) {
+                            $form->add('organization', EntityType::class, [
+                                'class' => 'App:Organization',
+                                'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
+                                    return $er->createQueryBuilder('o')
+                                        ->andWhere('o.id = :submittedOrganizationId')
+                                        ->setParameter('submittedOrganizationId', $submittedOrganizationId);
+                                },
+                                'choice_label' => function (Organization $organization) {
+                                    return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
+                                },
+                                'multiple' => false,
+                                'expanded' => false,
+                                'required' => false,
+                                'placeholder' => '',
+                                'attr' => array(
+                                    'class' => 'organization-ajax-filter-select'
+                                )
+                            ]);
+                        }
                     }
-
                 }
-            );
-        ;
+            );;
     }
 
     public function getBlockPrefix()
