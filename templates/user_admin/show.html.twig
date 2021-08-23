@@ -124,8 +124,8 @@
                    class="btn btn-primary btn-block">{{ "Edit"|trans }}</a>
             </div>
             <div class="col-md-2">
-                <a href="{{ path('user_admin_change_password', {'id': user.id}) }}"
-                   class="btn btn-outline-primary btn-block">{{ "Password change"|trans }}</a>
+                <a href="{{ path('user_admin_reset_password', {'id': user.id}) }}"
+                   class="btn btn-outline-primary btn-block">{{ "Password reset"|trans }}</a>
             </div>
             <div class="col-md-2">
                 {% if is_granted('ROLE_ALLOWED_TO_SWITCH') %}

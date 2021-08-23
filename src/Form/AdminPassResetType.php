@@ -7,17 +7,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-
-class UserPassSetType extends AbstractType
+class AdminPassResetType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('newPassword', PasswordType::class, ['constraints' => new Length(['min' => $_ENV['MIN_PASSWORD_LENGTH']])])
-            ->add('newPassword2', PasswordType::class)
-    
-        ;
+        $builder->add('submit', SubmitType::class, [
+            'attr' => ['class' => 'btn btn-primary'],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

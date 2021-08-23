@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\PassSetter;
+use App\Form\AdminPassResetType;
 use App\Form\UserPassSetType;
 use App\Model\PassHelperTools;
 use App\Model\StringTools;
@@ -15,8 +16,13 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -147,8 +153,65 @@ class UserAdminController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/change_password", name="user_admin_change_password", methods={"GET","POST"})
+     * @Route("/{id}/reset_password", name="user_admin_reset_password", methods={"GET","POST"})
      * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function resetPasswordAd(Request $request, User $user, UserPasswordEncoderInterface $encoder,
+                                    TranslatorInterface $translator, MailerInterface $mailer): Response
+    {
+
+        $requestedUser = $user;
+
+        $form = $this->createForm(AdminPassResetType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $requestedUser->setLastPassResetRequest(new \DateTime());
+            $paschangeToken = StringTools::randomString();
+            $requestedUser->setPassResetToken($paschangeToken);
+
+            $tokha = md5($paschangeToken);
+            $uri = $this->generateUrl('pass_reset_set_password', ['tokha' => $tokha,
+                'id' => $requestedUser->getId()
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            $message = (new Email())
+                ->subject($translator->trans('ResetPasswordRequestMailTitle'))
+                ->to($requestedUser->getEmail())
+                ->html(
+                    $this->renderView(
+                        'emails/pass_reset__request.html.twig',
+                        [
+                            'paschangeTokenHash' => $tokha,
+                            'uri' => $uri,
+                            'user' => $requestedUser
+                        ]
+                    ),
+                    'text/html'
+                );
+
+            $mlResult = $mailer->send($message);
+            dump($mlResult);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($requestedUser);
+            $em->flush();
+
+
+            $this->addFlash('success', $translator->trans("Password reset email sent."));
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('user_admin/reset_pass.html.twig', [
+            'form' => $form->createView(),
+            'user' => $user
+        ]);
+
+    }
+
+
+    /**
+     * @Route("/{id}/change_password", name="user_admin_change_password", methods={"GET","POST"})
+     * @Security("is_granted('ROLE_NON_EXISTING_ADMIN')")
      */
     public function changePassword(Request $request, User $user, UserPasswordEncoderInterface $encoder,
                                    TranslatorInterface $translator): Response
@@ -190,7 +253,7 @@ class UserAdminController extends AbstractController
                 'passChanger' => $passSetter,
                 'form' => $form->createView(),
                 'randomPasswords' => $randomPasswords,
-                'user'=>$user
+                'user' => $user
             ]);
         } else {
             return $this->render('error/common.html.twig', [

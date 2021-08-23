@@ -90,7 +90,7 @@ Password changed.: Password changed.
 New passwords not match.: New passwords not match.
 Error: Error
 Wrong or expired link.: Wrong or expired link.
-PasswordRequirements: The new password must be at least 20 characters long. This is the only limitation.
+PasswordRequirements: The new password must be at least %num% characters long. This is the only limitation.
 Confirm: Confirm
 Password inspirations: Password inspirations
 forUser: for
@@ -106,3 +106,6 @@ Current e-mail address: Obecny adres e-mail
 The request is out of date or has expired.: The request is out of date or has expired.
 The email address has been changed.: The email address has been changed.
 Change: Change
+Password reset email sent.: Password reset email sent.
+ResetPasswordTitle: Reset Password
+Password reset: Password reset

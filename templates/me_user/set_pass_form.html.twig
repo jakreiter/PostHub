@@ -5,7 +5,7 @@
                 {{ form_start(form, { 'attr': {'not-novalidate': 'novalidate'} }) }}
                 <input name="username" type="text"  autocomplete="username" value="{{ user.username }}" style="display: none">
                 <div class="alert alert-info" role="alert">
-                    {{ "PasswordRequirements"|trans }}
+                    {{ 'PasswordRequirements'|trans({'%num%': min_password_length}) }}
                 </div>
                 {{ form_widget(form) }}
 

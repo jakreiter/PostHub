@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reset password{% endblock %}
+
+{% block body %}
+    <h1>{{ "ResetPasswordTitle"|trans }} {{ "forUser"|trans }} <strong>{{ user }}</strong></h1>
+
+    {{ form_start(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}
