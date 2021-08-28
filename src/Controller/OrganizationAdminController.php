@@ -83,11 +83,6 @@ class OrganizationAdminController extends AbstractController
 
         $query = $filterBuilder->getQuery();
 
-        $pagination = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
-        );
 
         $organizations = $query->getResult();
 
@@ -123,8 +118,9 @@ class OrganizationAdminController extends AbstractController
                                             INDEX BY organization.id 
                                             WHERE (letter.organization IN (:organizations))      
                                             AND letter.scanOrdered IS NOT NULL
-                                            AND letter.scanOrdered BETWEEN :orderedFrom AND :orderedTill
-                                            GROUP BY organization.id')
+                                            AND letter.scanOrdered BETWEEN :orderedFrom AND :orderedTill 
+                                            GROUP BY organization.id
+                                            ')
                                             ->setParameter('organizations', $organizations)
                                             ->setParameter('orderedFrom', $orderedFrom)
                                             ->setParameter('orderedTill', $orderedTill);
@@ -132,6 +128,10 @@ class OrganizationAdminController extends AbstractController
             if ('dev' == $this->environment) {
                 dump($lettersPerOrgs);
             }
+            foreach ($organizations as $idOrg=>$organization) {
+                if (!isset($lettersPerOrgs[$idOrg])) unset($organizations[$idOrg]);
+            }
+
             /*
             $lettersPerOrgs = $scanReportQueryBuilder = $em->createQueryBuilder()
                 ->select([ 'Organization.id', 'COUNT(Letter)'])
@@ -154,7 +154,6 @@ class OrganizationAdminController extends AbstractController
         return $this->render('organization_admin/scan_report.html.twig', [
             'organizations' => $organizations,
             'lettersPerOrgs'=> $lettersPerOrgs,
-            'pagination' => $pagination,
             'form' => $filterForm->createView(),
         ]);
 

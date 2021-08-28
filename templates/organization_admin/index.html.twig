@@ -48,8 +48,8 @@
             <th{% if pagination.isSorted('Location.name') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Location'|trans, 'Location.name') }}
             </th>
-            <th{% if pagination.isSorted('Owner.username') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Owner'|trans, 'Owner.username') }}
+            <th{% if pagination.isSorted('Owner.lastName') %} class="sorted"{% endif %}>
+                {{ knp_pagination_sortable(pagination, 'Owner'|trans, 'Owner.lastName') }}
             </th>
             <th{% if pagination.isSorted('ScanPlan.name') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'ScanPlan'|trans, 'ScanPlan.name') }}

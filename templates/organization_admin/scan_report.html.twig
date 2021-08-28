@@ -51,24 +51,14 @@
         <thead class="thead-light">
         <tr>
             <th>Id</th>
-            <th{% if pagination.isSorted('Organization.name') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Name'|trans, 'Organization.name') }}
-            </th>
-            <th{% if pagination.isSorted('Location.name') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Location'|trans, 'Location.name') }}
-            </th>
-            <th{% if pagination.isSorted('Owner.username') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Owner'|trans, 'Owner.username') }}
-            </th>
-            <th{% if pagination.isSorted('ScanPlan.name') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'ScanPlan'|trans, 'ScanPlan.name') }}
-            </th>
-            <th{% if pagination.isSorted('Organization.Created') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Organization.created') }}
-            </th>
+            <th>{{ 'Organization'|trans }}</th>
+            <th>{{ 'Location'|trans }}</th>
+            <th>{{ 'Owner'|trans }} </th>
+            <th>{{ 'ScanPlan'|trans }}</th>
+            <th>{{ 'Created'|trans }}</th>
             <th class="text-right">{{ "numberOfScannedLetters"|trans }}</th>
             <th>{{ "scanLettersDue"|trans }}</th>
-            <th class="text-right">actions</th>
+            <th class="text-right">{{ "actions"|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -105,8 +95,5 @@
         </tbody>
     </table>
 
-    {# display navigation #}
-    <div class="navigation">
-        {{ knp_pagination_render(pagination) }}
-    </div>
+
 {% endblock %}

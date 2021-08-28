@@ -98,9 +98,10 @@ class Organization
     {
         $arr = [
             'id' => $this->getId(),
-            'text' => $this->getName().' '.($this->getScan()?'📷':'🔒'),
+            'text' => $this->getName().' ('.$this->getScanPlan().') '.($this->getScan()?'📷':'🔒'),
             'name' => $this->getName(),
             'scan' => $this->getScan(),
+            'scanPlan' => $this->getScanPlan()->getName(),
 
         ];
         if ($this->getLocation()) {

@@ -16,6 +16,11 @@
             <td>{{ organization.name }}</td>
         </tr>
         <tr>
+            <th>{{ "Comma separated emails"|trans }}</th>
+            <td>{{ organization.commaSeparatedEmails }}</td>
+        </tr>
+
+        <tr>
             <th>{{ "Location"|trans }}</th>
             <td>{% if organization.location %}
                 <a href="{{ path('location_admin_show', {'id': organization.location.id}) }}" class="">{{ organization.location }}</a>
@@ -35,6 +40,10 @@
             <th>{{ "Scan"|trans }}</th>
             <td>{{ organization.scan ? 'Yes' : 'No' }}</td>
         </tr>
+        <tr>
+            <th>{{ "Allow scan download without login"|trans }}</th>
+            <td>{{ organization.allowScanDownloadWithoutLogin ? 'Yes' : 'No' }}</td>
+        </tr>
         </tbody>
     </table>
 
@@ -43,10 +52,7 @@
 
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-2">
-                <a href="{{ path('organization_admin_index') }}"
-                   class="btn btn-secondary btn-block">{{ "Back to list"|trans }}</a>
-            </div>
+
             <div class="col-md-2">
                 <a href="{{ path('dh_auditor_show_entity_history', {'id': organization.id, 'entity': 'App-Entity-Organization'}) }}"
                    class="btn btn-outline-info btn-block">{{ "Audit"|trans }}</a>

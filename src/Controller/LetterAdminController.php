@@ -161,7 +161,7 @@ class LetterAdminController extends AbstractController
 
         if ($request->query->has($filterForm->getName())) {
             $filter = $request->query->get($filterForm->getName());
-            $filterForm->submit($filter);
+
 
             if (isset($filter['title']) && $filter['title']) {
                 $filterBuilder->andWhere('Letter.title LIKE :title')->setParameter('title', '%' . $filter['title'] . '%');
@@ -175,14 +175,19 @@ class LetterAdminController extends AbstractController
             if (isset($filter['barcodeNumber']) && $filter['barcodeNumber']) {
                 $filterBuilder->andWhere('Letter.barcodeNumber = :barcodeNumber')->setParameter('barcodeNumber', $filter['barcodeNumber']);
             }
+
+            if (isset($filter['hasOrderedScanInserted']) && $filter['hasOrderedScanInserted']) {
+                if (-1 == $filter['hasOrderedScanInserted']) {
+                    $filterBuilder->andWhere('Letter.scanInserted IS NULL');
+                    $filter['hasScanOrdered'] = 1;
+                }
+                if (1 == $filter['hasOrderedScanInserted']) $filterBuilder->andWhere('Letter.scanInserted IS NOT NULL');
+            }
             if (isset($filter['hasScanOrdered']) && $filter['hasScanOrdered']) {
                 if (-1==$filter['hasScanOrdered']) $filterBuilder->andWhere('Letter.scanOrdered IS NULL');
                 if ( 1==$filter['hasScanOrdered']) $filterBuilder->andWhere('Letter.scanOrdered IS NOT NULL');
             }
-            if (isset($filter['hasOrderedScanInserted']) && $filter['hasOrderedScanInserted']) {
-                if (-1 == $filter['hasOrderedScanInserted']) $filterBuilder->andWhere('Letter.scanInserted IS NULL');
-                if (1 == $filter['hasOrderedScanInserted']) $filterBuilder->andWhere('Letter.scanInserted IS NOT NULL');
-            }
+            $filterForm->submit($filter);
 
         }
 

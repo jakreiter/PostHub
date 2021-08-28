@@ -8,6 +8,7 @@ export default function (organizationInfo) {
     var $container = $(
         "<div class='sel-row'>" +
         " <span class='select2-result-repository__title'></span>" +
+        " <span class='select2-result-repository__splan badge badge-info'></span>" +
         " <span class='select2-result-repository__scan badge'></span>" +
         " <span class='select2-result-repository__location badge badge-info'></span>" +
         "</div>"
@@ -17,6 +18,8 @@ export default function (organizationInfo) {
     if (organizationInfo.scan) {
         $container.find(".select2-result-repository__scan").text('scan');
     }
+    $container.find(".select2-result-repository__splan").text(organizationInfo.scanPlan);
+
     if (organizationInfo.scan) $container.find(".select2-result-repository__scan").addClass('badge-success');
     else  $container.find(".select2-result-repository__scan").addClass('badge-secondary');
 
