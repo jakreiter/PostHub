@@ -102,7 +102,7 @@ class LetterUserController extends AbstractController
                 $letter->setScanDue($_ENV['SINGLE_SCAN_PRICE']);
                 $this->getDoctrine()->getManager()->flush();
                 $this->addFlash('success', $translator->trans('A scan of the letter has been ordered.'));
-                return $this->redirectToRoute('letter_user_index', ['id' => $letter->getOrganization()->getId()]);
+                //return $this->redirectToRoute('letter_user_index', ['id' => $letter->getOrganization()->getId()]);
             }
         }
 

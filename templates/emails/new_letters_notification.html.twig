@@ -1,5 +1,5 @@
 {# templates/emails/registration.html.twig #}
-<h1>{{ "New letters notification"|trans }}</h1>
+<h1>{{ "New letters notification"|trans }} dla <strong>{{ organization }}</strong></h1>
 
 
 <ol>
@@ -10,6 +10,9 @@
           skan:
          <a href="{{ url('letter_file_download_for_not_logged_in', {'id': letter.id, 'rapas': letter.rapas}) }}"
             class="">{{ letter.originalName }}</a>
+      {% else%}
+          <a href="{{ url('letter_user_order_scan', {'organization': letter.organization.id, 'letter': letter.id}) }}"
+             class="">[Zamów skan]</a>
       {% endif %}
    </li>
 {% endfor %}
