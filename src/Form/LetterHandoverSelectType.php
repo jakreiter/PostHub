@@ -26,8 +26,12 @@ class LetterHandoverSelectType extends AbstractType
             'label' => 'Prepare a printout of the handover',
             'attr' => ['class' => 'btn btn-primary'],
         ]);
-        $builder->add('changeStatusBtn', SubmitType::class, [
+        $builder->add('changeStatusToGivenToTheRecipientBtn', SubmitType::class, [
             'label' => 'Prepare a printout of the handover and Change status to Given to the recipient',
+            'attr' => ['class' => 'btn btn-primary'],
+        ]);
+        $builder->add('changeStatusToSentByTraditionalMailBtn', SubmitType::class, [
+            'label' => 'Prepare a printout of the handover and Change status to Given to Sent by traditional mail',
             'attr' => ['class' => 'btn btn-primary'],
         ]);
     }

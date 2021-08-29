@@ -107,8 +107,15 @@ class LetterAdminController extends AbstractController
             if ($selectForm->isSubmitted() && $selectForm->isValid()) {
 
                 $selectedLetters = $selectForm->get('letters')->getData();
-                if ($selectForm->get('changeStatusBtn')->isClicked()) {
-                    $givenStatus = $letterStatusRepository->find(5);
+                if ($selectForm->get('changeStatusToGivenToTheRecipientBtn')->isClicked()) {
+                    $givenStatus = $letterStatusRepository->find(5); // 5 - Given to the recipient
+                    foreach ($selectedLetters as $letter) {
+                        /** @var Letter $letter */
+                        $letter->setStatus($givenStatus);
+                    }
+                    $em->flush();
+                } else if ($selectForm->get('changeStatusToSentByTraditionalMailBtn')->isClicked()) {
+                    $givenStatus = $letterStatusRepository->find(7); // 7 - changeStatusToSentByTraditionalMailBtn
                     foreach ($selectedLetters as $letter) {
                         /** @var Letter $letter */
                         $letter->setStatus($givenStatus);

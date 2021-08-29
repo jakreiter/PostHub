@@ -185,7 +185,8 @@ Refresh the page to send more.: Refresh the page to send more.
 Completed scan notification: Powiadomienie o wykonanym skanie
 Scan orders pending: Zamówienia na skany czekające na realizację
 Prepare a printout of the handover: Wygeneruj protokół przekazania
-Prepare a printout of the handover and Change status to Given to the recipient: Wygeneruj protokół przekazania i zmień status przesyłek
+Prepare a printout of the handover and Change status to Given to the recipient: Wygeneruj protokół przekazania i zmień status przesyłek na Oddane odbiorcy
+Prepare a printout of the handover and Change status to Given to Sent by traditional mail	: Wygeneruj protokół przekazania i zmień status przesyłek na Wysłane pocztą
 Check all: Zaznacz wszystkie
 Password reset email sent.: E-mail umożliwiający ustawienie hasła został wysłany.
 Password reset: Reset hasła
