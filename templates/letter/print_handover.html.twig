@@ -6,7 +6,7 @@
 {% block body %}
     <div class="row">
         <div class="col-md-9">
-
+            <button class="btn btn-primary d-print-none print-this-page" data-controller="handover-print">{{ "Print this page"|trans }}</button>
         </div>
         <div class="col-md-3 text-right">
             {{ todaysDate|date('Y-m-d') }}
@@ -30,6 +30,7 @@
         <table class="table table-bordered">
             <thead class="thead-light">
             <tr>
+                <th>Lp</th>
                 <th>
                     {{ 'Sender'|trans }}
                 </th>
@@ -46,8 +47,11 @@
             </tr>
             </thead>
             <tbody>
+            {% set nri = 0 %}
             {% for letter in letters %}
+                {% set nri = nri +1 %}
                 <tr>
+                    <td>{{ nri }}</td>
                     <td>{{ letter.title }}</td>
                     <td>{% if letter.organization %}
                             <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
