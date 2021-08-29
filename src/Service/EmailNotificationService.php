@@ -86,10 +86,14 @@ class EmailNotificationService
                 $organization = $this->organizationRepository->find($orgId);
                 if ($organization) {
 
-                    if ($organization->getCommaSeparatedEmails())
-                        $commaSeparatedEmails = $organization->getCommaSeparatedEmails();
-                    else if ($organization->getOwner())
-                        $commaSeparatedEmails = $organization->getOwner()->getEmail();
+                    $commaSeparatedEmails = '';
+                    if ($organization->getCommaSeparatedEmails()) {
+                        $commaSeparatedEmails.= $organization->getCommaSeparatedEmails();
+                    }
+                    if ($organization->getOwner()) {
+                        if ($commaSeparatedEmails) $commaSeparatedEmails.=',';
+                        $commaSeparatedEmails.= $organization->getOwner()->getEmail();
+                    }
                     else {
                         $this->output->writeln("Owner: [".$organization->getOwner()."] <error>No e-mail</error>");
                         continue;
