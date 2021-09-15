@@ -121,7 +121,9 @@ class EmailNotificationService
                             foreach ($emails as $email) {
                                 $mailMessage->addTo($email);
                             }
-
+                            if ($_ENV['NOTIFICATION_BCC_EMAIL']) {
+                                $mailMessage->addBcc($_ENV['NOTIFICATION_BCC_EMAIL']);
+                            }
                             try {
                                 $entMessageInfo = $mailer->send($mailMessage);
                                 $messageId = $entMessageInfo->getMessageId();
