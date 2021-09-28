@@ -30,6 +30,7 @@ class OrganizationType extends AbstractType
                 'choice_label' => "name"
                 ])
             ->add('location')
+            ->add('numberOfDaysAfterWhichTheScansShouldBeDeleted')
             ->add('owner', EntityType::class, [
                 'class' => 'App:User',
                 'query_builder' => function (UserRepository $er) {

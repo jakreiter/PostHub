@@ -378,9 +378,10 @@ class LetterAdminController extends AbstractController
     /**
      * @Route("/delete:{id}", name="letter_admin_delete", methods={"POST"})
      */
-    public function delete(Request $request, Letter $letter): Response
+    public function delete(Request $request, Letter $letter, FileLetterService $fileLetterService): Response
     {
         if ($this->isCsrfTokenValid('delete' . $letter->getId(), $request->request->get('_token'))) {
+            $fileLetterService->deleteFile($letter);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($letter);
             $entityManager->flush();

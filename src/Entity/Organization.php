@@ -26,6 +26,7 @@ class Organization
      */
     private $id;
 
+
     /**
      * @ORM\Column(type="string", length=127)
      */
@@ -81,6 +82,11 @@ class Organization
      * @ORM\Column(type="datetime")
      */
     private $updated;
+
+    /**
+     * @ORM\Column(type="integer", nullable=false, options={"default":0})
+     */
+    private $numberOfDaysAfterWhichTheScansShouldBeDeleted=0;
 
     public function __construct()
     {
@@ -280,6 +286,20 @@ class Organization
 
         return $this;
     }
+
+    public function getNumberOfDaysAfterWhichTheScansShouldBeDeleted(): int
+    {
+        return $this->numberOfDaysAfterWhichTheScansShouldBeDeleted;
+    }
+
+    public function setNumberOfDaysAfterWhichTheScansShouldBeDeleted(int $numberOfDaysAfterWhichTheScansShouldBeDeleted): self
+    {
+        $this->numberOfDaysAfterWhichTheScansShouldBeDeleted = $numberOfDaysAfterWhichTheScansShouldBeDeleted;
+
+
+        return $this;
+    }
+
 
 
 }
