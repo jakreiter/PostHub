@@ -324,6 +324,10 @@ table.layout-fixed {
   border-bottom: 1px solid #888;
 }
 
+.letter_row .form-group {
+  margin-bottom: 2px;
+}
+
 label.required:before {
   content: "* ";
   color: #aaa;
