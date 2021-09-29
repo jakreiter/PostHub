@@ -23,13 +23,19 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
 use App\Service\RecaptchaService;
+use App\Service\EmailNotificationService;
 
 /**
  * @Route("/pass_reset")
  */
 class PassResetController extends AbstractController
 {
+    private $emailNotificationService;
 
+    public function __construct(EmailNotificationService $emailNotificationService)
+    {
+        $this->emailNotificationService = $emailNotificationService;
+    }
 
     /**
      * @Route("/", name="pass_reset_email", methods="GET|POST")
@@ -84,7 +90,7 @@ class PassResetController extends AbstractController
                         ->to($passResetEmail->getEmail())
                         ->html(
                             $this->renderView(
-                                'emails/pass_reset__request.html.twig',
+                                $this->emailNotificationService->getRightEmailTemplate('pass_reset__request.html.twig') ,
                                 [
                                     'paschangeTokenHash' => $tokha,
                                     'uri' => $uri,

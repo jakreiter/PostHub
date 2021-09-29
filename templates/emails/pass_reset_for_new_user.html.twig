@@ -1,4 +1,3 @@
-{# templates/emails/registration.html.twig #}
 <h1>{{ "PasswordResetRequestForNewAccountTitle"|trans }}</h1>
 
 <a href="{{ uri }}">{{ "ClickToSetNewPasswordForNewAccountLinkTitle"|trans }}</a>
@@ -8,4 +7,4 @@
 
 
 
-{% include 'emails/mail_footer.html.twig' %}
+{% include ['emails_customized/mail_footer.html.twig' 'emails/mail_footer.html.twig'] %}

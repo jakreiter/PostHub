@@ -1,22 +1,22 @@
-{# templates/emails/registration.html.twig #}
-<h1>{{ "New letters notification"|trans }} dla <strong>{{ organization }}</strong></h1>
+<h1>{{ "New letters notification"|trans }} {{ "for"|trans }} <strong>{{ organization }}</strong></h1>
 
 
 <ol>
-{% for letter in letters %}
-   <li><a href="{{ url('letter_user_show', {'organization': letter.organization.id, 'letter': letter.id }) }}"
-          class="">{{ letter.title }}</a>
-      {% if letter.originalName %}
-          skan:
-         <a href="{{ url('letter_file_download_for_not_logged_in', {'id': letter.id, 'rapas': letter.rapas}) }}"
-            class="">{{ letter.originalName }}</a>
-      {% else%}
-          <a href="{{ url('letter_user_order_scan', {'organization': letter.organization.id, 'letter': letter.id}) }}"
-             class="">[Zamów skan]</a>
-      {% endif %}
-   </li>
-{% endfor %}
+    {% for letter in letters %}
+        <li><a href="{{ url('letter_user_show', {'organization': letter.organization.id, 'letter': letter.id }) }}"
+               class="">{{ letter.title }}</a>
+            {% if letter.originalName %}
+                skan:
+                <a href="{{ url('letter_file_download_for_not_logged_in', {'id': letter.id, 'rapas': letter.rapas}) }}"
+                   class="">{{ letter.originalName }}</a>
+            {% else%}
+                <a href="{{ url('letter_user_order_scan', {'organization': letter.organization.id, 'letter': letter.id}) }}"
+                   class="">[Zamów skan]</a>
+            {% endif %}
+        </li>
+    {% endfor %}
 </ol>
 
 
-{% include 'emails/mail_footer.html.twig' %}
+{% include ['emails_customized/mail_footer.html.twig', 'emails/mail_footer.html.twig'] %}
+

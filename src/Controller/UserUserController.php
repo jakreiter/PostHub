@@ -8,6 +8,7 @@ use App\Form\MeUserPassType;
 use App\Form\MeUserEmailConfirmationType;
 use App\Model\StringTools;
 use App\Repository\UserRepository;
+use App\Service\EmailNotificationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,12 @@ use Symfony\Component\Mime\Email;
 class UserUserController extends AbstractController
 {
 
+    private $emailNotificationService;
+
+    public function __construct(EmailNotificationService $emailNotificationService)
+    {
+        $this->emailNotificationService = $emailNotificationService;
+    }
 
     /**
      * @Route("/", name="self_user_show", methods="GET")
@@ -131,7 +138,7 @@ class UserUserController extends AbstractController
                     ->to($requestedUser->getEmail())
                     ->html(
                         $this->renderView(
-                            'emails/changing_email_information.html.twig',
+                            $this->emailNotificationService->getRightEmailTemplate('changing_email_information.html.twig'),
                             [
                                 'newEmail' => $newEmail,
                                 'user' => $requestedUser
@@ -147,7 +154,7 @@ class UserUserController extends AbstractController
                     ->to($newEmail)
                     ->html(
                         $this->renderView(
-                            'emails/change_email_request.html.twig',
+                            $this->emailNotificationService->getRightEmailTemplate('change_email_request.html.twig'),
                             [
                                 'paschangeTokenHash' => $tokha,
                                 'uri' => $uri,

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Notification;
 use App\Form\LetterHandoverSelectType;
+use App\Service\EmailNotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -24,6 +25,7 @@ use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Model\TemplateCustomizer;
 
 /**
  * @Route("/kadmin/letter")
@@ -31,13 +33,15 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 class LetterAdminController extends AbstractController
 {
     private $slugger;
+    private $emailNotificationService;
 
     public function __construct(SluggerInterface $slugger, TransportInterface $mailer, TranslatorInterface $translator,
-                                UrlGeneratorInterface $router)
+                                UrlGeneratorInterface $router, EmailNotificationService $emailNotificationService)
     {
         $this->slugger = $slugger;
         $this->mailer = $mailer;
         $this->translator = $translator;
+        $this->emailNotificationService = $emailNotificationService;
     }
 
     /**
@@ -304,9 +308,10 @@ class LetterAdminController extends AbstractController
                             if (count($letters)) {
                                 $emails = explode(',', $commaSeparatedEmails);
                                 $subject = $translator->trans('Completed scan notification');
+                                $templateFilenameToUse = $this->emailNotificationService->getRightEmailTemplate('completed_scan_notification.html.twig');
                                 $mailMessage = (new TemplatedEmail())
                                     ->subject($subject)
-                                    ->htmlTemplate('emails/completed_scan_notification.html.twig')
+                                    ->htmlTemplate($templateFilenameToUse)
                                     ->context(['organization' => $organization, 'letters' => $letters]);
 
                                 foreach ($emails as $email) {

@@ -28,11 +28,12 @@ class EmailNotificationService
 
     private $letterRepository;
     private $organizationRepository;
+    private $projectDir;
 
     public function __construct(EntityManagerInterface $em, $environment, ManagerRegistry $doctrine, ParameterBagInterface $parameterBag,
                                 TransportInterface $mailer, TranslatorInterface $translator,
                                 UrlGeneratorInterface $router,
-                                LetterRepository $letterRepository, OrganizationRepository $organizationRepository)
+                                LetterRepository $letterRepository, OrganizationRepository $organizationRepository, $projectDir)
     {
         $this->doctrine = $doctrine;
         $this->mailer = $mailer;
@@ -42,6 +43,7 @@ class EmailNotificationService
 
         $this->em = $em;
         $this->environment = $environment;
+        $this->projectDir = $projectDir;
     }
 
     public function setOutput(OutputInterface $output)
@@ -113,9 +115,13 @@ class EmailNotificationService
                         if (count($letters)) {
                             $emails = explode(',', $commaSeparatedEmails);
                             $subject = $translator->trans('New letters notification');
+                            $emailTemplate = $this->getRightEmailTemplate('new_letters_notification.html.twig');
+                            if ($this->output) {
+                                $this->output->write(" Template: ".$emailTemplate . "\t ");
+                            }
                             $mailMessage = (new TemplatedEmail())
                                 ->subject($subject)
-                                ->htmlTemplate('emails/new_letters_notification.html.twig')
+                                ->htmlTemplate($emailTemplate)
                                 ->context(['organization' => $organization, 'letters' => $letters]);
 
                             foreach ($emails as $email) {
@@ -168,4 +174,11 @@ class EmailNotificationService
         return $notifications;
     }
 
+    public function getRightEmailTemplate($templateFilenameAlone): string
+    {
+        $defaultTemplateFilename = 'emails'.DIRECTORY_SEPARATOR.$templateFilenameAlone;
+        $customizedTemplateFilename = 'emails_customized'.DIRECTORY_SEPARATOR.$templateFilenameAlone;
+        $templateFilenameToUse = file_exists($this->projectDir.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR.$customizedTemplateFilename) ? $customizedTemplateFilename : $defaultTemplateFilename;
+        return $templateFilenameToUse;
+    }
 }

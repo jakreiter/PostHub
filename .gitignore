@@ -24,3 +24,10 @@ yarn-error.log
 /.idea/
 /toProd.sh
 /str.sql
+/templates/emails_customized/change_email_request.html.twig
+/templates/emails_customized/changing_email_information.html.twig
+/templates/emails_customized/completed_scan_notification.html.twig
+/templates/emails_customized/mail_footer.html.twig
+/templates/emails_customized/new_letters_notification.html.twig
+/templates/emails_customized/pass_reset__request.html.twig
+/templates/emails_customized/pass_reset_for_new_user.html.twig

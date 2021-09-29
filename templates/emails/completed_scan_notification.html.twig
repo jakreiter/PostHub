@@ -1,4 +1,3 @@
-{# templates/emails/registration.html.twig #}
 <h1>{{ "Completed scan notification"|trans }}</h1>
 
 
@@ -16,4 +15,4 @@
 </ol>
 
 
-{% include 'emails/mail_footer.html.twig' %}
+{% include ['emails_customized/mail_footer.html.twig', 'emails/mail_footer.html.twig'] %}

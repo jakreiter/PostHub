@@ -7,6 +7,7 @@ use App\Form\AdminPassResetType;
 use App\Form\UserPassSetType;
 use App\Model\PassHelperTools;
 use App\Model\StringTools;
+use App\Service\EmailNotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\User;
@@ -33,6 +34,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  */
 class UserAdminController extends AbstractController
 {
+    private $emailNotificationService;
+
+    public function __construct(EmailNotificationService $emailNotificationService)
+    {
+        $this->emailNotificationService = $emailNotificationService;
+    }
+
     /**
      * @Route("/find.{_format}",
      *      requirements = { "_format" = "html|json" },
@@ -180,7 +188,7 @@ class UserAdminController extends AbstractController
                 ->to($requestedUser->getEmail())
                 ->html(
                     $this->renderView(
-                        'emails/pass_reset__request.html.twig',
+                        $this->emailNotificationService->getRightEmailTemplate('pass_reset__request.html.twig'),
                         [
                             'paschangeTokenHash' => $tokha,
                             'uri' => $uri,
@@ -191,7 +199,7 @@ class UserAdminController extends AbstractController
                 );
 
             $mlResult = $mailer->send($message);
-            dump($mlResult);
+
             $em = $this->getDoctrine()->getManager();
             $em->persist($requestedUser);
             $em->flush();
