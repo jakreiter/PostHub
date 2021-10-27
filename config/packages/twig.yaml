@@ -8,3 +8,6 @@ twig:
         recaptcha_sitekey: '%recaptcha_sitekey%'
         single_scan_price: '%single_scan_price%'
         single_scan_currency: '%single_scan_currency%'
+        use_barcodes: '%env(USE_BARCODES)%'
+
+

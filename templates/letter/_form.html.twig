@@ -16,12 +16,14 @@
             <div class="col-md-2">
                 {{ form_row(form.status) }}
             </div>
-            <div class="col-md-2">
+            <div class="{% if use_barcodes %}col-md-2{% else %}col-md-4{% endif %}">
                 {{ form_row(form.file) }}
             </div>
+            {% if use_barcodes %}
             <div class="col-md-2">
                 {{ form_row(form.barcodeNumber) }}
             </div>
+            {% endif %}
             <div class="col-md-1">
                 <label style="min-width: 100px;"> &nbsp; </label>
                 <div class="btnSubmitNormal">

@@ -26,7 +26,7 @@ class LetterType extends AbstractType
                     'class' => 'ltr_title' // form-control
                 ]
             ])
-            ->add('barcodeNumber')
+
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
@@ -130,7 +130,10 @@ class LetterType extends AbstractType
                     }
 
                 }
-            );;
+            );
+            if ($_ENV['USE_BARCODES']) {
+                $builder->add('barcodeNumber');
+            }
     }
 
     public function configureOptions(OptionsResolver $resolver)

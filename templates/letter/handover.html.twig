@@ -13,9 +13,11 @@
         <div class="col-md-3">
             {{ form_row(filterForm.statuses) }}
         </div>
+        {% if filterForm.barcodes is defined %}
         <div class="col-md-3">
             {{ form_row(filterForm.barcodes) }}
         </div>
+        {% endif %}
         <div class="col-md-1">
             <label style="min-width: 100px;"> &nbsp; </label>
             <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
@@ -49,9 +51,11 @@
                 <th>
                     {{ 'Scan file'|trans }}
                 </th>
+                {% if use_barcodes %}
                 <th>
                     {{ 'Barcode number'|trans }}
                 </th>
+                {% endif %}
                 <th>
                     {{ 'Created'|trans }}
                 </th>
@@ -77,7 +81,9 @@
                                class="">{{ letter.originalName }}</a>
                         {% endif %}
                     </td>
+                    {% if use_barcodes %}
                     <td>{{ letter.barcodeNumber }}</td>
+                    {% endif %}
                     <td>{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</td>
                     <td>
                         <a href="{{ path('letter_admin_show', {'id': letter.id}) }}"

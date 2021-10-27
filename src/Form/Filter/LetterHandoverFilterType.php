@@ -19,12 +19,6 @@ class LetterHandoverFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('barcodes', TextareaType::class, [
-                'required'=>false,
-                'attr'=> [
-                    'rows'=>3
-                ]
-            ])
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
@@ -33,7 +27,7 @@ class LetterHandoverFilterType extends AbstractType
                         ->setMaxResults(5);
                 },
                 'choice_label' => function (Organization $organization) {
-                    return $organization->getName().' '.($organization->getScan()?'📷':'🔒');
+                    return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
                 },
                 'multiple' => false,
                 'expanded' => false,
@@ -48,8 +42,7 @@ class LetterHandoverFilterType extends AbstractType
                 'label' => 'Statuses',
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
-                        ->orderBy('o.name', 'ASC')
-                        ;
+                        ->orderBy('o.name', 'ASC');
                 },
                 'choice_label' => function (LetterStatus $letterStatus) {
                     return $letterStatus->getName();
@@ -59,10 +52,9 @@ class LetterHandoverFilterType extends AbstractType
                 'required' => false,
                 'placeholder' => '',
                 'attr' => array(
-                    'class'=>''
+                    'class' => ''
                 )
             ])
-
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) {
@@ -79,7 +71,7 @@ class LetterHandoverFilterType extends AbstractType
                                     ->setParameter('submittedOrganizationId', $submittedOrganizationId);
                             },
                             'choice_label' => function (Organization $organization) {
-                                return $organization->getName().' '.($organization->getScan()?'📷':'🔒');
+                                return $organization->getName() . ' ' . ($organization->getScan() ? '📷' : '🔒');
                             },
                             'multiple' => false,
                             'expanded' => false,
@@ -93,7 +85,15 @@ class LetterHandoverFilterType extends AbstractType
 
                 }
             );
-        ;
+
+        if ($_ENV['USE_BARCODES']) {
+            $builder->add('barcodes', TextareaType::class, [
+                'required' => false,
+                'attr' => [
+                    'rows' => 3
+                ]
+            ]);
+        }
     }
 
     public function getBlockPrefix()

@@ -6,7 +6,8 @@
 {% block body %}
     <div class="row">
         <div class="col-md-9">
-            <button class="btn btn-primary d-print-none print-this-page" data-controller="handover-print">{{ "Print this page"|trans }}</button>
+            <button class="btn btn-primary d-print-none print-this-page"
+                    data-controller="handover-print">{{ "Print this page"|trans }}</button>
         </div>
         <div class="col-md-3 text-right">
             {{ todaysDate|date('Y-m-d') }}
@@ -37,10 +38,11 @@
                 <th>
                     {{ 'Organization'|trans }}
                 </th>
-
-                <th>
-                    {{ 'Barcode number'|trans }}
-                </th>
+                {% if use_barcodes %}
+                    <th>
+                        {{ 'Barcode number'|trans }}
+                    </th>
+                {% endif %}
                 <th>
                     {{ 'Date of receipt of the letter'|trans }}
                 </th>
@@ -58,8 +60,11 @@
                                class="">{{ letter.organization }}</a>
                         {% endif %}
                     </td>
-                    <td>{{ letter.barcodeNumber }}</td>
+                    {% if use_barcodes %}
+                        <td>{{ letter.barcodeNumber }}</td>
+                    {% endif %}
                     <td>{{ letter.created ? letter.created|date('Y-m-d') : '' }}</td>
+
                 </tr>
             {% else %}
 

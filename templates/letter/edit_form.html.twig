@@ -14,9 +14,11 @@
             <div class="col-md-2">
                 {{ form_row(form.file) }}
             </div>
+            {% if barcodeNumber is defined %}
             <div class="col-md-2">
                 {{ form_row(form.barcodeNumber) }}
             </div>
+            {% endif %}
             <div class="col-md-1">
                 <label style="min-width: 100px;"> &nbsp; </label>
                 <div class="btnSubmitNormal">

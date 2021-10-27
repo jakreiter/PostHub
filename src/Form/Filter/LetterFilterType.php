@@ -21,7 +21,6 @@ class LetterFilterType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['required' => false])
-            ->add('barcodeNumber', TextType::class, ['required' => false])
             ->add('organization', EntityType::class, [
                 'class' => 'App:Organization',
                 'query_builder' => function (OrganizationRepository $er) {
@@ -99,7 +98,10 @@ class LetterFilterType extends AbstractType
                         }
                     }
                 }
-            );;
+            );
+        if ($_ENV['USE_BARCODES']) {
+            $builder->add('barcodeNumber', TextType::class, ['required' => false]);
+        }
     }
 
     public function getBlockPrefix()

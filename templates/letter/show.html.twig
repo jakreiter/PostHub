@@ -19,10 +19,12 @@
                 <th>{{ "Status"|trans }}</th>
                 <td>{{ letter.status }}</td>
             </tr>
+            {% if use_barcodes %}
             <tr>
                 <th>{{ "Barcode"|trans }}</th>
                 <td>{{ letter.barcodeNumber }}</td>
             </tr>
+            {% endif %}
             <tr>
                 <th>{{ "Organization"|trans }}</th>
                 <td><a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
