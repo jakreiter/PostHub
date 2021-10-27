@@ -62,7 +62,7 @@ class LetterType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '2048k',
+                        'maxSize' => $_ENV['MAX_UPLOAD_FILE_SIZE'],
                         'mimeTypes' => [
                             'application/pdf',
                             'application/x-pdf',
