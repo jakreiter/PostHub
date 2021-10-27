@@ -23,11 +23,21 @@ export default function rebind() {
      *
      * TODO: Recheck with the select2 GH issue and remove once this is fixed on their side
      */
+    $(document).on('select2:open', () => {
+        document.querySelector('.select2-search__field').focus();
+    });
 
-    $(document).on("select2:open", () => {
-        document.querySelector(".select2-container--open .select2-search__field").focus()
-    })
+    // on first focus (bubbles up to document), open the menu
+    $(document).on('focus', '.select2-selection.select2-selection--single', function (e) {
+        $(this).closest(".select2-container").siblings('select:enabled').select2('open');
+    });
 
+    // steal focus during close - only capture once and stop propogation
+    $('select.select2').on('select2:closing', function (e) {
+        $(e.target).data("select2").$selection.one('focus focusin', function (e) {
+            e.stopPropagation();
+        });
+    });
 
     $(function () {
         $("table.sortable").tablesorter({
