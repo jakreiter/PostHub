@@ -31,3 +31,4 @@ yarn-error.log
 /templates/emails_customized/new_letters_notification.html.twig
 /templates/emails_customized/pass_reset__request.html.twig
 /templates/emails_customized/pass_reset_for_new_user.html.twig
+/notification_sender.txt

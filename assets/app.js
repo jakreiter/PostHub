@@ -15,7 +15,7 @@ global.$ = global.jQuery = $;
 import 'bootstrap';
 import 'tablesorter';
 require('@fortawesome/fontawesome-free/js/all.js');
-
+import 'startbootstrap-sb-admin-2/scss/sb-admin-2.scss';
 import 'select2';
 import capPassReset from './js/captcha_submit_pass_reset';
 import capRegister from './js/captcha_submit_register';
