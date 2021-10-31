@@ -16,7 +16,6 @@ class LetterUserFilterType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, ['required'=>false])
-            ->add('barcodeNumber', TextType::class, ['required'=>false])
             ->add('status', EntityType::class, [
                 'class' => 'App:LetterStatus',
                 'query_builder' => function (LetterStatusRepository $er) {
@@ -34,7 +33,10 @@ class LetterUserFilterType extends AbstractType
                 'attr' => array(
 
                 )
-            ])
+            ]);
+            if ($_ENV['USE_BARCODES']) {
+                $builder->add('barcodeNumber', TextType::class, ['required'=>false]);
+            }
 
         ;
     }

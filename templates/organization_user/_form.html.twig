@@ -1,0 +1,30 @@
+{{ form_start(form) }}
+
+<div class="container-fluid">
+
+
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_row(form.allowScanDownloadWithoutLogin) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_row(form.commaSeparatedEmails) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            {{ form_rest(form) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9"></div>
+        <div class="col-md-3">
+            <button class="btn btn-success btn-block">{{ button_label|default('Save') }}</button>
+        </div>
+    </div>
+
+</div>
+
+{{ form_end(form) }}

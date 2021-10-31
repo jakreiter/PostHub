@@ -3,7 +3,9 @@
 {% block title %}{{ "Letters"|trans }} - {{ application_name }}{% endblock %}
 
 {% block body %}
-    <h1>Letters</h1>
+    <h1>{{ organization }} <a href="{{ path('organization_user_edit', {'id': organization.id}) }}"
+                              class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a></h1>
+    <h2>{{ "Letters"|trans }}</h2>
 
     {{ form_start(form, {'action': path('letter_user_index', {'id':organization.id}), 'method': 'GET'}) }}
 
@@ -14,9 +16,11 @@
         <div class="col-md-2">
             {{ form_row(form.status) }}
         </div>
+        {% if form.barcodeNumber is defined %}
         <div class="col-md-2">
             {{ form_row(form.barcodeNumber) }}
         </div>
+        {% endif %}
         <div class="col-md-1">
             <label style="min-width: 100px;"> &nbsp; </label>
             <button class="btn btn-primary btn-block">{{ "Filter"|trans }}</button>
@@ -47,9 +51,11 @@
             <th{% if pagination.isSorted('letter.originalName') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Scan file'|trans, 'Letter.originalName') }}
             </th>
+            {% if use_barcodes %}
             <th{% if pagination.isSorted('letter.BarcodeNumber') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Barcode number'|trans, 'Letter.barcodeNumber') }}
             </th>
+            {% endif %}
             <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
             </th>

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "Edit Organization"|trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ "Edit Organization"|trans }}</h1>
+
+    {{ include('organization_user/_form.html.twig', {'button_label': 'Save'|trans}) }}
+
+
+
+{% endblock %}
