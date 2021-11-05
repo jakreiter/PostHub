@@ -13,7 +13,6 @@
         "sass": "1.32.12",
         "sass-loader": "^11.0.1",
         "select2": "4.0",
-        "startbootstrap-sb-admin-2": "^4.1.4",
         "stimulus": "^2.0.0",
         "tablesorter": "^2.31.3",
         "webpack-notifier": "^1.6.0"
