@@ -80,7 +80,7 @@
                 {% if use_barcodes %}
                     <td>{{ letter.barcodeNumber }}</td>
                 {% endif %}
-                <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</td>
                 <td>{{ letter.scanOrdered ? 'Yes'|trans : 'No'|trans }}</td>
                 <td>
                     <a href="{{ path('letter_user_show', {'organization': letter.organization.id, 'letter': letter.id}) }}"

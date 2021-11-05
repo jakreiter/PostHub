@@ -18,9 +18,9 @@
             {{ form_row(form.status) }}
         </div>
         {% if use_barcodes %}
-        <div class="col-md-2">
-            {{ form_row(form.barcodeNumber) }}
-        </div>
+            <div class="col-md-2">
+                {{ form_row(form.barcodeNumber) }}
+            </div>
         {% endif %}
     </div>
     <div class="row">
@@ -63,9 +63,9 @@
                 {{ knp_pagination_sortable(pagination, 'Scan file'|trans, 'Letter.originalName') }}
             </th>
             {% if use_barcodes %}
-            <th{% if pagination.isSorted('letter.BarcodeNumber') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Barcode number'|trans, 'Letter.barcodeNumber') }}
-            </th>
+                <th{% if pagination.isSorted('letter.BarcodeNumber') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Barcode number'|trans, 'Letter.barcodeNumber') }}
+                </th>
             {% endif %}
             <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
@@ -87,30 +87,46 @@
             <tr>
                 <td>{{ letter.title }}</td>
                 <td>{% if letter.organization %}
-                    <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
-                       class="">{{ letter.organization }}</a>
+                        <a href="{{ path('organization_admin_show', {'id': letter.organization.id}) }}"
+                           class="">{{ letter.organization }}</a>
                     {% endif %}
                 </td>
                 <td>{{ letter.status }}</td>
                 <td>
                     {% if letter.originalName %}
                         <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
-                           class="">{{ letter.originalName }}</a>
+                           class="" title="{{ letter.originalName }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf-fill" viewBox="0 0 16 16">
+                                <path d="M5.523 12.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.36.106-.165.319-.354.647-.548zm2.455-1.647c-.119.025-.237.05-.356.078a21.148 21.148 0 0 0 .5-1.05 12.045 12.045 0 0 0 .51.858c-.217.032-.436.07-.654.114zm2.525.939a3.881 3.881 0 0 1-.435-.41c.228.005.434.022.612.054.317.057.466.147.518.209a.095.095 0 0 1 .026.064.436.436 0 0 1-.06.2.307.307 0 0 1-.094.124.107.107 0 0 1-.069.015c-.09-.003-.258-.066-.498-.256zM8.278 6.97c-.04.244-.108.524-.2.829a4.86 4.86 0 0 1-.089-.346c-.076-.353-.087-.63-.046-.822.038-.177.11-.248.196-.283a.517.517 0 0 1 .145-.04c.013.03.028.092.032.198.005.122-.007.277-.038.465z"/>
+                                <path fill-rule="evenodd" d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm5.5 1.5v2a1 1 0 0 0 1 1h2l-3-3zM4.165 13.668c.09.18.23.343.438.419.207.075.412.04.58-.03.318-.13.635-.436.926-.786.333-.401.683-.927 1.021-1.51a11.651 11.651 0 0 1 1.997-.406c.3.383.61.713.91.95.28.22.603.403.934.417a.856.856 0 0 0 .51-.138c.155-.101.27-.247.354-.416.09-.181.145-.37.138-.563a.844.844 0 0 0-.2-.518c-.226-.27-.596-.4-.96-.465a5.76 5.76 0 0 0-1.335-.05 10.954 10.954 0 0 1-.98-1.686c.25-.66.437-1.284.52-1.794.036-.218.055-.426.048-.614a1.238 1.238 0 0 0-.127-.538.7.7 0 0 0-.477-.365c-.202-.043-.41 0-.601.077-.377.15-.576.47-.651.823-.073.34-.04.736.046 1.136.088.406.238.848.43 1.295a19.697 19.697 0 0 1-1.062 2.227 7.662 7.662 0 0 0-1.482.645c-.37.22-.699.48-.897.787-.21.326-.275.714-.08 1.103z"/>
+                            </svg>
+                        </a>
                     {% endif %}
                 </td>
                 {% if use_barcodes %}
-                <td>{{ letter.barcodeNumber }}</td>
+                    <td>{{ letter.barcodeNumber }}</td>
                 {% endif %}
-                <td>{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</td>
-                <td>{{ letter.scanOrdered ? letter.scanOrdered|date('Y-m-d H:i') : '' }}</td>
-                <td>{{ letter.scanInserted ? letter.scanInserted|date('Y-m-d H:i') : '' }}</td>
-                <td>{{ letter.scanDue  }}</td>
-                <td>
+                <td><span class="nobr">{{ letter.created ? letter.created|date('Y-m-d H:i') : '' }}</span></td>
+                <td><span class="nobr">{{ letter.scanOrdered ? letter.scanOrdered|date('Y-m-d H:i') : '' }}</span></td>
+                <td><span class="nobr">{{ letter.scanInserted ? letter.scanInserted|date('Y-m-d H:i') : '' }}</span>
+                </td>
+                <td>{{ letter.scanDue }}</td>
+                <td><span class="nobr">
                     <a href="{{ path('letter_admin_show', {'id': letter.id}) }}"
-                       class="btn btn-sm btn-success">{{ "btnShow"|trans }}</a>
+                       class="btn btn-sm btn-success" title="{{ "btnShow"|trans }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                             class="bi bi-eye-fill" viewBox="0 0 16 16">
+  <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+  <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+</svg> </a>
                     <a href="{{ path('letter_admin_edit', {'id': letter.id}) }}"
-                       class="btn btn-sm btn-primary">{{ "btnEdit"|trans }}</a>
-
+                       class="btn btn-sm btn-primary" title="{{ "btnEdit"|trans }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                         class="bi bi-pen-fill" viewBox="0 0 16 16">
+  <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z"/>
+</svg>
+                    </a>
+                    </span>
                 </td>
             </tr>
         {% else %}
