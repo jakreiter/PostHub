@@ -17,9 +17,9 @@
             {{ form_row(form.status) }}
         </div>
         {% if form.barcodeNumber is defined %}
-        <div class="col-md-2">
-            {{ form_row(form.barcodeNumber) }}
-        </div>
+            <div class="col-md-2">
+                {{ form_row(form.barcodeNumber) }}
+            </div>
         {% endif %}
         <div class="col-md-1">
             <label style="min-width: 100px;"> &nbsp; </label>
@@ -52,9 +52,9 @@
                 {{ knp_pagination_sortable(pagination, 'Scan file'|trans, 'Letter.originalName') }}
             </th>
             {% if use_barcodes %}
-            <th{% if pagination.isSorted('letter.BarcodeNumber') %} class="sorted"{% endif %}>
-                {{ knp_pagination_sortable(pagination, 'Barcode number'|trans, 'Letter.barcodeNumber') }}
-            </th>
+                <th{% if pagination.isSorted('letter.BarcodeNumber') %} class="sorted"{% endif %}>
+                    {{ knp_pagination_sortable(pagination, 'Barcode number'|trans, 'Letter.barcodeNumber') }}
+                </th>
             {% endif %}
             <th{% if pagination.isSorted('letter.Created') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Created'|trans, 'Letter.created') }}
@@ -77,7 +77,9 @@
                            class="">{{ letter.originalName }}</a>
                     {% endif %}
                 </td>
-                <td>{{ letter.barcodeNumber }}</td>
+                {% if use_barcodes %}
+                    <td>{{ letter.barcodeNumber }}</td>
+                {% endif %}
                 <td>{{ letter.created ? letter.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ letter.scanOrdered ? 'Yes'|trans : 'No'|trans }}</td>
                 <td>
