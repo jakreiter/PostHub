@@ -92,7 +92,7 @@ class DownloadController extends AbstractController
     {
         $entityManager = $this->getDoctrine()->getManager();
         $file = $this->fileLetterService->getFilePath($letter);
-        if (file_exists($file)) {
+        if (file_exists($file) && is_file($file)) {
             $response = new BinaryFileResponse($file);
             $response->setContentDisposition(
             // ResponseHeaderBag::DISPOSITION_ATTACHMENT,
