@@ -93,7 +93,7 @@
                 </td>
                 <td>{{ letter.status }}</td>
                 <td>
-                    {% if letter.originalName %}
+                    {% if letter.fileName %}
                         <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
                            class="" title="{{ letter.originalName }}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf-fill" viewBox="0 0 16 16">
