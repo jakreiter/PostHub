@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nie znaleziono strony{% endblock %}
+{% block title %}{{ Error }} {{ status_code }}{% endblock %}
 
 {% block body %}
-    <h1>Nie znaleziono strony</h1>
+    <h1>{{ "Error"|trans }} {{ status_code }}: {{ "Page not found"|trans }}</h1>
 
     <div><p>{% if msg is defined and msg %}{{ msg|nl2br }}{% else %}{% endif %}</p></div>
     <div>

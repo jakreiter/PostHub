@@ -92,6 +92,7 @@ Actions: Akcje
 Password changed.: Hasło zmienione.
 New passwords not match.: Hasła nie są takie same.
 Error: Błąd
+Page not found: Nie znaleziono strony
 Wrong or expired link.: Nieporawny lub wygasły link.
 PasswordRequirements: Nowe hasło musi mieć co najmniej %num% znaków. To jedyne ograniczenie.
 Confirm: Zatwierdź
