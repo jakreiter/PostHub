@@ -52,26 +52,24 @@ class AppFixtures extends Fixture
 
 
         $scanPlans = [];
+
         $scanPlans[1] = new ScanPlan();
         $scanPlans[1] ->setName('ScanNo');
         $manager->persist($scanPlans[1]);
 
-        $scanPlans = [];
         $scanPlans[2] = new ScanPlan();
         $scanPlans[2] ->setName('ScanNoPaid');
-        $manager->persist($scanPlans[1]);
+        $manager->persist($scanPlans[2]);
 
-        $scanPlans = [];
         $scanPlans[3] = new ScanPlan();
         $scanPlans[3] ->setName('ScanYesPaid');
         $scanPlans[3]->setScan(true);
-        $manager->persist($scanPlans[1]);
+        $manager->persist($scanPlans[3]);
 
-        $scanPlans = [];
         $scanPlans[4] = new ScanPlan();
         $scanPlans[4] ->setName('ScanYesAll');
         $scanPlans[4]->setScan(true);
-        $manager->persist($scanPlans[1]);
+        $manager->persist($scanPlans[4]);
 
 
 
