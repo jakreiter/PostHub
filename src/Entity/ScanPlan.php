@@ -26,7 +26,7 @@ class ScanPlan
     private $name;
 
     /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":false}
+     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
      */
     private $scan=false;
 
