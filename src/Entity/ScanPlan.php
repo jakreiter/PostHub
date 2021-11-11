@@ -26,9 +26,9 @@ class ScanPlan
     private $name;
 
     /**
-     * @ORM\Column(type="boolean", nullable=false, nullable=false)
+     * @ORM\Column(type="boolean", nullable=false, options={"default":false}
      */
-    private $scan;
+    private $scan=false;
 
     public function getId(): ?int
     {

@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Organization;
+use App\Entity\ScanPlan;
 use App\Entity\User;
 use App\Entity\Location;
 use App\Entity\LetterStatus;
@@ -47,6 +48,30 @@ class AppFixtures extends Fixture
         $letterStatus = new LetterStatus();
         $letterStatus->setName('Sent by traditional mail');
         $manager->persist($letterStatus);
+
+
+
+        $scanPlans = [];
+        $scanPlans[1] = new ScanPlan();
+        $scanPlans[1] ->setName('ScanNo');
+        $manager->persist($scanPlans[1]);
+
+        $scanPlans = [];
+        $scanPlans[2] = new ScanPlan();
+        $scanPlans[2] ->setName('ScanNoPaid');
+        $manager->persist($scanPlans[1]);
+
+        $scanPlans = [];
+        $scanPlans[3] = new ScanPlan();
+        $scanPlans[3] ->setName('ScanYesPaid');
+        $scanPlans[3]->setScan(true);
+        $manager->persist($scanPlans[1]);
+
+        $scanPlans = [];
+        $scanPlans[4] = new ScanPlan();
+        $scanPlans[4] ->setName('ScanYesAll');
+        $scanPlans[4]->setScan(true);
+        $manager->persist($scanPlans[1]);
 
 
 
@@ -118,7 +143,7 @@ class AppFixtures extends Fixture
             $organization = new Organization();
             $organization->setName($colorName);
             $organization->setLocation($location);
-            $organization->setScan((bool)$locNr % 2);
+            $organization->setScanPlan($scanPlans[$locNr % 4+1]);
             $manager->persist($organization);
         }
 
