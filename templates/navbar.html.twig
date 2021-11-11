@@ -1,5 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">{{ application_name }}</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">
+        {% if logo_image_file %}
+            <img src="{{ logo_image_file }}" alt="{{ application_name }}" {% if logo_image_width %}width="{{ logo_image_width }}" {% endif %} {% if logo_image_width %}height="{{ logo_image_height }}" {% endif%} />
+        {% else %}
+            {{ application_name }}
+        {% endif %}
+    </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>

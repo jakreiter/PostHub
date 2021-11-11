@@ -9,5 +9,8 @@ twig:
         single_scan_price: '%single_scan_price%'
         single_scan_currency: '%single_scan_currency%'
         use_barcodes: '%env(USE_BARCODES)%'
+        logo_image_file: '%env(LOGO_IMAGE_FILE)%'
+        logo_image_width: '%env(LOGO_IMAGE_WIDTH)%'
+        logo_image_height: '%env(LOGO_IMAGE_HEIGHT)%'
 
 
