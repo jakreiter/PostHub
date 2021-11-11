@@ -25,17 +25,14 @@ export default function newLetterFormsAjaxize() {
                     let prntdv = $(form).closest('div');
                     let thisFormNumber = prntdv.data('formNumber');
                     if (data.includes('form-signin') && data.includes('form-signin')) {
-                        console.log('Session expired. 1');
                         $(form).find('fieldset').prop("disabled", false);
                         $(form).find('.btnSubmitNormal').show();
                         $(form).find('.btnSubmitInProgress').hide();
                         $(form).find('.btnSubmitSuccess').hide();
 
                         let statusTarget = $(form).find('div.statusDiv').first();
-                        console.log(statusTarget);
                         statusTarget.html("<p class='error-text text-danger text-sm-center'>Session expired. Please <a href='/login' target='_blank'>log in in new window</a>.</p>");
                     } else {
-                        console.log('ajax fail s2. on ' + thisFormNumber);
                         let html = makeUnikeFormFieldIds(data, thisFormNumber + 1000);
                         prntdv.html(html);
                         organizationSelectAjaxize(thisFormNumber);
@@ -44,7 +41,6 @@ export default function newLetterFormsAjaxize() {
                     }
                 },
                 error: function (data) {
-                    console.log('ajax error1.');
                     $(form).find('fieldset').prop("disabled", false);
                     $(form).find('.btnSubmitNormal').show();
                     $(form).find('.btnSubmitInProgress').hide();

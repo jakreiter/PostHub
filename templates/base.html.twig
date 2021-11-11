@@ -7,9 +7,12 @@
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
-    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" nonce="{{ csp_nonce('script') }}"></script>
     {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
+        {{ encore_entry_script_tags('app', null, '_default', {
+            nonce: csp_nonce('script'),
+            defer: null
+        }) }}
     {% endblock %}
 </head>
 <body>
