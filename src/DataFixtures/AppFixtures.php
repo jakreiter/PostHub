@@ -11,6 +11,7 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class AppFixtures extends Fixture
@@ -20,16 +21,21 @@ class AppFixtures extends Fixture
     private $encoder;
     private $projectDir;
     private $colorNames;
+    private $em;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, ParameterBagInterface $parameterBag)
+    public function __construct(UserPasswordEncoderInterface $encoder, ParameterBagInterface $parameterBag, EntityManagerInterface $em)
     {
         $this->encoder = $encoder;
         $this->projectDir = $parameterBag->get('project_dir');
         $this->colorNames = NiceNames::COLOR_NAMES;
+        $this->em = $em;
     }
 
     public function load(ObjectManager $manager)
     {
+
+        $connection = $this->em->getConnection();
+        $connection->exec("ALTER TABLE letter_status AUTO_INCREMENT = 5;");
 
         $letterStatus = new LetterStatus();
         $letterStatus->setName('In the office');
@@ -50,7 +56,7 @@ class AppFixtures extends Fixture
         $manager->persist($letterStatus);
 
 
-
+        $connection->exec("ALTER TABLE scan_plan AUTO_INCREMENT = 5;");
         $scanPlans = [];
 
         $scanPlans[1] = new ScanPlan();
@@ -106,6 +112,7 @@ class AppFixtures extends Fixture
         }
 
 
+        $connection->exec("ALTER TABLE location AUTO_INCREMENT = 5;");
         $locations = [];
 
         $location = new Location();

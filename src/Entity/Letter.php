@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=LetterRepository::class)
- * @ORM\Table(uniqueConstraints={
+ * @ORM\Table(name="letterph", uniqueConstraints={
  *      @ORM\UniqueConstraint(name="unique_barcode_number", columns={"barcode_number"})
  * }, indexes={
  *      @ORM\Index(name="seen_in_organization_index", columns={"organization_id", "seen"}),
@@ -139,6 +139,11 @@ class Letter
      * @ORM\Column(type="float", nullable=false, options={"default":0})
      */
     private $scanDue=0.0;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $foreignId;
 
     /**
      * @ORM\ManyToOne(targetEntity="User")
@@ -411,6 +416,18 @@ class Letter
     public function setRapas(?string $rapas): self
     {
         $this->rapas = $rapas;
+
+        return $this;
+    }
+
+    public function getForeignId(): ?int
+    {
+        return $this->foreignId;
+    }
+
+    public function setForeignId(?int $foreignId): self
+    {
+        $this->foreignId = $foreignId;
 
         return $this;
     }

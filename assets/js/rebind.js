@@ -14,6 +14,49 @@ export default function rebind() {
         theme: 'bootstrap4',
     });
 
+    function formatAccount(repo) {
+        if (!repo.id) {
+            return repo.text;
+        }
+
+        var markup = $("<span>"
+            + repo.text + " <span class='badge badge-info'>" + repo.owner + "</span> </span>");
+
+        return markup;
+    }
+
+    $("#import1_registered")
+        .select2(
+            {
+                minimumInputLength: 2,
+                minimumResultsForSearch: 10,
+                theme: 'bootstrap4',
+                ajax: {
+                    url: '/kadmin/import/registered',
+                    dataType: "json",
+                    type: "GET",
+                    data: function (params) {
+
+                        var queryParameters = {
+                            fragment: params.term
+                        };
+                        return queryParameters;
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    id: item.id,
+                                    text: item.company,
+                                    owner: item.name
+                                }
+                            })
+                        };
+                    }
+                },
+                templateResult: formatAccount
+            });
+
     userSelectAjaxize();
     organizationFilterSelectAjaxize();
     /*

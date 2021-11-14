@@ -68,6 +68,10 @@
                            href="{{ path('letter_admin_handover') }}">{{ "Letters handover"|trans }}</a>
 
                         <a class="dropdown-item" href="{{ path('letter_multi') }}">{{ "letterMulti"|trans }}</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                        <a class="dropdown-item"
+                           href="{{ path('admin_letters_import1') }}">{{ "Import"|trans }}</a>
+                        {% endif %}
 
                     </div>
                 </li>

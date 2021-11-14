@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Import{% endblock %}
+
+{% block body %}
+    <h1>Import</h1>
+
+
+    <div class="alert alert-info alert-dismissible niezaszer" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                    aria-hidden="true">&times;</span></button>
+        {{ "Number of letters imported"|trans }}: {{ resuInfo.numberOfImported }}<br>
+        {{ "Number of letters not imported"|trans }}: {{ resuInfo.numberOfNotImported }}
+    </div>
+
+    {% if resuInfo.importResults is defined and resuInfo.importResults %}
+
+
+
+        <table class="table table-bordered table-sm">
+            <thead class="thead-light">
+            <tr>
+
+                <th>{{ "Foreign id"|trans }}</th>
+                <th>{{ "Created"|trans }}</th>
+                <th>{{ "Title"|trans }}</th>
+                <th>{{ "Reason"|trans }}</th>
+                <th>{{ "Letter"|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for org_id,result in resuInfo.importResults %}
+                <tr>
+                    <td>{{ org_id }}</td>
+                    <td>{{ result.date_added }}</td>
+                    <td>{{ result.title }}</td>
+                    <td>{{ result.reason }}</td>
+                    <td><span class="nobr">
+                    {% if result.letter  %}
+                        <a href="{{ path('letter_admin_show', {'id': result.letter.id}) }}"
+                       class="btn btn-sm btn-success" title="{{ "btnShow"|trans }}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                                     class="bi bi-eye-fill" viewBox="0 0 16 16">
+                          <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                          <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                        </svg> </a>
+                    {% endif %}
+                    </span>
+                    </td>
+                </tr>
+            {% else %}
+
+            {% endfor %}
+            </tbody>
+        </table>
+
+
+    {% endif %}
+
+{% endblock %}

@@ -194,3 +194,10 @@ Password reset: Reset hasła
 Print this page: Drukuj
 Number of days after which the scans should be deleted: Liczba dni, po której należy usuwać skany
 for: dla
+Company from source system: Klient z systemu źródłowego
+Foreign id: Identyfikator z obcego systemu
+Import: Import
+Has already been imported: Został już wcześniej zaimportowany
+Number of letters imported: Liczba zaimportowanych listów
+Number of letters not imported: Liczba niezaimportowanych listów
+Reason: Powód

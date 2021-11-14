@@ -32,6 +32,9 @@ yarn-error.log
 /templates/emails_customized/pass_reset__request.html.twig
 /templates/emails_customized/pass_reset_for_new_user.html.twig
 /notification_sender.txt
+/old_file_delete.txt
 /toCyberProd.sh
 /toTestDm.sh
 /public/images/logo.png
+/public/images/logo_dev.png
+/public/images/logo_test.png
