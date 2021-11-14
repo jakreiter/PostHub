@@ -97,7 +97,9 @@ class EmailNotificationService
                         $commaSeparatedEmails.= $organization->getOwner()->getEmail();
                     }
                     else {
-                        $this->output->writeln("Owner: [".$organization->getOwner()."] <error>No e-mail</error>");
+                        if ($this->output) {
+                            $this->output->writeln("Owner: [" . $organization->getOwner() . "] <error>No e-mail</error>");
+                        }
                         continue;
                     }
                     if ($commaSeparatedEmails) {
