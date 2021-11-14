@@ -48,6 +48,7 @@ class LetterFilterType extends AbstractType
                 'choice_label' => function (LetterStatus $letterStatus) {
                     return $letterStatus->getName();
                 },
+                'choice_translation_domain' => true,
                 'multiple' => false,
                 'expanded' => false,
                 'required' => false,

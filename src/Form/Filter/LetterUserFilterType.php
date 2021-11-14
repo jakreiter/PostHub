@@ -15,13 +15,12 @@ class LetterUserFilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, ['required'=>false])
+            ->add('title', TextType::class, ['required' => false])
             ->add('status', EntityType::class, [
                 'class' => 'App:LetterStatus',
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
-                        ->orderBy('o.name', 'ASC')
-                        ;
+                        ->orderBy('o.name', 'ASC');
                 },
                 'choice_label' => function (LetterStatus $letterStatus) {
                     return $letterStatus->getName();
@@ -30,15 +29,12 @@ class LetterUserFilterType extends AbstractType
                 'expanded' => false,
                 'required' => false,
                 'placeholder' => '',
-                'attr' => array(
-
-                )
+                'attr' => array(),
+                'choice_translation_domain' => true
             ]);
-            if ($_ENV['USE_BARCODES']) {
-                $builder->add('barcodeNumber', TextType::class, ['required'=>false]);
-            }
-
-        ;
+        if ($_ENV['USE_BARCODES']) {
+            $builder->add('barcodeNumber', TextType::class, ['required' => false]);
+        };
     }
 
     public function getBlockPrefix()

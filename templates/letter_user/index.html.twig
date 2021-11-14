@@ -70,7 +70,7 @@
             <tr>
                 <td>{{ letter.title }}</td>
                 <td>{{ letter.organization }}</td>
-                <td>{{ letter.status }}</td>
+                <td>{{ letter.status|trans }}</td>
                 <td>
                     {% if letter.originalName %}
                         <a href="{{ path('letter_file_download', {'id': letter.id}) }}"

@@ -91,7 +91,7 @@
                            class="">{{ letter.organization }}</a>
                     {% endif %}
                 </td>
-                <td>{{ letter.status }}</td>
+                <td>{{ letter.status|trans }}</td>
                 <td>
                     {% if letter.fileName %}
                         <a href="{{ path('letter_file_download', {'id': letter.id}) }}"
