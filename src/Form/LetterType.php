@@ -54,6 +54,7 @@ class LetterType extends AbstractType
                 'multiple' => false,
                 'expanded' => false,
                 'required' => true,
+                'choice_translation_domain' => true
             ])
             ->add('file', FileType::class, [
                 'label' => 'Scan (PDF file)',
