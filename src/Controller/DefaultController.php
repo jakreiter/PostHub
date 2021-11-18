@@ -30,7 +30,7 @@ class DefaultController extends AbstractController
     {
         if ('https'==$_ENV['WEB_APP_SCHEME'] && 'http'==$request->getScheme()) {
             $appUrl = $_ENV['WEB_APP_SCHEME'].'https://'.$_ENV['WEB_APP_HOST'].$_ENV['WEB_APP_BASE_URL'];
-            $this->redirect($appUrl);
+            return $this->redirect($appUrl);
         }
 
         /** @var User $user */
