@@ -28,10 +28,12 @@ class DefaultController extends AbstractController
 
     public function homeAction(Request $request, SluggerInterface $slugger, LetterRepository $letterRepository, OrganizationRepository $organizationRepository, CoreSecurity $security): Response
     {
+        /*
         if ('https'==$_ENV['WEB_APP_SCHEME'] && 'http'==$request->getScheme()) {
             $appUrl = $_ENV['WEB_APP_SCHEME'].'://'.$_ENV['WEB_APP_HOST'].$_ENV['WEB_APP_BASE_URL'];
             return $this->redirect($appUrl);
         }
+        */
 
         /** @var User $user */
         $user = $this->getUser();
