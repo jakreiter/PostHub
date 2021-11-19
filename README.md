@@ -21,6 +21,13 @@ git clone https://github.com/jakreiter/PostHub.git posthub
 
 ```bash
 cp .env .env.local
+
+```
+
+* Create .htaccess file and change it manually if needed (for example redirect http to https)
+
+```bash
+cp public/.htaccess.dist public/.htaccess
 ```
 
 Production values in .env.local:
