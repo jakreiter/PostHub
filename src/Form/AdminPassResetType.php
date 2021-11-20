@@ -14,6 +14,7 @@ class AdminPassResetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('submit', SubmitType::class, [
+            'label' => 'Send',
             'attr' => ['class' => 'btn btn-primary'],
         ]);
     }
