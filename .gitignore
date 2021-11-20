@@ -38,3 +38,4 @@ yarn-error.log
 /public/images/logo.png
 /public/images/logo_dev.png
 /public/images/logo_test.png
+/public/.htaccess
