@@ -32,7 +32,7 @@ class OrganizationType extends AbstractType
             ->add('location')
             ->add('numberOfDaysAfterWhichTheScansShouldBeDeleted')
             ->add('owner', EntityType::class, [
-                'class' => 'App:User',
+                'class' => User::class,
                 'query_builder' => function (UserRepository $er) {
                     return $er->createQueryBuilder('u')
                         ->orderBy('u.email', 'ASC')
@@ -58,7 +58,7 @@ class OrganizationType extends AbstractType
                     if ($organization->getOwner()) {
                         $loadedUserId = $organization->getOwner()->getId();
                         $form->add('owner', EntityType::class, [
-                            'class' => 'App:User',
+                            'class' => User::class,
                             'query_builder' => function (UserRepository $er) use ($loadedUserId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :loadedUserId')
@@ -88,7 +88,7 @@ class OrganizationType extends AbstractType
                     $submittedUserId = $data['owner'];
                     if ($submittedUserId) {
                         $form->add('owner', EntityType::class, [
-                            'class' => 'App:User',
+                            'class' => User::class,
                             'query_builder' => function (UserRepository $er) use ($submittedUserId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :submittedUserId')

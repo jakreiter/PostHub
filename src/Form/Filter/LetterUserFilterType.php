@@ -17,7 +17,7 @@ class LetterUserFilterType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' => false])
             ->add('status', EntityType::class, [
-                'class' => 'App:LetterStatus',
+                'class' => LetterStatus::class,
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC');

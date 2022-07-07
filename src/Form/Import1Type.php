@@ -27,7 +27,7 @@ class Import1Type extends AbstractType
             ])
 
             ->add('organization', EntityType::class, [
-                'class' => 'App:Organization',
+                'class' => Organization::class,
                 'query_builder' => function (OrganizationRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC')
@@ -54,7 +54,7 @@ class Import1Type extends AbstractType
                     if ($letter && $letter->getOrganization()) {
                         $submittedOrganizationId = $letter->getOrganization()->getId();
                         $form->add('organization', EntityType::class, [
-                            'class' => 'App:Organization',
+                            'class' => Organization::class,
                             'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :submittedOrganizationId')
@@ -84,7 +84,7 @@ class Import1Type extends AbstractType
                     $submittedOrganizationId = $data['organization'];
                     if ($submittedOrganizationId) {
                         $form->add('organization', EntityType::class, [
-                            'class' => 'App:Organization',
+                            'class' => Organization::class,
                             'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :submittedOrganizationId')

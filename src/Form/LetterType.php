@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Letter;
 use App\Entity\Organization;
+use App\Entity\LetterStatus;
 use App\Repository\OrganizationRepository;
 use App\Repository\LetterStatusRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,7 +29,7 @@ class LetterType extends AbstractType
             ])
 
             ->add('organization', EntityType::class, [
-                'class' => 'App:Organization',
+                'class' => Organization::class,
                 'query_builder' => function (OrganizationRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC')
@@ -46,7 +47,7 @@ class LetterType extends AbstractType
                 ]
             ])
             ->add('status', EntityType::class, [
-                'class' => 'App:LetterStatus',
+                'class' => LetterStatus::class,
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.id', 'ASC');
@@ -81,7 +82,7 @@ class LetterType extends AbstractType
                     if ($letter->getOrganization()) {
                         $submittedOrganizationId = $letter->getOrganization()->getId();
                         $form->add('organization', EntityType::class, [
-                            'class' => 'App:Organization',
+                            'class' => Organization::class,
                             'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :submittedOrganizationId')
@@ -111,7 +112,7 @@ class LetterType extends AbstractType
                     $submittedOrganizationId = $data['organization'];
                     if ($submittedOrganizationId) {
                         $form->add('organization', EntityType::class, [
-                            'class' => 'App:Organization',
+                            'class' => Organization::class,
                             'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :submittedOrganizationId')

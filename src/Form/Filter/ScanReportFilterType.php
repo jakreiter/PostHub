@@ -20,7 +20,7 @@ class ScanReportFilterType extends AbstractType
         $builder
             ->add('name', TextType::class, ['required' => false])
             ->add('location', EntityType::class, [
-                'class' => 'App:Location',
+                'class' => Location::class,
                 'query_builder' => function (LocationRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC')

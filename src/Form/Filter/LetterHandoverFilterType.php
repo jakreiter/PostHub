@@ -20,7 +20,7 @@ class LetterHandoverFilterType extends AbstractType
     {
         $builder
             ->add('organization', EntityType::class, [
-                'class' => 'App:Organization',
+                'class' => Organization::class,
                 'query_builder' => function (OrganizationRepository $er) {
                     return $er->createQueryBuilder('o')
                         ->orderBy('o.name', 'ASC')
@@ -38,7 +38,7 @@ class LetterHandoverFilterType extends AbstractType
                 )
             ])
             ->add('statuses', EntityType::class, [
-                'class' => 'App:LetterStatus',
+                'class' => LetterStatus::class,
                 'label' => 'Statuses',
                 'query_builder' => function (LetterStatusRepository $er) {
                     return $er->createQueryBuilder('o')
@@ -64,7 +64,7 @@ class LetterHandoverFilterType extends AbstractType
                     $submittedOrganizationId = $data['organization'];
                     if ($submittedOrganizationId) {
                         $form->add('organization', EntityType::class, [
-                            'class' => 'App:Organization',
+                            'class' => Organization::class,
                             'query_builder' => function (OrganizationRepository $er) use ($submittedOrganizationId) {
                                 return $er->createQueryBuilder('o')
                                     ->andWhere('o.id = :submittedOrganizationId')
