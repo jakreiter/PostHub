@@ -38,6 +38,7 @@ APP_ENV - 'prod' for production, 'dev' for developing
 composer install
 ```
 
+
 * Clear Symfony cache.
 
 ```bash
