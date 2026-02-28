@@ -1,0 +1,98 @@
+services:
+  app:
+    build:
+      context: .
+      args:
+        PHP_VERSION: "7.4"
+    container_name: posthub_app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+      - vendor_data:/var/www/html/vendor
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      APP_ENV: dev
+      APP_SECRET: docker_dev_secret_change_me
+      DATABASE_URL: "mysql://posthub:posthub@db:3306/posthub?serverVersion=mariadb-10.3.27"
+      MAILER_DSN: "null://null"
+      EMAIL_SENDER: "PostHub Docker <noreply@localhost>"
+      ADMIN_CONTACT_EMAIL: "admin@localhost"
+      NOTIFICATION_BCC_EMAIL: ""
+      ADMIN_EMAIL_INITIAL: "admin@localhost"
+      ADMIN_PASS_INITIAL: "admin_docker_password"
+      APPLICATION_NAME: "POST HUB DOCKER"
+      MAIL_DOMAIN_FOR_FIXURES: "localhost"
+      DEFAULT_LOCALE: "pl"
+      RECAPTCHA_SITEKEY: ""
+      RECAPTCHA_SECRET: ""
+      RECAPTCHA_PROXY: ""
+      RECAPTCHA_SCORE_THRESHOLD: "0.5"
+      MAX_ATTEMPTS_FROM_IP: "10"
+      PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE: "50"
+      SINGLE_SCAN_PRICE: "1.23"
+      SINGLE_SCAN_CURRENCY: ""
+      MIN_PASSWORD_LENGTH: "10"
+      TRY_TO_RESEND_NOTIFICATIONS_AFTER: "-30 minutes"
+      WEB_APP_HOST: "localhost:8080"
+      WEB_APP_SCHEME: "http"
+      WEB_APP_BASE_URL: ""
+      NUMBER_OF_DAYS_AFTER_WHICH_THE_SCANS_SHOULD_BE_DELETED: "60"
+      MAX_UPLOAD_FILE_SIZE: "20480k"
+      USE_BARCODES: "0"
+      LOGO_IMAGE_FILE: ""
+      LOGO_IMAGE_WIDTH: ""
+      LOGO_IMAGE_HEIGHT: ""
+      LOCK_DSN: "semaphore"
+    restart: unless-stopped
+
+  db:
+    image: mariadb:10.3
+    container_name: posthub_db
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: posthub
+      MYSQL_USER: posthub
+      MYSQL_PASSWORD: posthub
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: posthub_phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  node:
+    image: node:14
+    container_name: posthub_node
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: sh -c "yarn install && yarn build"
+    profiles:
+      - tools
+
+volumes:
+  db_data:
+  vendor_data:
+

@@ -1,0 +1,10 @@
+.git/
+vendor/
+node_modules/
+var/
+public/build/
+.env.local
+.env.*.local
+*.log
+.idea/
+
