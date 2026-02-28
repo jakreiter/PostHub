@@ -46,9 +46,6 @@ Encore
     //.enableVersioning(Encore.isProduction())
     .enableVersioning()
 
-    .configureBabel((config) => {
-        config.plugins.push('@babel/plugin-proposal-class-properties');
-    })
 
     // enables @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
@@ -57,7 +54,13 @@ Encore
     })
 
     // enables Sass/SCSS support
-    .enableSassLoader()
+    .enableSassLoader(function(options) {
+        // Silence deprecation warnings from Bootstrap 4 SCSS with modern Dart Sass
+        options.sassOptions = {
+            silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'slash-div', 'legacy-js-api'],
+            futureDeprecations: [],
+        };
+    })
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()

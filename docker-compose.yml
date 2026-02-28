@@ -3,7 +3,7 @@ services:
     build:
       context: .
       args:
-        PHP_VERSION: "7.4"
+        PHP_VERSION: "8.2"
     container_name: posthub_app
     ports:
       - "8080:80"

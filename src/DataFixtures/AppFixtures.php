@@ -31,7 +31,7 @@ class AppFixtures extends Fixture
         $this->em = $em;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
 
         $connection = $this->em->getConnection();

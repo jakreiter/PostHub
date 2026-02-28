@@ -1,5 +1,5 @@
-ARG PHP_VERSION=7.4
-FROM node:14 AS node
+ARG PHP_VERSION=8.2
+FROM node:18 AS node
 FROM php:${PHP_VERSION}-apache
 
 # Copy Node.js and Yarn from the official node image
