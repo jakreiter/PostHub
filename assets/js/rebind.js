@@ -11,7 +11,7 @@ global.posthubSendingAllLetterForms = posthubSendingAllLetterForms;
 export default function rebind() {
 
     $('select.select2').select2({
-        theme: 'bootstrap4',
+        theme: 'bootstrap-5',
     });
 
     function formatAccount(repo) {
@@ -20,7 +20,7 @@ export default function rebind() {
         }
 
         var markup = $("<span>"
-            + repo.text + " <span class='badge badge-info'>" + repo.owner + "</span> </span>");
+            + repo.text + " <span class='badge bg-info'>" + repo.owner + "</span> </span>");
 
         return markup;
     }
@@ -30,7 +30,7 @@ export default function rebind() {
             {
                 minimumInputLength: 2,
                 minimumResultsForSearch: 10,
-                theme: 'bootstrap4',
+                theme: 'bootstrap-5',
                 ajax: {
                     url: '/kadmin/import/registered',
                     dataType: "json",

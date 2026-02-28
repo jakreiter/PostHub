@@ -14,13 +14,11 @@ use App\Service\EmailNotificationService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-/**
- * @Route("/kadmin/organization")
- */
+#[Route('/kadmin/organization')]
 class OrganizationAdminController extends AbstractController
 {
     private $em;
@@ -33,11 +31,7 @@ class OrganizationAdminController extends AbstractController
 
     }
 
-    /**
-     * @Route("/find.{_format}",
-     *      requirements = { "_format" = "html|json" },
-     *      name="organization_admin_find", methods={"GET"})
-     */
+    #[Route('/find.{_format}', requirements: ['_format' => 'html|json'], name: 'organization_admin_find', methods: ['GET'])]
     public function findByFragmentAction(Request $request, $_format, OrganizationRepository $organizationRepository): Response
     {
         $fragment = $request->query->get('q');
@@ -68,9 +62,7 @@ class OrganizationAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/scan_report", name="scan_report", methods={"GET"})
-     */
+    #[Route('/scan_report', name: 'scan_report', methods: ['GET'])]
     public function scanReportPerOrganization(PaginatorInterface $paginator, Request $request): Response
     {
         $defaultData= [
@@ -159,9 +151,7 @@ class OrganizationAdminController extends AbstractController
 
     }
 
-    /**
-     * @Route("/notification_required", name="organization_notification_required", methods={"GET"})
-     */
+    #[Route('/notification_required', name: 'organization_notification_required', methods: ['GET'])]
     public function RequiredNotificationPerOrganizationAction(PaginatorInterface $paginator, Request $request, EmailNotificationService $emailNotificationService): Response
     {
         $requiringNotificationInfoPerOrganization = $emailNotificationService->getNumberOfRequiringNewLetterNotificationPerOrganization();
@@ -201,9 +191,7 @@ class OrganizationAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/send_notifications", name="organization_admin_send_notifications", methods={"GET"})
-     */
+    #[Route('/send_notifications', name: 'organization_admin_send_notifications', methods: ['GET'])]
     public function sendNotifications(Request $request, EmailNotificationService $emailNotificationService): Response
     {
         $notifications = $emailNotificationService->sendNewLettersNotifications(30);
@@ -215,9 +203,7 @@ class OrganizationAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/", name="organization_admin_index", methods={"GET"})
-     */
+    #[Route('/', name: 'organization_admin_index', methods: ['GET'])]
     public function index(PaginatorInterface $paginator, Request $request): Response
     {
         $filterForm = $this->createForm(OrganizationFilterType::class);
@@ -243,9 +229,7 @@ class OrganizationAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/new", name="organization_admin_new", methods={"GET","POST"})
-     */
+    #[Route('/new', name: 'organization_admin_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $organization = new Organization();
@@ -253,9 +237,8 @@ class OrganizationAdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($organization);
-            $entityManager->flush();
+            $this->em->persist($organization);
+            $this->em->flush();
 
             return $this->redirectToRoute('organization_admin_index');
         }
@@ -266,9 +249,7 @@ class OrganizationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="organization_admin_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'organization_admin_show', methods: ['GET'])]
     public function show(Organization $organization): Response
     {
         return $this->render('organization_admin/show.html.twig', [
@@ -276,9 +257,7 @@ class OrganizationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/notifications", name="organization_notifications_admin_show", methods={"GET"})
-     */
+    #[Route('/{id}/notifications', name: 'organization_notifications_admin_show', methods: ['GET'])]
     public function showNotifications(Organization $organization): Response
     {
         return $this->render('organization_admin/notifications.html.twig', [
@@ -286,12 +265,7 @@ class OrganizationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{organization}/notification/{notification}", name="organization_notification_admin_show", methods={"GET"}, requirements={
-     * "organization": "\d+",
-     * "notification": "\d+"
-     * })
-     */
+    #[Route('/{organization}/notification/{notification}', name: 'organization_notification_admin_show', methods: ['GET'], requirements: ['organization' => '\d+', 'notification' => '\d+'])]
     public function showNotification(Organization $organization, Notification $notification): Response
     {
         if ($notification->getOrganization()!=$organization) {
@@ -305,16 +279,14 @@ class OrganizationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="organization_admin_edit", methods={"GET","POST"})
-     */
+    #[Route('/{id}/edit', name: 'organization_admin_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Organization $organization): Response
     {
         $form = $this->createForm(OrganizationType::class, $organization);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('organization_admin_index');
         }
@@ -325,15 +297,12 @@ class OrganizationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="organization_admin_delete", methods={"POST"})
-     */
+    #[Route('/{id}', name: 'organization_admin_delete', methods: ['POST'])]
     public function delete(Request $request, Organization $organization): Response
     {
         if ($this->isCsrfTokenValid('delete' . $organization->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($organization);
-            $entityManager->flush();
+            $this->em->remove($organization);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('organization_admin_index');

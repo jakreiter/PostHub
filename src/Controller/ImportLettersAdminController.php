@@ -6,7 +6,7 @@ use App\Form\Import1Type;
 use App\Service\LetterImport1Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,9 +14,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/kadmin/import")
- */
+#[Route('/kadmin/import')]
 class ImportLettersAdminController extends AbstractController
 {
 
@@ -28,9 +26,7 @@ class ImportLettersAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/letters1", name="admin_letters_import1", methods={"GET","POST"})
-     */
+    #[Route('/letters1', name: 'admin_letters_import1', methods: ['GET', 'POST'])]
     public function import1(EntityManagerInterface $em, Request $request, LetterImport1Service $letterImportService): Response
     {
         $form = $this->createForm(Import1Type::class);
@@ -55,9 +51,7 @@ class ImportLettersAdminController extends AbstractController
 
     }
 
-    /**
-     * @Route("/registered", name="admin_letters_import1_registered", methods={"GET","POST"})
-     */
+    #[Route('/registered', name: 'admin_letters_import1_registered', methods: ['GET', 'POST'])]
     public function getRegistered(EntityManagerInterface $em, Request $request): Response
     {
         $conn = $em->getConnection();

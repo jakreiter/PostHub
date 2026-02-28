@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,23 +10,18 @@ use App\Entity\User;
 use App\Repository\OrganizationRepository;
 use App\Repository\LetterRepository;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Security\Core\Security as CoreSecurity;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\SecurityBundle\Security;
 
 
 
-/**
- * @Route("/")
- */
+#[Route('/')]
 class DefaultController extends AbstractController
 {
 
-    /**
-     * @Route("/", name="home", methods="GET")
-     * @Security("is_granted('ROLE_USER')")
-     */
-
-    public function homeAction(Request $request, SluggerInterface $slugger, LetterRepository $letterRepository, OrganizationRepository $organizationRepository, CoreSecurity $security): Response
+    #[Route('/', name: 'home', methods: 'GET')]
+    #[IsGranted('ROLE_USER')]
+    public function homeAction(Request $request, SluggerInterface $slugger, LetterRepository $letterRepository, OrganizationRepository $organizationRepository, Security $security): Response
     {
         /*
         if ('https'==$_ENV['WEB_APP_SCHEME'] && 'http'==$request->getScheme()) {

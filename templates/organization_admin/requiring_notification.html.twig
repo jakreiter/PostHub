@@ -7,7 +7,7 @@
 
 
     <table class="table table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
         <tr>
             <th>Id</th>
             <th{% if pagination.isSorted('Organization.name') %} class="sorted"{% endif %}>
@@ -22,8 +22,8 @@
             <th{% if pagination.isSorted('ScanPlan.name') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'ScanPlan'|trans, 'ScanPlan.name') }}
             </th>
-            <th class="text-right">{{ "Number of letters to be notified"|trans }}</th>
-            <th class="text-right">{{ "Last attempt to send a notification"|trans }}</th>
+            <th class="text-end">{{ "Number of letters to be notified"|trans }}</th>
+            <th class="text-end">{{ "Last attempt to send a notification"|trans }}</th>
             <th></th>
         </tr>
         </thead>
@@ -37,10 +37,10 @@
                                                   class="">{{ organization.owner }}</a>
                     {% endif %}</td>
                 <td>{{ organization.scanPlan|trans }}</td>
-                <td class="text-right">
+                <td class="text-end">
                     {{ requiringNotificationInfoPerOrganization[organization.id].letters }}
                 </td>
-                <td class="text-right">
+                <td class="text-end">
                     {{ requiringNotificationInfoPerOrganization[organization.id].lastAttemptToSendNotification }}
                 </td>
 

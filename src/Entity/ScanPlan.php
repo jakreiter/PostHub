@@ -6,28 +6,20 @@ use App\Repository\ScanPlanRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
-/**
- * @ORM\Entity(repositoryClass=ScanPlanRepository::class)
- * @Audit\Auditable()
- * @Audit\Security(view={"ROLE_ADMIN"})
- */
+#[ORM\Entity(repositoryClass: ScanPlanRepository::class)]
+#[Audit\Auditable]
+#[Audit\Security(view: ['ROLE_ADMIN'])]
 class ScanPlan
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
     private $scan=false;
 
     public function getId(): ?int

@@ -6,7 +6,7 @@
     <h1>{{ "Sending notifications"|trans }}</h1>
 
     <table class="table table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
         <tr>
             <th>{{ "Created"|trans }}</th>
             <th>{{ "Title"|trans }}</th>
@@ -39,8 +39,7 @@
 
     <p class="text-center"></p>
     <div class="alert alert-info alert-dismissible niezaszer" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-                    aria-hidden="true">&times;</span></button>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         Refresh the page to send more.
     </div>
 {% endblock %}

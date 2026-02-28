@@ -9,7 +9,7 @@ use App\Entity\Location;
 use App\Entity\LetterStatus;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,14 +18,14 @@ class AppFixtures extends Fixture
 {
 
 
-    private $encoder;
+    private $hasher;
     private $projectDir;
     private $colorNames;
     private $em;
 
-    public function __construct(UserPasswordEncoderInterface $encoder, ParameterBagInterface $parameterBag, EntityManagerInterface $em)
+    public function __construct(UserPasswordHasherInterface $hasher, ParameterBagInterface $parameterBag, EntityManagerInterface $em)
     {
-        $this->encoder = $encoder;
+        $this->hasher = $hasher;
         $this->projectDir = $parameterBag->get('project_dir');
         $this->colorNames = NiceNames::COLOR_NAMES;
         $this->em = $em;
@@ -35,7 +35,7 @@ class AppFixtures extends Fixture
     {
 
         $connection = $this->em->getConnection();
-        $connection->exec("ALTER TABLE letter_status AUTO_INCREMENT = 5;");
+        $connection->executeStatement("ALTER TABLE letter_status AUTO_INCREMENT = 5;");
 
         $letterStatus = new LetterStatus();
         $letterStatus->setName('In the office');
@@ -56,7 +56,7 @@ class AppFixtures extends Fixture
         $manager->persist($letterStatus);
 
 
-        $connection->exec("ALTER TABLE scan_plan AUTO_INCREMENT = 5;");
+        $connection->executeStatement("ALTER TABLE scan_plan AUTO_INCREMENT = 5;");
         $scanPlans = [];
 
         $scanPlans[1] = new ScanPlan();
@@ -86,7 +86,7 @@ class AppFixtures extends Fixture
         $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
         $user->setEnabled(true);
         $plainPassword = $_ENV['ADMIN_PASS_INITIAL'];
-        $encoded = $this->encoder->encodePassword($user, $plainPassword);
+        $encoded = $this->hasher->hashPassword($user, $plainPassword);
         $user->setPassword($encoded);
         $manager->persist($user);
         $users[] = $user;
@@ -112,7 +112,7 @@ class AppFixtures extends Fixture
         }
 
 
-        $connection->exec("ALTER TABLE location AUTO_INCREMENT = 5;");
+        $connection->executeStatement("ALTER TABLE location AUTO_INCREMENT = 5;");
         $locations = [];
 
         $location = new Location();

@@ -9,83 +9,56 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
-/**
- * @ORM\Entity(repositoryClass=OrganizationRepository::class)
- * @ORM\Table(indexes={
- *      @ORM\Index(name="created_index", columns={"created"})
- * })
- * @Audit\Auditable()
- * @Audit\Security(view={"ROLE_ADMIN"})
- */
+#[ORM\Entity(repositoryClass: OrganizationRepository::class)]
+#[ORM\Table(indexes: [
+    new ORM\Index(name: 'created_index', columns: ['created'])
+])]
+#[Audit\Auditable]
+#[Audit\Security(view: ['ROLE_ADMIN'])]
 class Organization
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
 
-    /**
-     * @ORM\Column(type="string", length=127)
-     */
+    #[ORM\Column(type: 'string', length: 127)]
     private $name;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $commaSeparatedEmails;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ScanPlan")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: ScanPlan::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $scanPlan;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Location")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $location;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="organizations")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'organizations')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $owner;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Letter", mappedBy="organization")
-     */
+    #[ORM\OneToMany(targetEntity: Letter::class, mappedBy: 'organization')]
     private $letters;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Notification", mappedBy="organization")
-     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'organization')]
     private $notifications;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":true})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => true])]
     private $allowScanDownloadWithoutLogin=true;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     protected $created;
 
-    /**
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updated;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false, options={"default":0})
-     */
+    #[ORM\Column(type: 'integer', nullable: false, options: ['default' => 0])]
     private $numberOfDaysAfterWhichTheScansShouldBeDeleted=0;
 
     public function __construct()

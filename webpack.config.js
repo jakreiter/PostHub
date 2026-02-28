@@ -55,10 +55,8 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader(function(options) {
-        // Silence deprecation warnings from Bootstrap 4 SCSS with modern Dart Sass
         options.sassOptions = {
-            silenceDeprecations: ['import', 'global-builtin', 'color-functions', 'slash-div', 'legacy-js-api'],
-            futureDeprecations: [],
+            silenceDeprecations: ['import', 'global-builtin', 'if-function', 'color-functions', 'legacy-js-api'],
         };
     })
 

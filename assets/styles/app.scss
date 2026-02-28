@@ -2,10 +2,16 @@
 @import '~bootstrap/scss/bootstrap';
 @import "~select2/src/scss/core";
 @import "~select2/src/scss/theme/classic/layout";
-@import '~@ttskch/select2-bootstrap4-theme/src/select2-bootstrap4.scss';
+@import '~select2-bootstrap-5-theme/dist/select2-bootstrap-5-theme.css';
 @import '~tablesorter/dist/css/theme.bootstrap_4.min.css';
 
 $brand-primary: $nies_blue;
+
+// BS4 backward-compat: btn-block was removed in BS5
+.btn-block {
+  display: block;
+  width: 100%;
+}
 
 html, body {
   min-height: 100vh;
@@ -324,7 +330,7 @@ table.layout-fixed {
   border-bottom: 1px solid #888;
 }
 
-.letter_row .form-group {
+.letter_row .mb-3 {
   margin-bottom: 2px;
 }
 

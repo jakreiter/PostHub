@@ -3,33 +3,32 @@
 namespace App\Controller;
 
 use App\Entity\Letter;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Security\Core\Security as CoreSecurity;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Bundle\SecurityBundle\Security;
 use App\Service\FileLetterService;
 
-/**
- * @Route("/download")
- */
+#[Route('/download')]
 class DownloadController extends AbstractController
 {
 
     private $fileLetterService;
+    private EntityManagerInterface $em;
 
-    public function __construct(FileLetterService $fileLetterService)
+    public function __construct(FileLetterService $fileLetterService, EntityManagerInterface $em)
     {
         $this->fileLetterService = $fileLetterService;
+        $this->em = $em;
     }
 
-    /**
-     * @Route("/letter_nl:{id}:{rapas}", name="letter_file_download_for_not_logged_in", methods={"GET"})
-     */
-    public function downloadActionForNotLoggedInUser(Letter $letter, $rapas, CoreSecurity $security): Response
+    #[Route('/letter_nl:{id}:{rapas}', name: 'letter_file_download_for_not_logged_in', methods: ['GET'])]
+    public function downloadActionForNotLoggedInUser(Letter $letter, $rapas, Security $security): Response
     {
 
         if (
@@ -47,11 +46,9 @@ class DownloadController extends AbstractController
     }
 
 
-    /**
-     * @Route("/letter:{id}", name="letter_file_download", methods={"GET"})
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function downloadActionForLoggedInUser(Letter $letter, CoreSecurity $security): Response
+    #[Route('/letter:{id}', name: 'letter_file_download', methods: ['GET'])]
+    #[IsGranted('ROLE_USER')]
+    public function downloadActionForLoggedInUser(Letter $letter, Security $security): Response
     {
 
         if (
@@ -70,19 +67,16 @@ class DownloadController extends AbstractController
 
 
 
-    /**
-     * @Route("/kadmin/delfile:{id}", name="letter_file_delete", methods={"DELETE"})
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
+    #[Route('/kadmin/delfile:{id}', name: 'letter_file_delete', methods: ['DELETE'])]
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Letter $letter): Response
     {
         if ($this->isCsrfTokenValid('delete' . $letter->getId(), $request->request->get('_token'))) {
 
-            $entityManager = $this->getDoctrine()->getManager();
             $this->fileLetterService->deleteFile($letter);
             $letter->setFileName(null);
-            $entityManager->remove($letter);
-            $entityManager->flush();
+            $this->em->remove($letter);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('home');
@@ -90,7 +84,6 @@ class DownloadController extends AbstractController
 
     private function downloadScan(Letter $letter, $seen=false): BinaryFileResponse
     {
-        $entityManager = $this->getDoctrine()->getManager();
         $file = $this->fileLetterService->getFilePath($letter);
         if (file_exists($file) && is_file($file)) {
             $response = new BinaryFileResponse($file);
@@ -102,7 +95,7 @@ class DownloadController extends AbstractController
 
                 if ($seen) $letter->setSeen(true);
                 if ($this->getUser()) $letter->setDownloadedByUser($this->getUser());
-                $entityManager->flush();
+                $this->em->flush();
 
             return $response;
         }

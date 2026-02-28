@@ -48,7 +48,7 @@
 
 
     <table class="table table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
         <tr>
             <th>Id</th>
             <th>{{ 'Organization'|trans }}</th>
@@ -56,9 +56,9 @@
             <th>{{ 'Owner'|trans }} </th>
             <th>{{ 'ScanPlan'|trans }}</th>
             <th>{{ 'Created'|trans }}</th>
-            <th class="text-right">{{ "numberOfScannedLetters"|trans }}</th>
+            <th class="text-end">{{ "numberOfScannedLetters"|trans }}</th>
             <th>{{ "scanLettersDue"|trans }}</th>
-            <th class="text-right">{{ "actions"|trans }}</th>
+            <th class="text-end">{{ "actions"|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -72,10 +72,10 @@
                     {% endif %}</td>
                 <td>{{ organization.scanPlan|trans }}</td>
                 <td>{{ organization.created ? organization.created|date('Y-m-d H:i') : '' }}</td>
-                <td class="text-right">{% if lettersPerOrgs[organization.id] is defined %}
+                <td class="text-end">{% if lettersPerOrgs[organization.id] is defined %}
                        {{  lettersPerOrgs[organization.id].letters }}
                     {% endif %}</td>
-                <td class="text-right">{% if lettersPerOrgs[organization.id] is defined %}
+                <td class="text-end">{% if lettersPerOrgs[organization.id] is defined %}
                         {{ lettersPerOrgs[organization.id].due }}
                     {% endif %}</td>
                 <td>

@@ -4,7 +4,7 @@ import formatOrganizationSelection from './formatOrganizationSelection';
 export default function organizationSelectAjaxize(posthubFormNumber)
 {
     $('#ifp' + posthubFormNumber + ' select.organization-ajax-select').select2({
-        theme: 'bootstrap4',
+        theme: 'bootstrap-5',
         ajax: {
             url: '/kadmin/organization/find.json',
             dataType: 'json',

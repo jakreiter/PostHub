@@ -7,7 +7,7 @@ export default function formatUserOption (userInfo) {
     var $container = $(
         "<div class='sel-row'>" +
         " <span class='select2-result-repository__title'></span>" +
-        " <span class='select2-result-repository__scan badge badge-info'></span>" +
+        " <span class='select2-result-repository__scan badge bg-info'></span>" +
         " <span class='select2-result-repository__location'></span>" +
         "</div>"
     );

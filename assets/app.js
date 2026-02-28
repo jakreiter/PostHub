@@ -12,7 +12,8 @@ const $ = require('jquery');
 global.$ = global.jQuery = $;
 // this "modifies" the jquery module: adding behavior to it
 // the bootstrap module doesn't export/return anything
-import 'bootstrap';
+import * as bootstrap from 'bootstrap';
+global.bootstrap = bootstrap;
 import 'tablesorter';
 require('@fortawesome/fontawesome-free/js/all.js');
 import 'select2';

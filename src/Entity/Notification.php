@@ -11,72 +11,48 @@ use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-/**
- * @ORM\Entity(repositoryClass=NotificationRepository::class)
- * @Audit\Auditable()
- * @Audit\Security(view={"ROLE_ADMIN"})
- * @Assert\EnableAutoMapping()
- */
+#[ORM\Entity(repositoryClass: NotificationRepository::class)]
+#[Audit\Auditable]
+#[Audit\Security(view: ['ROLE_ADMIN'])]
 class Notification
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="notifications")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Organization::class, inversedBy: 'notifications')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: false)]
     private $organization;
 
-    /**
-     * @ORM\Column(type="string", length=300, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 300, nullable: true)]
     private $sentMessageId;
 
 
-    /**
-     * @ORM\OneToMany(targetEntity="Letter", mappedBy="notification")
-     */
+    #[ORM\OneToMany(targetEntity: Letter::class, mappedBy: 'notification')]
     private $letters;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $recipient;
 
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $contents;
 
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private $debug;
 
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     protected $created;
 
-    /**
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updated;
 
 

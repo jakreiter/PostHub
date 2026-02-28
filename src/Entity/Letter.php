@@ -10,151 +10,99 @@ use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
-/**
- * @ORM\Entity(repositoryClass=LetterRepository::class)
- * @ORM\Table(name="letterph", uniqueConstraints={
- *      @ORM\UniqueConstraint(name="unique_barcode_number", columns={"barcode_number"})
- * }, indexes={
- *      @ORM\Index(name="seen_in_organization_index", columns={"organization_id", "seen"}),
- *      @ORM\Index(name="seen_in_organization_index", columns={"organization_id", "seen"}),
- *      @ORM\Index(name="downloaded_by_user_index", columns={"downloaded_by_user_id"}),
- *      @ORM\Index(name="created_index", columns={"created"})
- * })
- * @Audit\Auditable()
- * @Audit\Security(view={"ROLE_ADMIN"})
- * @Assert\EnableAutoMapping()
- */
+#[ORM\Entity(repositoryClass: LetterRepository::class)]
+#[ORM\Table(name: 'letterph', uniqueConstraints: [
+    new ORM\UniqueConstraint(name: 'unique_barcode_number', columns: ['barcode_number'])
+], indexes: [
+    new ORM\Index(name: 'seen_in_organization_index', columns: ['organization_id', 'seen']),
+    new ORM\Index(name: 'downloaded_by_user_index', columns: ['downloaded_by_user_id']),
+    new ORM\Index(name: 'created_index', columns: ['created'])
+])]
+#[Audit\Auditable]
+#[Audit\Security(view: ['ROLE_ADMIN'])]
 class Letter
 {
     /**
      * @var \Ramsey\Uuid\UuidInterface
-     *
-     * @ORM\Id
-     * @ORM\Column(type="uuid", unique=true)
-     * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Organization", inversedBy="letters")
-     * @ORM\JoinColumn(onDelete="CASCADE", nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: Organization::class, inversedBy: 'letters')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE', nullable: false)]
     private $organization;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="LetterStatus")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: LetterStatus::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private $status;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=false)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: false)]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=40, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 40, nullable: true)]
     private $barcodeNumber;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $fileName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $originalName;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $size;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Notification", inversedBy="letters")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: Notification::class, inversedBy: 'letters')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $notification;
 
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
     private $notificationSent=false;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":false})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => false])]
     private $seen=false;
 
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $downloadedByUser;
 
-    /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 32, nullable: true)]
     private $rapas;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     protected $created;
 
-    /**
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updated;
 
-    /**
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $lastAttemptToSendNotification;
 
-    /**
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $scanOrdered;
 
-    /**
-     *
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $scanInserted;
 
-    /**
-     *
-     * @ORM\Column(type="float", nullable=false, options={"default":0})
-     */
+    #[ORM\Column(type: 'float', nullable: false, options: ['default' => 0])]
     private $scanDue=0.0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private $foreignId;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $createdByUser;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $modifiedByUser;
 
     public function __construct()

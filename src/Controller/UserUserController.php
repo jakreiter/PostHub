@@ -9,34 +9,32 @@ use App\Form\MeUserEmailConfirmationType;
 use App\Model\StringTools;
 use App\Repository\UserRepository;
 use App\Service\EmailNotificationService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Model\PassHelperTools;
 use Symfony\Component\Mime\Email;
 
-/**
- * @Route("/me/user")
- */
+#[Route('/me/user')]
 class UserUserController extends AbstractController
 {
 
     private $emailNotificationService;
+    private EntityManagerInterface $em;
 
-    public function __construct(EmailNotificationService $emailNotificationService)
+    public function __construct(EmailNotificationService $emailNotificationService, EntityManagerInterface $em)
     {
         $this->emailNotificationService = $emailNotificationService;
+        $this->em = $em;
     }
 
-    /**
-     * @Route("/", name="self_user_show", methods="GET")
-     * @return Response
-     */
+    #[Route('/', name: 'self_user_show', methods: 'GET')]
     public function show(): Response
     {
         $user = $this->getUser();
@@ -45,13 +43,8 @@ class UserUserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/change_pass", name="self_user_change_pass", methods="GET|POST")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @return Response
-     */
-    public function changePassword(Request $request, UserPasswordEncoderInterface $encoder, TranslatorInterface $translator): Response
+    #[Route('/change_pass', name: 'self_user_change_pass', methods: ['GET', 'POST'])]
+    public function changePassword(Request $request, UserPasswordHasherInterface $hasher, TranslatorInterface $translator): Response
     {
 
         $formData = [];
@@ -69,15 +62,13 @@ class UserUserController extends AbstractController
 
             $plainOldPassword = $form->get('password')->getData();
 
-            if ($encoder->isPasswordValid($user, $plainOldPassword)) {
+            if ($hasher->isPasswordValid($user, $plainOldPassword)) {
 
                 $plainNewPassword = $form->get('newPassword')->getData();
-                $newEncoded = $encoder->encodePassword($user, $plainNewPassword);
+                $newEncoded = $hasher->hashPassword($user, $plainNewPassword);
                 $user->setPassword($newEncoded);
 
-                $this->getDoctrine()
-                    ->getManager()
-                    ->flush();
+                $this->em->flush();
 
                 $this->addFlash('success', $translator->trans('Password changed.'));
 
@@ -97,15 +88,7 @@ class UserUserController extends AbstractController
     }
 
 
-    /**
-     * @Route("/change_email_init", name="self_user_change_email_init", methods="GET|POST")
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @param TranslatorInterface $translator
-     * @param UserRepository $userRepository
-     * @param MailerInterface $mailer
-     * @return Response
-     */
+    #[Route('/change_email_init', name: 'self_user_change_email_init', methods: ['GET', 'POST'])]
     public function changeEmailAction(Request $request, TranslatorInterface $translator, UserRepository $userRepository, MailerInterface $mailer): Response
     {
 
@@ -127,12 +110,9 @@ class UserUserController extends AbstractController
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $requestedUser->setNewEmailToken($paschangeToken);
-                $this->getDoctrine()
-                    ->getManager()
-                    ->flush();
+                $this->em->flush();
 
                 $this->addFlash('success', $translator->trans('The e-mail address change process has started. Check your e-mail now and click the link that verifies the new e-mail address.'));
-                //$this->addFlash('success', $uri);
                 $message = (new Email())
                     ->subject($translator->trans('ChangeEmailInformationMailTitle'))
                     ->to($requestedUser->getEmail())
@@ -181,14 +161,7 @@ class UserUserController extends AbstractController
     }
 
 
-    /**
-     * @Route("/change_email_confirmation/i{id}/{tokha}", name="self_user_change_email_confirmation", methods="GET|POST", requirements={
-     * "id": "\d+"
-     * })
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @return Response
-     */
+    #[Route('/change_email_confirmation/i{id}/{tokha}', name: 'self_user_change_email_confirmation', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function changeEmailConfirmation(User $requestedUser, $tokha, Request $request, TranslatorInterface $translator, UserRepository $userRepository): Response
     {
         $user = $this->getUser();
@@ -213,9 +186,7 @@ class UserUserController extends AbstractController
                 $requestedUser->setNewEmail(null);
                 $requestedUser->setNewEmailToken(null);
 
-                $this->getDoctrine()
-                    ->getManager()
-                    ->flush();
+                $this->em->flush();
 
                 $this->addFlash('success', $translator->trans('The email address has been changed.'));
 

@@ -9,14 +9,15 @@ use App\Form\PassResetEmailType;
 use App\Form\UserPassSetType;
 use App\Model\PassHelperTools;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Message;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use App\Model\StringTools;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -25,23 +26,19 @@ use Symfony\Component\Mime\Address;
 use App\Service\RecaptchaService;
 use App\Service\EmailNotificationService;
 
-/**
- * @Route("/pass_reset")
- */
+#[Route('/pass_reset')]
 class PassResetController extends AbstractController
 {
     private $emailNotificationService;
+    private EntityManagerInterface $em;
 
-    public function __construct(EmailNotificationService $emailNotificationService)
+    public function __construct(EmailNotificationService $emailNotificationService, EntityManagerInterface $em)
     {
         $this->emailNotificationService = $emailNotificationService;
+        $this->em = $em;
     }
 
-    /**
-     * @Route("/", name="pass_reset_email", methods="GET|POST")
-     * @param Request $request
-     * @return Response
-     */
+    #[Route('/', name: 'pass_reset_email', methods: ['GET', 'POST'])]
     public function resetRequest(Request $request, UserRepository $userRepository, MailerInterface $mailer,
                                  TranslatorInterface $translator, RecaptchaService $recaptchaService, ParameterBagInterface $parameterBag): Response
     {
@@ -71,11 +68,7 @@ class PassResetController extends AbstractController
                             return $this->redirectToRoute('home');
                         }
                     }
-                    /**
-                     * @var User $requestedUser
-                     */
 
-                    //$requestedUser->getLastPassResetRequest()
                     $requestedUser->setLastPassResetRequest(new \DateTime());
                     $paschangeToken = StringTools::randomString();
                     $requestedUser->setPassResetToken($paschangeToken);
@@ -102,9 +95,8 @@ class PassResetController extends AbstractController
 
                     $mailer->send($message);
 
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($requestedUser);
-                    $em->flush();
+                    $this->em->persist($requestedUser);
+                    $this->em->flush();
 
 
                     $this->addFlash('success', $translator->trans("Password reset request sent."));
@@ -121,17 +113,8 @@ class PassResetController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/i{id}/{tokha}", name="pass_reset_set_password", methods="GET|POST", requirements={
-     * "id": "\d+"
-     * })
-     * @param Request $request
-     * @param UserPasswordEncoderInterface $encoder
-     * @param User $user
-     * @param $tokha
-     * @return Response
-     */
-    public function changePassword(Request $request, UserPasswordEncoderInterface $encoder, $id, $tokha,
+    #[Route('/i{id}/{tokha}', name: 'pass_reset_set_password', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function changePassword(Request $request, UserPasswordHasherInterface $hasher, $id, $tokha,
                                    UserRepository $userRepository, TranslatorInterface $translator,
                                    MailerInterface $mailer): Response
     {
@@ -160,13 +143,11 @@ class PassResetController extends AbstractController
                 if ($passSetter->getNewPassword() == $passSetter->getNewPassword2()) {
 
                     $plainPassword = $passSetter->getNewPassword();
-                    $encoded = $encoder->encodePassword($user, $plainPassword);
+                    $encoded = $hasher->hashPassword($user, $plainPassword);
                     $user->setPassword($encoded);
                     $user->setPassResetToken(null);
                     $user->setLastPassResetRequest(null);
-                    $this->getDoctrine()
-                        ->getManager()
-                        ->flush();
+                    $this->em->flush();
 
 
                     $this->addFlash('success', $translator->trans('Password changed.'));
@@ -195,3 +176,4 @@ class PassResetController extends AbstractController
 
     }
 }
+

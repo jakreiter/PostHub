@@ -37,7 +37,7 @@
 
 
     <table class="table table-bordered">
-        <thead class="thead-light">
+        <thead class="table-light">
         <tr>
             <th{% if pagination.isSorted('User.id') %} class="sorted"{% endif %}>
                 {{ knp_pagination_sortable(pagination, 'Id'|trans, 'User.id') }}
@@ -77,7 +77,7 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.enabled ? 'Yes' : 'No' }}</td>
                 <td>{% for role in user.roles %}
-                        <span class="badge badge-info">{{ role|trans }}</span>
+                        <span class="badge bg-info">{{ role|trans }}</span>
                     {% endfor %}
                 </td>
                 <td>{{ user.created ? user.created|date('Y-m-d H:i:s') : '' }}</td>

@@ -21,31 +21,27 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Message;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 
-/**
- * @Route("/kadmin/user")
- */
+#[Route('/kadmin/user')]
 class UserAdminController extends AbstractController
 {
     private $emailNotificationService;
+    private EntityManagerInterface $em;
 
-    public function __construct(EmailNotificationService $emailNotificationService)
+    public function __construct(EmailNotificationService $emailNotificationService, EntityManagerInterface $em)
     {
         $this->emailNotificationService = $emailNotificationService;
+        $this->em = $em;
     }
 
-    /**
-     * @Route("/find.{_format}",
-     *      requirements = { "_format" = "html|json" },
-     *      name="user_admin_find", methods={"GET"})
-     */
+    #[Route('/find.{_format}', requirements: ['_format' => 'html|json'], name: 'user_admin_find', methods: ['GET'])]
     public function findByFragmentAction(Request $request, $_format, UserRepository $userRepository): Response
     {
         $fragment = $request->query->get('q');
@@ -75,9 +71,7 @@ class UserAdminController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/", name="user_admin_index", methods={"GET"})
-     */
+    #[Route('/', name: 'user_admin_index', methods: ['GET'])]
     public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $filterForm = $this->createForm(UserFilterType::class);
@@ -111,9 +105,9 @@ class UserAdminController extends AbstractController
         $query = $filterBuilder->getQuery();
 
         $pagination = $paginator->paginate(
-            $query, /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE'] /*limit per page*/
+            $query,
+            $request->query->getInt('page', 1),
+            $_ENV['PAGINATION_MAX_NUMBER_OF_ITEM_PER_PAGE']
         );
 
         $users = $query->getResult();
@@ -126,9 +120,7 @@ class UserAdminController extends AbstractController
 
     }
 
-    /**
-     * @Route("/new", name="user_admin_new", methods={"GET","POST"})
-     */
+    #[Route('/new', name: 'user_admin_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $user = new User();
@@ -137,9 +129,8 @@ class UserAdminController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             return $this->redirectToRoute('user_admin_index');
         }
@@ -150,9 +141,7 @@ class UserAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="user_admin_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'user_admin_show', methods: ['GET'])]
     public function show(User $user): Response
     {
         return $this->render('user_admin/show.html.twig', [
@@ -160,11 +149,9 @@ class UserAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/reset_password", name="user_admin_reset_password", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
-    public function resetPasswordAd(Request $request, User $user, UserPasswordEncoderInterface $encoder,
+    #[Route('/{id}/reset_password', name: 'user_admin_reset_password', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function resetPasswordAd(Request $request, User $user, UserPasswordHasherInterface $hasher,
                                     TranslatorInterface $translator, MailerInterface $mailer): Response
     {
 
@@ -200,9 +187,8 @@ class UserAdminController extends AbstractController
 
             $mlResult = $mailer->send($message);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($requestedUser);
-            $em->flush();
+            $this->em->persist($requestedUser);
+            $this->em->flush();
 
 
             $this->addFlash('success', $translator->trans("Password reset email sent."));
@@ -217,11 +203,9 @@ class UserAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/{id}/change_password", name="user_admin_change_password", methods={"GET","POST"})
-     * @Security("is_granted('ROLE_NON_EXISTING_ADMIN')")
-     */
-    public function changePassword(Request $request, User $user, UserPasswordEncoderInterface $encoder,
+    #[Route('/{id}/change_password', name: 'user_admin_change_password', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_NON_EXISTING_ADMIN')]
+    public function changePassword(Request $request, User $user, UserPasswordHasherInterface $hasher,
                                    TranslatorInterface $translator): Response
     {
 
@@ -240,13 +224,11 @@ class UserAdminController extends AbstractController
                 if ($passSetter->getNewPassword() == $passSetter->getNewPassword2()) {
 
                     $plainPassword = $passSetter->getNewPassword();
-                    $encoded = $encoder->encodePassword($user, $plainPassword);
+                    $encoded = $hasher->hashPassword($user, $plainPassword);
                     $user->setPassword($encoded);
                     $user->setPassResetToken(null);
                     $user->setLastPassResetRequest(null);
-                    $this->getDoctrine()
-                        ->getManager()
-                        ->flush();
+                    $this->em->flush();
 
 
                     $this->addFlash('success', $translator->trans('Password changed.'));
@@ -274,16 +256,14 @@ class UserAdminController extends AbstractController
 
     }
 
-    /**
-     * @Route("/{id}/edit", name="user_admin_edit", methods={"GET","POST"})
-     */
+    #[Route('/{id}/edit', name: 'user_admin_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, TranslatorInterface $translator): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
             $this->addFlash('success', $translator->trans('Changes have been saved.'));
             return $this->redirectToRoute('user_admin_show', ['id' => $user->getId()]);
         }
@@ -294,15 +274,12 @@ class UserAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="user_admin_delete", methods={"POST"})
-     */
+    #[Route('/{id}', name: 'user_admin_delete', methods: ['POST'])]
     public function delete(Request $request, User $user): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
+            $this->em->remove($user);
+            $this->em->flush();
         }
 
         return $this->redirectToRoute('user_admin_index');

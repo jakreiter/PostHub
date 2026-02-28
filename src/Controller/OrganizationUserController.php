@@ -8,12 +8,10 @@ use App\Form\OrganizationSelfType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 
-/**
- * @Route("org_")
- */
+#[Route('org_')]
 class OrganizationUserController extends AbstractController
 {
     private $em;
@@ -26,9 +24,7 @@ class OrganizationUserController extends AbstractController
 
     }
 
-    /**
-     * @Route("{id}/edit", name="organization_user_edit", methods={"GET","POST"})
-     */
+    #[Route('{id}/edit', name: 'organization_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Organization $organization): Response
     {
 
@@ -42,7 +38,7 @@ class OrganizationUserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('letter_user_index', ['id'=>$organization->getId()]);
         }

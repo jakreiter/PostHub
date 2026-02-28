@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,16 +13,12 @@ use App\Form\Filter\LetterUserFilterType;
 use App\Entity\Letter;
 use App\Entity\Organization;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-/**
- * @Route("/org_")
- */
+#[Route('/org_')]
 class LetterUserController extends AbstractController
 {
-    /**
-     * @Route("{id}/letters", name="letter_user_index", methods={"GET"})
-     */
+    #[Route('{id}/letters', name: 'letter_user_index', methods: ['GET'])]
     public function index(Organization $organization, EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
 
@@ -78,12 +74,8 @@ class LetterUserController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("{organization}/letter_order_scan:{letter}/", name="letter_user_order_scan", methods={"GET","POST"}, requirements={
-     * "organization": "\d+"
-     * })
-     */
-    public function orderScanAction(Request $request, Letter $letter, TranslatorInterface $translator): Response
+    #[Route('{organization}/letter_order_scan:{letter}/', name: 'letter_user_order_scan', methods: ['GET', 'POST'], requirements: ['organization' => '\d+'])]
+    public function orderScanAction(Request $request, Letter $letter, TranslatorInterface $translator, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(LetterOrderScanType::class, $letter);
         $form->handleRequest($request);
@@ -100,9 +92,8 @@ class LetterUserController extends AbstractController
                 $letter->setModifiedByUser($this->getUser());
                 $letter->setScanOrdered(new \DateTime());
                 $letter->setScanDue($_ENV['SINGLE_SCAN_PRICE']);
-                $this->getDoctrine()->getManager()->flush();
+                $em->flush();
                 $this->addFlash('success', $translator->trans('A scan of the letter has been ordered.'));
-                //return $this->redirectToRoute('letter_user_index', ['id' => $letter->getOrganization()->getId()]);
             }
         }
 
@@ -113,12 +104,8 @@ class LetterUserController extends AbstractController
     }
 
 
-    /**
-     * @Route("{organization}/letter_show:{letter}/", name="letter_user_show", methods={"GET"}, requirements={
-     * "organization": "\d+"
-     * })
-     * @Security("is_granted('ROLE_USER')")
-     */
+    #[Route('{organization}/letter_show:{letter}/', name: 'letter_user_show', methods: ['GET'], requirements: ['organization' => '\d+'])]
+    #[IsGranted('ROLE_USER')]
     public function show(Organization $organization, Letter $letter): Response
     {
         $user = $this->getUser();
@@ -135,3 +122,4 @@ class LetterUserController extends AbstractController
 
 
 }
+

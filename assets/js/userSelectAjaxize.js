@@ -5,7 +5,7 @@ import formatUserSelection from './formatUserSelection';
 export default function userSelectAjaxize()
 {
     $('select.user-ajax-select').select2({
-        theme: 'bootstrap4',
+        theme: 'bootstrap-5',
         ajax: {
             url: '/kadmin/user/find.json',
             dataType: 'json',

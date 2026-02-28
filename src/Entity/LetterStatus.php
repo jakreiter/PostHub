@@ -6,23 +6,17 @@ use App\Repository\LetterStatusRepository;
 use Doctrine\ORM\Mapping as ORM;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 
-/**
- * @ORM\Entity(repositoryClass=LetterStatusRepository::class)
- * @Audit\Auditable()
- * @Audit\Security(view={"ROLE_ADMIN"})
- */
+#[ORM\Entity(repositoryClass: LetterStatusRepository::class)]
+#[Audit\Auditable]
+#[Audit\Security(view: ['ROLE_ADMIN'])]
 class LetterStatus
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=32)
-     */
+    #[ORM\Column(type: 'string', length: 32)]
     private $name;
 
     public function getId(): ?int
@@ -46,5 +40,4 @@ class LetterStatus
     {
         return $this->getName();
     }
-
 }

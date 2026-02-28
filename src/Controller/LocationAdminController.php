@@ -5,19 +5,16 @@ namespace App\Controller;
 use App\Entity\Location;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
-/**
- * @Route("/kadmin/location")
- */
+#[Route('/kadmin/location')]
 class LocationAdminController extends AbstractController
 {
-    /**
-     * @Route("/", name="location_admin_index", methods={"GET"})
-     */
+    #[Route('/', name: 'location_admin_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository): Response
     {
         return $this->render('location_admin/index.html.twig', [
@@ -25,19 +22,16 @@ class LocationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="location_admin_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
+    #[Route('/new', name: 'location_admin_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $em): Response
     {
         $location = new Location();
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($location);
-            $entityManager->flush();
+            $em->persist($location);
+            $em->flush();
 
             return $this->redirectToRoute('location_admin_index');
         }
@@ -48,9 +42,7 @@ class LocationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="location_admin_show", methods={"GET"})
-     */
+    #[Route('/{id}', name: 'location_admin_show', methods: ['GET'])]
     public function show(Location $location): Response
     {
         return $this->render('location_admin/show.html.twig', [
@@ -58,16 +50,14 @@ class LocationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="location_admin_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, Location $location): Response
+    #[Route('/{id}/edit', name: 'location_admin_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Location $location, EntityManagerInterface $em): Response
     {
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $em->flush();
 
             return $this->redirectToRoute('location_admin_index');
         }
@@ -78,15 +68,12 @@ class LocationAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="location_admin_delete", methods={"POST"})
-     */
-    public function delete(Request $request, Location $location): Response
+    #[Route('/{id}', name: 'location_admin_delete', methods: ['POST'])]
+    public function delete(Request $request, Location $location, EntityManagerInterface $em): Response
     {
         if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($location);
-            $entityManager->flush();
+            $em->remove($location);
+            $em->flush();
         }
 
         return $this->redirectToRoute('location_admin_index');

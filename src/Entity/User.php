@@ -6,117 +6,81 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Gedmo\Mapping\Annotation as Gedmo;
 use DH\Auditor\Provider\Doctrine\Auditing\Annotation as Audit;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Table(indexes={
- *      @ORM\Index(name="created_index", columns={"created"})
- * })
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @UniqueEntity("email")
- * @Audit\Auditable()
- * @Audit\Security(view={"ROLE_ADMIN"})
- */
-class User implements UserInterface, \Serializable
+#[ORM\Table(indexes: [
+    new ORM\Index(name: 'created_index', columns: ['created'])
+])]
+#[ORM\Entity(repositoryClass: 'App\Repository\UserRepository')]
+#[UniqueEntity('email')]
+#[Audit\Auditable]
+#[Audit\Security(view: ['ROLE_ADMIN'])]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
     const ALL_ROLES = ['ROLE_USER', 'ROLE_LOCATION_MODERATOR', 'ROLE_LOCATION_ADMIN', 'ROLE_ADMIN'];
 
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @Audit\Ignore
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Audit\Ignore]
     private $id;
 
 
-    /**
-     * @ORM\Column(type="string", length=127, unique=false, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 127, unique: false, nullable: true)]
     private $firstName;
 
-    /**
-     * @ORM\Column(type="string", length=127, unique=false, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 127, unique: false, nullable: true)]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", length=100, unique=true)
-     * @Assert\NotBlank
-     * @Assert\Email
-     */
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
     private $newEmail;
 
-    /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 32, nullable: true)]
     private $newEmailToken;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Location")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: Location::class)]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $location;
 
 
-    /**
-     * @ORM\Column(type="boolean", options={"default":0}, nullable=false)
-     */
+    #[ORM\Column(type: 'boolean', options: ['default' => 0], nullable: false)]
     private $enabled = false;
 
-    /**
-     * @ORM\Column(type="json", nullable=true)
-     */
+    #[ORM\Column(type: 'json', nullable: true)]
     private $roles = [];
 
-    /**
-     * @ORM\OneToMany(targetEntity="Organization", mappedBy="owner")
-     */
+    #[ORM\OneToMany(targetEntity: Organization::class, mappedBy: 'owner')]
     private $organizations;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[ORM\Column(type: 'datetime')]
+    #[Gedmo\Timestampable(on: 'create')]
     protected $created;
 
-    /**
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private $updated;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $lastPassResetRequest;
 
-    /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 32, nullable: true)]
     private $passResetToken;
 
 
-
-
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     private $ipAddressDuringRegistration;
 
 
@@ -153,43 +117,24 @@ class User implements UserInterface, \Serializable
 
 
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return null;
     }
 
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
 
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
-    /** @see \Serializable::serialize() */
-    public function serialize()
+    public function getUserIdentifier(): string
     {
-        return serialize(array(
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->enabled
-            // see section on salt below
-            // $this->salt,
-        ));
-    }
-
-    /** @see \Serializable::unserialize() */
-    public function unserialize($serialized)
-    {
-        list (
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->enabled
-            ) = unserialize($serialized, ['allowed_classes' => false]);
+        return $this->email;
     }
 
 

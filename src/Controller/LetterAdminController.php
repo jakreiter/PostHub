@@ -8,7 +8,7 @@ use App\Service\EmailNotificationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,26 +27,26 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use App\Model\TemplateCustomizer;
 
-/**
- * @Route("/kadmin/letter")
- */
+#[Route('/kadmin/letter')]
 class LetterAdminController extends AbstractController
 {
     private $slugger;
     private $emailNotificationService;
+    private $mailer;
+    private $translator;
+    private EntityManagerInterface $em;
 
     public function __construct(SluggerInterface $slugger, TransportInterface $mailer, TranslatorInterface $translator,
-                                UrlGeneratorInterface $router, EmailNotificationService $emailNotificationService)
+                                UrlGeneratorInterface $router, EmailNotificationService $emailNotificationService, EntityManagerInterface $em)
     {
         $this->slugger = $slugger;
         $this->mailer = $mailer;
         $this->translator = $translator;
         $this->emailNotificationService = $emailNotificationService;
+        $this->em = $em;
     }
 
-    /**
-     * @Route("/print_handover", name="letter_admin_print_handover", methods={"GET", "POST"})
-     */
+    #[Route('/print_handover', name: 'letter_admin_print_handover', methods: ['GET', 'POST'])]
     public function printHandover(PaginatorInterface $paginator, EntityManagerInterface $em, Request $request, OrganizationRepository $organizationRepository, LetterStatusRepository $letterStatusRepository): Response
     {
         $letters = [];
@@ -61,9 +61,7 @@ class LetterAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/handover", name="letter_admin_handover", methods={"GET","POST"})
-     */
+    #[Route('/handover', name: 'letter_admin_handover', methods: ['GET', 'POST'])]
     public function lettersHandover(PaginatorInterface $paginator, EntityManagerInterface $em, Request $request, OrganizationRepository $organizationRepository, LetterStatusRepository $letterStatusRepository): Response
     {
         $filter = ['statuses' => [$letterStatusRepository->find(4), $letterStatusRepository->find(6)]];
@@ -99,9 +97,9 @@ class LetterAdminController extends AbstractController
             $query = $filterBuilder->getQuery();
 
             $pagination = $paginator->paginate(
-                $query, /* query NOT result */
-                $request->query->getInt('page', 1), /*page number*/
-                500 /*limit per page*/
+                $query,
+                $request->query->getInt('page', 1),
+                500
             );
 
             $letters = $query->getResult();
@@ -112,14 +110,14 @@ class LetterAdminController extends AbstractController
 
                 $selectedLetters = $selectForm->get('letters')->getData();
                 if ($selectForm->get('changeStatusToGivenToTheRecipientBtn')->isClicked()) {
-                    $givenStatus = $letterStatusRepository->find(5); // 5 - Given to the recipient
+                    $givenStatus = $letterStatusRepository->find(5);
                     foreach ($selectedLetters as $letter) {
                         /** @var Letter $letter */
                         $letter->setStatus($givenStatus);
                     }
                     $em->flush();
                 } else if ($selectForm->get('changeStatusToSentByTraditionalMailBtn')->isClicked()) {
-                    $givenStatus = $letterStatusRepository->find(7); // 7 - changeStatusToSentByTraditionalMailBtn
+                    $givenStatus = $letterStatusRepository->find(7);
                     foreach ($selectedLetters as $letter) {
                         /** @var Letter $letter */
                         $letter->setStatus($givenStatus);
@@ -154,9 +152,7 @@ class LetterAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/", name="letter_admin_index", methods={"GET"})
-     */
+    #[Route('/', name: 'letter_admin_index', methods: ['GET'])]
     public function index(EntityManagerInterface $em, PaginatorInterface $paginator, Request $request): Response
     {
         $filterForm = $this->createForm(LetterFilterType::class);
@@ -219,10 +215,7 @@ class LetterAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="letter_new", methods="GET|POST")
-     */
-
+    #[Route('/new', name: 'letter_new', methods: ['GET', 'POST'])]
     public function newAction(Request $request): Response
     {
 
@@ -240,9 +233,8 @@ class LetterAdminController extends AbstractController
                 $this->handleFileUpload($uploadedFile, $letter);
             }
 
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($letter);
-            $entityManager->flush();
+            $this->em->persist($letter);
+            $this->em->flush();
 
             $dummyFormNumber = 'L' . $letter->getId();
             return $this->render('letter/saved.html.twig', [
@@ -263,9 +255,7 @@ class LetterAdminController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/show:{id}", name="letter_admin_show", methods={"GET"})
-     */
+    #[Route('/show:{id}', name: 'letter_admin_show', methods: ['GET'])]
     public function show(Letter $letter): Response
     {
         return $this->render('letter/show.html.twig', [
@@ -274,9 +264,7 @@ class LetterAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/edit:{id}", name="letter_admin_edit", methods={"GET","POST"})
-     */
+    #[Route('/edit:{id}', name: 'letter_admin_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Letter $letter, FileLetterService $letterService): Response
     {
         $form = $this->createForm(LetterType::class, $letter);
@@ -328,7 +316,7 @@ class LetterAdminController extends AbstractController
                                     $notification->setContents($entMessageInfo->getMessage()->toString());
                                     $notification->setDebug($entMessageInfo->getDebug());
                                     $notification->setRecipient($commaSeparatedEmails);
-                                    $this->getDoctrine()->getManager()->persist($notification);
+                                    $this->em->persist($notification);
                                     $notifications[] = $notification;
 
                                     foreach ($letters as $letter) {
@@ -336,9 +324,8 @@ class LetterAdminController extends AbstractController
                                         if ($messageId) {
                                             $letter->setNotificationSent(true);
                                         }
-                                        //$letter->setNotification($notification);
                                     }
-                                    $this->getDoctrine()->getManager()->flush();
+                                    $this->em->flush();
                                 } catch (TransportExceptionInterface $e) {
 
                                 }
@@ -349,7 +336,7 @@ class LetterAdminController extends AbstractController
             }
 
             $letter->setModifiedByUser($this->getUser());
-            $this->getDoctrine()->getManager()->flush();
+            $this->em->flush();
 
             return $this->redirectToRoute('letter_admin_index');
         }
@@ -361,9 +348,7 @@ class LetterAdminController extends AbstractController
     }
 
 
-    /**
-     * @Route("/multi", name="letter_multi", methods="GET")
-     */
+    #[Route('/multi', name: 'letter_multi', methods: ['GET'])]
     public function multiFormAction(Request $request): Response
     {
 
@@ -380,16 +365,13 @@ class LetterAdminController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/delete:{id}", name="letter_admin_delete", methods={"POST"})
-     */
+    #[Route('/delete:{id}', name: 'letter_admin_delete', methods: ['POST'])]
     public function delete(Request $request, Letter $letter, FileLetterService $fileLetterService): Response
     {
         if ($this->isCsrfTokenValid('delete' . $letter->getId(), $request->request->get('_token'))) {
             $fileLetterService->deleteFile($letter);
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($letter);
-            $entityManager->flush();
+            $this->em->remove($letter);
+            $this->em->flush();
             $this->addFlash('danger', 'Deleted.');
         }
 
@@ -424,3 +406,4 @@ class LetterAdminController extends AbstractController
     }
 
 }
+
