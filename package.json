@@ -21,6 +21,11 @@
         "webpack-cli": "^6.0.1",
         "webpack-notifier": "^1.6.0"
     },
+    "resolutions": {
+        "serialize-javascript": "^7.0.5",
+        "uuid": "^14.0.0",
+        "webpack-dev-server": "^5.2.3"
+    },
     "license": "UNLICENSED",
     "private": true,
     "scripts": {

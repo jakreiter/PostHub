@@ -40,3 +40,6 @@ yarn-error.log
 /public/images/logo_test.png
 /public/.htaccess
 /toProdDm.sh
+
+# Local audit artifacts
+.audit/

@@ -1,0 +1,9 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "tee": true,
+        "/^cd /home/z0/projects/post-hub && which npm node && node -v && npm -v && ls -la \\| grep -E \"\\(yarn\\|package\\|lock\\)\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
