@@ -1,0 +1,20 @@
+nelmio_security:
+    csp:
+        enforce:
+            script-src:
+                - 'unsafe-inline'
+                - 'unsafe-eval'
+                - 'self'
+                - 'https://www.google.com/'
+            style-src:
+                - 'unsafe-inline'
+                - 'self'
+            img-src:
+                - 'self'
+                - 'data:'
+
+    clickjacking:
+        paths:
+            '^/_wdt': ALLOW
+            '^/_profiler': ALLOW
+            '^/.*': DENY
