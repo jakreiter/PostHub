@@ -11,7 +11,6 @@ use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\ORM\EntityManagerInterface;
 
 
 class AppFixtures extends Fixture
@@ -21,21 +20,16 @@ class AppFixtures extends Fixture
     private $hasher;
     private $projectDir;
     private $colorNames;
-    private $em;
 
-    public function __construct(UserPasswordHasherInterface $hasher, ParameterBagInterface $parameterBag, EntityManagerInterface $em)
+    public function __construct(UserPasswordHasherInterface $hasher, ParameterBagInterface $parameterBag)
     {
         $this->hasher = $hasher;
         $this->projectDir = $parameterBag->get('project_dir');
         $this->colorNames = NiceNames::COLOR_NAMES;
-        $this->em = $em;
     }
 
     public function load(ObjectManager $manager): void
     {
-
-        $connection = $this->em->getConnection();
-        $connection->executeStatement("ALTER TABLE letter_status AUTO_INCREMENT = 5;");
 
         $letterStatus = new LetterStatus();
         $letterStatus->setName('In the office');
@@ -56,7 +50,6 @@ class AppFixtures extends Fixture
         $manager->persist($letterStatus);
 
 
-        $connection->executeStatement("ALTER TABLE scan_plan AUTO_INCREMENT = 5;");
         $scanPlans = [];
 
         $scanPlans[1] = new ScanPlan();
@@ -112,7 +105,6 @@ class AppFixtures extends Fixture
         }
 
 
-        $connection->executeStatement("ALTER TABLE location AUTO_INCREMENT = 5;");
         $locations = [];
 
         $location = new Location();

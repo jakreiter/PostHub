@@ -82,10 +82,8 @@ export default function rebind() {
         });
     });
 
-    $(function () {
-        $("table.sortable").tablesorter({
-            theme: "bootstrap"
-        });
+    $("table.sortable").tablesorter({
+        theme: "bootstrap"
     });
 
     $('form.deleteForm').off();

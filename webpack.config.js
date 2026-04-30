@@ -71,8 +71,14 @@ Encore
 //.enableIntegrityHashes(Encore.isProduction())
 
 // uncomment if you're having problems with a jQuery plugin
-//.autoProvidejQuery()
+.autoProvidejQuery()
 
+// Force every `require('jquery')` (incl. nested deps like tablesorter@2.32 which
+// pins jquery@4) to resolve to the single root jQuery, so plugins extend the
+// same `$.fn` that the application code uses.
+.addAliases({
+    jquery: require.resolve('jquery'),
+})
 
 ;
 const config = Encore.getWebpackConfig();
