@@ -84,7 +84,7 @@ class OrganizationAdminController extends AbstractController
             //if ('dev' == $this->environment) dump($organizations);
 
             if ($request->query->has($filterForm->getName())) {
-                $filter = $request->query->get($filterForm->getName());
+                $filter = $request->query->all($filterForm->getName());
                 //if ('dev' == $this->environment) dump($filter);
                 $orderedFrom = $filter['orderedFrom'];
                 $orderedTill = $filter['orderedTill'];
@@ -324,7 +324,7 @@ class OrganizationAdminController extends AbstractController
 
 
         if ($request->query->has($filterForm->getName())) {
-            $filter = $request->query->get($filterForm->getName());
+            $filter = $request->query->all($filterForm->getName());
             $filterForm->submit($filter);
 
             if (isset($filter['name']) && $filter['name']) {

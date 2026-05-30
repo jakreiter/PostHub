@@ -43,3 +43,4 @@ yarn-error.log
 
 # Local audit artifacts
 .audit/
+docker/php/ca-certs/nazwassldvtlsg2r29ca.crt

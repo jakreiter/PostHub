@@ -41,7 +41,7 @@ class LetterUserController extends AbstractController
         $filterBuilder->andWhere('Letter.organization = :organization')->setParameter('organization', $organization);
 
         if ($request->query->has($filterForm->getName())) {
-            $filter = $request->query->get($filterForm->getName());
+            $filter = $request->query->all($filterForm->getName());
             $filterForm->submit($filter);
 
             if (isset($filter['title']) && $filter['title']) {
